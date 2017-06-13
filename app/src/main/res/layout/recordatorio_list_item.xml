@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardBackgroundColor="@color/colorItem"
+    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="4dp"
+    card_view:contentPadding="4dp"
+    android:clickable="true"
+    android:foreground="?selectableItemBackground"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/idTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:id="@+id/recordatorioTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="TextView"
+                android:textSize="18sp"
+                tools:text="Cumpleaños de mi padre"/>
+
+            <TextView
+                android:id="@+id/recordatorioNameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="TextView"
+                android:textSize="16sp"
+                tools:text="Adalino Mas Trigoso"/>
+
+            <TextView
+                android:id="@+id/recordatorioMessageTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="TextView"
+                android:textSize="14sp"
+                tools:text="Este es un día muy especial para ti padre y te deseo lo mejor en este día y los que vendrán."/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="54dp"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/editImageButton"
+                android:layout_width="38dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/colorPrimary"
+                android:contentDescription="@string/edit"
+                app:srcCompat="@android:drawable/ic_menu_edit"/>
+
+            <ImageButton
+                android:id="@+id/deleteImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/colorAccent"
+                android:contentDescription="@string/delete"
+                app:srcCompat="@android:drawable/ic_menu_delete"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

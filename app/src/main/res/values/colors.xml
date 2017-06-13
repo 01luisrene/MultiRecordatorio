@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--color base: 882D61-->
+    <color name="colorPrimary">#3f51b5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#fa88af</color>
+    <color name="colorFondo">#882D60</color>
+    <color name="colorItem">#CD88AF</color>
+    <color name="botonFlotante">#FF2D882D</color>
+</resources>

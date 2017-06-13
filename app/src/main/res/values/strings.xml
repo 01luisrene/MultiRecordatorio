@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Multi Recordatorio</string>
+    <string name="action_settings">Configuraciones</string>
+    <string name="action_add">Agregar</string>
+    <string name="action_search">Buscar</string>
+    <string name="edit">Icono editar</string>
+    <string name="delete">Icono eliminar</string>
+</resources>
