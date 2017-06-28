@@ -22,12 +22,17 @@ import com.a01luisrene.multirecordatorio.modelos.Recordatorio;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
+public class MainActivity extends AppCompatActivity
+        implements View.OnClickListener,
+        SearchView.OnQueryTextListener,
+        MenuItemCompat.OnActionExpandListener,
+        ListaRecordatorioFragment.OnItemSelectedListener {
+
     private DataBaseManagerRecordatorios managerRecordatorio;
     private RecyclerView recordatorioListRecyclerView;
     private RecordatorioListAdapter recordatorioListAdapter;
-
     private DataBaseManager manager;
+
     private List<Recordatorio> listaItemsRecordatorio;
 
     @Override
@@ -38,9 +43,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Creación de la base de datos SQLite
         manager = new DataBaseManagerRecordatorios(this);
 
+        manager.insertarTipoRecordatorio(null, "cumpleanios.png", "Cumpleaño", "1", "28-066-2017");
+        manager.insertarTipoRecordatorio(null, "cita.png", "Cita", "1", "28-066-2017");
+
         manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Feliz cumpleaños", "1145454","1", "1", "1", "2017", "2017","1");
         manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Feliz cumpleaños", "1145454","1", "1", "1", "2017", "2017","1");
         manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Feliz cumpleaños", "1145454","1", "1", "1", "2017", "2017","1");
+
         manager.cerrar();
 
         //Contenedo de la lista de recordatorios
