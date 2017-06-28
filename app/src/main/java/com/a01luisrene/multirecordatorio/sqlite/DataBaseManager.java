@@ -27,7 +27,7 @@ public abstract class DataBaseManager {
      *
      * METODOSS PARA LA TABLA RECORDATORIOS
      *
-     * */
+     **/
     //Insertar un registro
     abstract public void insertarRecoratorio(String id,
                                      String titulo,

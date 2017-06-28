@@ -6,7 +6,7 @@ package com.a01luisrene.multirecordatorio.sqlite;
 
 public class TablasDb {
 
-    public class TablaRecordatorios {
+    public static class TablaRecordatorios {
         /*[NOMBRE DE LA TABLA]*/
         public static final String TABLE_NAME = "recordatorios";
 
@@ -43,7 +43,7 @@ public class TablasDb {
                 +"("+TablaTipoRecordatorio.CN_ID+"));";
     }
 
-    public class TablaTipoRecordatorio{
+    public static class TablaTipoRecordatorio{
         /*[NOMBRE DE LA TABLA]*/
         public static final String TABLE_NAME = "tipoRecordatorios";
 
@@ -63,7 +63,7 @@ public class TablasDb {
                 + CN_CREATION_DATE + " text NOT NULL);";
     }
 
-    public class TablaUsuario{
+    public static class TablaUsuario{
         /*[NOMBRE DE LA TABLA]*/
         public static final String TABLE_NAME = "usuario";
 
@@ -82,7 +82,6 @@ public class TablasDb {
                 + CN_PASSWORD + " text NOT NULL,"
                 + CN_EMAIL + " text NOT NULL,"
                 + CN_CREATION_DATE + " text NOT NULL,"
-                + CN_STATE + "integer NOT NULL);";
+                + CN_STATE + " integer NOT NULL);";
     }
-
 }

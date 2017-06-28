@@ -19,13 +19,13 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onOpen(SQLiteDatabase db) {
-        super.onOpen(db);
-        if (!db.isReadOnly()) {
+    public void onOpen(SQLiteDatabase sqLiteDatabase) {
+        super.onOpen(sqLiteDatabase);
+        if (!sqLiteDatabase.isReadOnly()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                db.setForeignKeyConstraintsEnabled(true);
+                sqLiteDatabase.setForeignKeyConstraintsEnabled(true);
             } else {
-                db.execSQL("PRAGMA foreign_keys=ON");
+                sqLiteDatabase.execSQL("PRAGMA foreign_keys=ON");
             }
         }
     }

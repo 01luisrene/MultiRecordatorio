@@ -37,6 +37,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Creación de la base de datos SQLite
         manager = new DataBaseManagerRecordatorios(this);
+
+        manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Feliz cumpleaños", "1145454","1", "1", "1", "2017", "2017","1");
+        manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Feliz cumpleaños", "1145454","1", "1", "1", "2017", "2017","1");
+        manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Feliz cumpleaños", "1145454","1", "1", "1", "2017", "2017","1");
         manager.cerrar();
 
         //Contenedo de la lista de recordatorios
