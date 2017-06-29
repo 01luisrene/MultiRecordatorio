@@ -11,46 +11,47 @@ import android.os.Build;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "MultiRecordatorio.sqlite";
+    private static final String DB_NAME = "multirecordatorio.db";
     private static final int DB_SCHEME_VERSION = 1;
+    private final Context context;
 
     public DbHelper(Context context) {
         super(context, DB_NAME, null, DB_SCHEME_VERSION);
+        this.context = context;
     }
 
     @Override
-    public void onOpen(SQLiteDatabase sqLiteDatabase) {
-        super.onOpen(sqLiteDatabase);
-        if (!sqLiteDatabase.isReadOnly()) {
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        if (!db.isReadOnly()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                sqLiteDatabase.setForeignKeyConstraintsEnabled(true);
+                db.setForeignKeyConstraintsEnabled(true);
             } else {
-                sqLiteDatabase.execSQL("PRAGMA foreign_keys=ON");
+                db.execSQL("PRAGMA foreign_keys=ON;");
             }
         }
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+    public void onCreate(SQLiteDatabase db) {
 
-        sqLiteDatabase.execSQL(TablasDb.TablaRecordatorios.CREATE_TABLE);
-        sqLiteDatabase.execSQL(TablasDb.TablaTipoRecordatorio.CREATE_TABLE);
-        sqLiteDatabase.execSQL(TablasDb.TablaUsuario.CREATE_TABLE);
+        db.execSQL(TablasDb.TablaRecordatorios.CREATE_TABLE);
+        db.execSQL(TablasDb.TablaTipoRecordatorio.CREATE_TABLE);
+        db.execSQL(TablasDb.TablaUsuario.CREATE_TABLE);
 
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
 
         String tablaRecordatorioV2 = "DROP TABLE IF EXISTS " + TablasDb.TablaRecordatorios.CREATE_TABLE;
         String tablaTipoRecordatoriosV2 = "DROP TABLE IF EXISTS " + TablasDb.TablaTipoRecordatorio.CREATE_TABLE;
         String tablaUsuariosV2 = "DROP TABLE IF EXISTS " + TablasDb.TablaUsuario.CREATE_TABLE;
 
-        sqLiteDatabase.execSQL(tablaRecordatorioV2);
-        sqLiteDatabase.execSQL(tablaTipoRecordatoriosV2);
-        sqLiteDatabase.execSQL(tablaUsuariosV2);
+        db.execSQL(tablaRecordatorioV2);
+        db.execSQL(tablaTipoRecordatoriosV2);
+        db.execSQL(tablaUsuariosV2);
 
-        onCreate(sqLiteDatabase);
-
+        onCreate(db);
     }
 }

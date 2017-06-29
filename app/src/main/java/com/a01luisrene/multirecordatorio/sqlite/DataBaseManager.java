@@ -68,6 +68,34 @@ public abstract class DataBaseManager {
     abstract public Boolean compruebaRegistroRecordatorio(String id);
 
     /**
+     *
+     * METODOS PARA LA TABLA TIPO RECORDATORIOS
+     */
+
+    abstract public void insertarTipoRecordatorio(String id,
+                                                  String iconoRecordatorio,
+                                                  String tipoRecordatorio,
+                                                  String proteccion,
+                                                  String fechaCreacion);
+
+    abstract public void actualizarTipoRecordatorio(String id,
+                                                    String iconoRecordatorio,
+                                                    String tipoRecordatorio,
+                                                    String proteccion,
+                                                    String fechaCreacion);
+
+    abstract public void eliminarTipoRecordatorio(String id);
+
+    abstract public void eliminarTipoRecordatorios();
+
+    abstract public Cursor cargarCursorTipoRecordatorios();
+
+    abstract public Cursor buscarTipoRecordatorio(String tipoRecordatorio);
+
+    abstract public Boolean compruebaRegistroTipoRecordatorio(String id);
+
+
+    /**
     *
     * GETTER & SETTER
     **/

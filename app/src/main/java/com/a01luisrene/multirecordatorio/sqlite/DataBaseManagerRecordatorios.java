@@ -180,4 +180,74 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
 
         return list;
     }
+
+    /**
+     *
+     * METODOS PARA LA TABLA TIPO RECORDATORIOS
+     */
+    private ContentValues generarContentValuesTipoRecordatorio(String id,
+                                                               String iconoRecordatorio,
+                                                               String tipoRecordatorio,
+                                                               String proteccion,
+                                                               String fechaCreacion){
+
+        ContentValues valores = new ContentValues();
+        valores.put(TablasDb.TablaTipoRecordatorio.CN_ID, id);
+        valores.put(TablasDb.TablaTipoRecordatorio.CN_ICON_REMINDER, iconoRecordatorio);
+        valores.put(TablasDb.TablaTipoRecordatorio.CN_REMINDER_TYPE, tipoRecordatorio);
+        valores.put(TablasDb.TablaTipoRecordatorio.CN_PROTECTION, proteccion);
+        valores.put(TablasDb.TablaTipoRecordatorio.CN_CREATION_DATE, fechaCreacion);
+
+        return valores;
+
+    }
+    @Override
+    public void insertarTipoRecordatorio(String id,
+                                         String iconoRecordatorio,
+                                         String tipoRecordatorio,
+                                         String proteccion,
+                                         String fechaCreacion) {
+        super.getDb().insert(TablasDb.TablaTipoRecordatorio.TABLE_NAME,null, generarContentValuesTipoRecordatorio(
+                id,
+                iconoRecordatorio,
+                tipoRecordatorio,
+                proteccion,
+                fechaCreacion
+        ));
+
+    }
+
+    @Override
+    public void actualizarTipoRecordatorio(String id,
+                                           String iconoRecordatorio,
+                                           String tipoRecordatorio,
+                                           String proteccion,
+                                           String fechaCreacion) {
+
+    }
+
+    @Override
+    public void eliminarTipoRecordatorio(String id) {
+
+    }
+
+    @Override
+    public void eliminarTipoRecordatorios() {
+
+    }
+
+    @Override
+    public Cursor cargarCursorTipoRecordatorios() {
+        return null;
+    }
+
+    @Override
+    public Cursor buscarTipoRecordatorio(String tipoRecordatorio) {
+        return null;
+    }
+
+    @Override
+    public Boolean compruebaRegistroTipoRecordatorio(String id) {
+        return null;
+    }
 }
