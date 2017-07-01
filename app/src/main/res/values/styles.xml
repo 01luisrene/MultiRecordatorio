@@ -1,8 +1,7 @@
 <resources>
-
-    <!-- Base application theme. -->
+    <!-- Tema de la aplicación base. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <!-- Personaliza tu tema aquí. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -12,6 +11,35 @@
     <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <!--Estilos para el formulario detalle - tablet-->
+    <style name="textFontMainTableta">
+        <item name="android:textColor">@color/colorTitle</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="textFontDetailTableta">
+        <item name="android:textColor">@color/colorDetail</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <!--Estilos para el formulario detalle - phone-->
+    <style name="textFontMainPhone">
+        <item name="android:textColor">@color/colorTitle</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="textFontDetailPhone">
+        <item name="android:textColor">@color/colorDetail</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">italic</item>
     </style>
 
 </resources>

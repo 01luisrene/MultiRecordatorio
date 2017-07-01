@@ -1,0 +1,167 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:paddingLeft="@dimen/container_padding"
+              android:paddingRight="@dimen/container_padding"
+              android:orientation="vertical"
+              tools:context="com.a01luisrene.multirecordatorio.DetalleRecordatorioFragment">
+
+    <include android:id="@+id/toolbar_detail" layout="@layout/toolbar_detail"/>
+
+    <TextView
+        android:id="@+id/lb_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_bottom_small"
+        android:text="@string/title_reminder"
+        style="@style/textFontMainTableta"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/textFontDetailTableta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_bottom_large"
+        tools:text="Cita para entrevista personal"/>
+
+    <TextView
+        android:id="@+id/lb_entity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/entity_reminder"
+        android:layout_marginBottom="@dimen/margin_bottom_small"
+        style="@style/textFontMainTableta"/>
+
+    <TextView
+        android:id="@+id/tv_entity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="INPE"
+        android:layout_marginBottom="@dimen/margin_bottom_large"
+        style="@style/textFontDetailTableta"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_bottom_large"
+        android:baselineAligned="false">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/lb_type_reminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/type_reminder"
+                android:layout_marginBottom="@dimen/margin_bottom_small"
+                style="@style/textFontMainTableta"/>
+
+            <Spinner
+                android:id="@+id/sp_type_reminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/textFontDetailTableta"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/lb_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/phone_reminder"
+                android:layout_marginBottom="@dimen/margin_bottom_small"
+                style="@style/textFontMainTableta"/>
+
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="954336108"
+                style="@style/textFontDetailTableta"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/message_reminder"
+        android:layout_marginBottom="@dimen/margin_bottom_small"
+        style="@style/textFontMainTableta"/>
+
+    <EditText
+        android:id="@+id/mt_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        tools:ignore="LabelFor"
+        tools:text="Contenedor del mensaje."
+        android:layout_marginBottom="@dimen/margin_bottom_large"
+        style="@style/textFontDetailTableta"/>
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:layout_marginBottom="@dimen/margin_bottom_large">
+       <TextView
+           android:id="@+id/lb_post_message_in"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/post_message_in_reminder"
+           android:layout_marginBottom="@dimen/margin_bottom_small"
+           style="@style/textFontMainTableta"/>
+
+       <LinearLayout
+           android:orientation="horizontal"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <CheckBox
+               android:id="@+id/checkBox"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/facebook_reminder"
+               style="@style/textFontDetailTableta"/>
+
+           <CheckBox
+               android:id="@+id/checkBox2"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/twitter_reminder"
+               style="@style/textFontDetailTableta"/>
+
+           <CheckBox
+               android:id="@+id/checkBox3"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/message_send_reminder"
+               style="@style/textFontDetailTableta"/>
+       </LinearLayout>
+   </LinearLayout>
+
+    <TextView
+        android:id="@+id/lb_date_reminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/date_reminder"
+        android:layout_marginBottom="@dimen/margin_bottom_small"
+        style="@style/textFontMainTableta"/>
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="30-06-2017"
+        style="@style/textFontDetailTableta"/>
+
+</LinearLayout>

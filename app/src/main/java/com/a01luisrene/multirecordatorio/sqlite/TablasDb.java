@@ -13,7 +13,7 @@ public class TablasDb {
         /*[COLUMNAS PARA LA TABLA RECORDATORIO]*/
         public static final String CN_ID = "_id";
         public static final String CN_TITLE = "Titulo";
-        public static final String CN_NAME_OTHER = "nombres_otros";
+        public static final String CN_NAME_OTHER = "entidad";
         public static final String CN_REMINDER_TYPE = "tipo_recordatorio";
         public static final String CN_CONTENT_MESSAGE = "contenido_mensaje";
         public static final String CN_PHONE = "telefono";

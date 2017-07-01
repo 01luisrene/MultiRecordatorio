@@ -26,7 +26,8 @@ public class MainActivity extends AppCompatActivity
         implements View.OnClickListener,
         SearchView.OnQueryTextListener,
         MenuItemCompat.OnActionExpandListener,
-        ListaRecordatorioFragment.OnItemSelectedListener {
+        ListaRecordatorioFragment.OnItemSelectedListener,
+DetalleRecordatorioFragment.OnItemSelectedListener{
 
     private DataBaseManagerRecordatorios managerRecordatorio;
     private RecyclerView recordatorioListRecyclerView;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         manager.cerrar();
 
         //Contenedo de la lista de recordatorios
-        recordatorioListRecyclerView = (RecyclerView) findViewById(R.id.recordatorioListRecyclerView);
+        recordatorioListRecyclerView = (RecyclerView) findViewById(R.id.reminder_list_recyclerView);
 
         recordatorioListRecyclerView.setHasFixedSize(true);
 
@@ -98,7 +99,9 @@ public class MainActivity extends AppCompatActivity
         //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setLogo(R.mipmap.ic_launcher);
+        //toolbar.setLogo(R.mipmap.ic_launcher);
+        //Dar fondo trasparente al toolbar
+        //toolbar.getBackground().setAlpha(0);
 
     }
 
@@ -123,6 +126,9 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()){
+            case R.id.action_add:
+                Toast.makeText(this, "Agregar", Toast.LENGTH_SHORT).show();
+                return true;
             case R.id.action_settings:
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
                 return true;
