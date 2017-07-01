@@ -1,54 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cardItem"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    card_view:cardBackgroundColor="@color/colorItem"
-    card_view:cardCornerRadius="0dp"
-    card_view:cardElevation="4dp"
-    card_view:contentPadding="4dp"
-    android:clickable="true"
-    android:foreground="?selectableItemBackground"
-    >
-
-    <LinearLayout
+    android:layout_height="wrap_content">
+    <android.support.v7.widget.CardView
+        android:id="@+id/list_item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="?selectableItemBackground"
+        card_view:cardBackgroundColor="@color/colorItem"
+        card_view:cardCornerRadius="0dp"
+        card_view:cardElevation="0dp"
+        card_view:contentPadding="6dp">
 
-        <TextView
-            android:id="@+id/idTextView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="invisible"/>
-
-        <TextView
-            android:id="@+id/recordatorioTitleTextView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:textSize="18sp"
-            tools:text="Cumpleaños de mi padre"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/recordatorioNameTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:textSize="16sp"
-            tools:text="Adalino Mas Trigoso"/>
+            <TextView
+                android:id="@+id/idTextView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="invisible"/>
 
-        <TextView
-            android:id="@+id/recordatorioMessageTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:textSize="14sp"
-            tools:text="Este es un día muy especial para ti padre y te deseo lo mejor en este día y los que vendrán."/>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/recordatorioTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:textSize="18sp"
+                tools:text="Cumpleaños de mi padre"/>
 
+            <TextView
+                android:id="@+id/recordatorioNameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"
+                tools:text="Adalino Mas Trigoso"/>
 
-</android.support.v7.widget.CardView>
+            <TextView
+                android:id="@+id/recordatorioMessageTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:textSize="14sp"
+                tools:text="Este es un día muy especial para ti padre y te deseo lo mejor en este día y los que vendrán."/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/lineItem"
+        android:id="@+id/linea"/>
+</LinearLayout>

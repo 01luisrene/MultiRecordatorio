@@ -12,10 +12,6 @@ import com.a01luisrene.multirecordatorio.R;
 
 import java.util.List;
 
-/**
- * Created by LUIS on 07/06/2017.
- */
-
 public class RecordatorioListAdapter extends RecyclerView.Adapter<RecordatorioListAdapter.ViewHolder> {
     private List<Recordatorio> mDataset;
     private Context mainContext;
@@ -23,7 +19,7 @@ public class RecordatorioListAdapter extends RecyclerView.Adapter<RecordatorioLi
     // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
         // you provide access to all the views for a data item in a view holder
-        static class ViewHolder extends RecyclerView.ViewHolder {
+        public static class ViewHolder extends RecyclerView.ViewHolder {
             // each data item is just a string in this case
             TextView id;
             TextView titulo;
@@ -47,8 +43,7 @@ public class RecordatorioListAdapter extends RecyclerView.Adapter<RecordatorioLi
 
         // Crear nuevas vistas (invocadas por el gestor de diseño)
         @Override
-        public RecordatorioListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                       int viewType) {
+        public RecordatorioListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             // create a new view
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recordatorio_list_item, parent, false);

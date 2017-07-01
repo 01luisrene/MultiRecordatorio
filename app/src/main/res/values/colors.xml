@@ -3,10 +3,15 @@
     <color name="colorPrimary">#FF7043</color>
     <color name="colorPrimaryDark">#FF5722</color>
     <color name="colorAccent">#FF8A65</color>
+
+
     <color name="colorFondo">#CFD8DC</color>
     <color name="colorItem">#4DB6AC</color>
 
     <!--Colores para los textos de la app-->
     <color name="colorTitle">#212121</color>
     <color name="colorDetail">#424242</color>
+
+    <!--Colores item-->
+    <color name="lineItem">#546E7A</color>
 </resources>

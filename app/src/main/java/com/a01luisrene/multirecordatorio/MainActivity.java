@@ -1,5 +1,6 @@
 package com.a01luisrene.multirecordatorio;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
@@ -19,6 +20,7 @@ import com.a01luisrene.multirecordatorio.adaptadores.RecordatorioListAdapter;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManager;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorio;
+import com.a01luisrene.multirecordatorio.ui.DetalleRecordatorioActivity;
 
 import java.util.List;
 
@@ -26,8 +28,7 @@ public class MainActivity extends AppCompatActivity
         implements View.OnClickListener,
         SearchView.OnQueryTextListener,
         MenuItemCompat.OnActionExpandListener,
-        ListaRecordatorioFragment.OnItemSelectedListener,
-DetalleRecordatorioFragment.OnItemSelectedListener{
+        ListaRecordatorioFragment.OnItemSelectedListener {
 
     private DataBaseManagerRecordatorios managerRecordatorio;
     private RecyclerView recordatorioListRecyclerView;
@@ -172,6 +173,7 @@ DetalleRecordatorioFragment.OnItemSelectedListener{
         }
     }
 
+
     // @Override
     //public void onClick(View view) {
         //if(view.getId() == R.id.imageButton){
@@ -199,6 +201,25 @@ DetalleRecordatorioFragment.OnItemSelectedListener{
         protected void onPostExecute(Void aVoid) {
             //adapter.changeCursor(cursor);
            // Toast.makeText(MainActivity.this, "Busqueda finalizada...", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void cargarFragmentoDetalle(int id) {
+        int d = id;
+    }
+
+
+    @Override
+    public void onItemSelected(int position) {
+
+        DetalleRecordatorioFragment displayFrag = (DetalleRecordatorioFragment)
+                getSupportFragmentManager().findFragmentById(R.id.details_frag);
+
+        if (displayFrag == null) {
+            Intent intent = new Intent(this, DetalleRecordatorioActivity.class);
+            intent.putExtra("position", position);
+            startActivity(intent);
+        } else {
+            cargarFragmentoDetalle(position);
         }
     }
 

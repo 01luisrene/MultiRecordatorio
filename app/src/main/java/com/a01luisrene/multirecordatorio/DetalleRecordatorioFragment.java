@@ -62,7 +62,4 @@ public class DetalleRecordatorioFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_detalle_recordatorio, container, false);
     }
 
-    public interface OnItemSelectedListener {
-
-    }
 }

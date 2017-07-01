@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.a01luisrene.multirecordatorio.adaptadores.RecordatorioListAdapter;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +16,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class ListaRecordatorioFragment extends Fragment {
+    private OnItemSelectedListener escucha;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -62,8 +66,20 @@ public class ListaRecordatorioFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_lista_recordatorio, container, false);
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        escucha = null;
+    }
+
+    public void cargarDetalle(int idArticulo) {
+        if (escucha != null) {
+            escucha.onItemSelected(idArticulo);
+        }
+    }
 
     public interface OnItemSelectedListener {
+        void onItemSelected(int position);
 
     }
 }

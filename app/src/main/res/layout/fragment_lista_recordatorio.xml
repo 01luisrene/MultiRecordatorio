@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.a01luisrene.multirecordatorio.ListaRecordatorioFragment">
 
     <!--Carga el layout del toolbar con el método include-->
@@ -14,9 +14,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/reminder_list_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/container_margin"
-        android:layout_marginRight="@dimen/container_margin"
+        android:layout_height="match_parent"
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
