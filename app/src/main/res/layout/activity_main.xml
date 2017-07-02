@@ -4,14 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/container_main"
     tools:context="com.a01luisrene.multirecordatorio.MainActivity">
-
-        <!--Fragmento A-->
-        <fragment
-            android:id="@+id/list_frag"
-            class="com.a01luisrene.multirecordatorio.ListaRecordatorioFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_lista_recordatorio"/>
-
 </FrameLayout>

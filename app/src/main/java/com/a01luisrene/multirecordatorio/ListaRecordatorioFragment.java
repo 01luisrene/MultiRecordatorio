@@ -1,51 +1,37 @@
 package com.a01luisrene.multirecordatorio;
 
-
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.a01luisrene.multirecordatorio.adaptadores.RecordatorioListAdapter;
+import com.a01luisrene.multirecordatorio.modelos.Recordatorio;
+import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 
+import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ListaRecordatorioFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ListaRecordatorioFragment extends Fragment {
-    private OnItemSelectedListener escucha;
+public class ListaRecordatorioFragment
+        extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private RecyclerView recordatorioListRecyclerView;
+    private RecordatorioListAdapter recordatorioListAdapter;
+    private List<Recordatorio> listaItemsRecordatorio;
+    private DataBaseManagerRecordatorios manager;
 
     public ListaRecordatorioFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ListaRecordatorioFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ListaRecordatorioFragment newInstance(String param1, String param2) {
+    public static ListaRecordatorioFragment newInstance() {
         ListaRecordatorioFragment fragment = new ListaRecordatorioFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,33 +39,66 @@ public class ListaRecordatorioFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_lista_recordatorio, container, false);
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        escucha = null;
-    }
+        View v = inflater.inflate(R.layout.fragment_lista_recordatorio, container, false);
 
-    public void cargarDetalle(int idArticulo) {
-        if (escucha != null) {
-            escucha.onItemSelected(idArticulo);
-        }
-    }
+        recordatorioListRecyclerView = (RecyclerView) v.findViewById(R.id.reminder_list_recyclerView);
 
-    public interface OnItemSelectedListener {
-        void onItemSelected(int position);
+        recordatorioListRecyclerView.setHasFixedSize(true);
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+
+        recordatorioListRecyclerView.setLayoutManager(linearLayoutManager);
+
+        manager = new DataBaseManagerRecordatorios(getActivity());
+
+        listaItemsRecordatorio = manager.getRecordatoriosList();
+
+        recordatorioListAdapter =  new RecordatorioListAdapter(listaItemsRecordatorio, getActivity());
+
+        recordatorioListRecyclerView.setAdapter(recordatorioListAdapter);
+
+        recordatorioListRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        final FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
+
+        fab.setOnClickListener((View.OnClickListener) getActivity());
+
+        recordatorioListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                if (dy > 0 || dy < 0 && fab.isShown())
+                    fab.hide();
+            }
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState)
+            {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                    fab.show();
+
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
+        //Toolbar
+        Toolbar toolbar = (Toolbar) v.findViewById(R.id.toolbar);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+
+        activity.setSupportActionBar(toolbar);
+        toolbar.setLogo(R.mipmap.ic_launcher);
+
+        return v;
     }
 }
