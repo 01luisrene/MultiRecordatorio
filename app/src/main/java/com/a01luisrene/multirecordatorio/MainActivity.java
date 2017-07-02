@@ -44,25 +44,18 @@ public class MainActivity extends AppCompatActivity
         manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Feliz cumpleaños", "1145454","1", "1", "1", "2017", "2017","1");
 
         manager.cerrar();
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
         MenuItem searchItem = menu.findItem(R.id.action_search);
-
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-
         //Listener para el EditText
         searchView.setOnQueryTextListener(this);
-
         //Listener para el cierre y apertura de widget
         MenuItem menuItem = MenuItemCompat.setOnActionExpandListener(searchItem, this);
-
         return super.onCreateOptionsMenu(menu);
     }
 

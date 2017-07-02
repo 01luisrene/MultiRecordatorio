@@ -14,4 +14,8 @@
 
     <!--Colores item-->
     <color name="lineItem">#546E7A</color>
+
+    <!--Toolbar Transparente-->
+    <color name="toolbarTransparent">#01faf9f8</color>
+
 </resources>

@@ -5,7 +5,8 @@
               android:orientation="vertical"
               tools:context="com.a01luisrene.multirecordatorio.DetalleRecordatorioFragment">
 
-    <include android:id="@+id/toolbar_detail" layout="@layout/toolbar_detail"/>
+    <include layout="@layout/toolbar_detail"/>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

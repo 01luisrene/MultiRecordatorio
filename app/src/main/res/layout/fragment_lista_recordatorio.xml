@@ -9,7 +9,7 @@
     tools:context="com.a01luisrene.multirecordatorio.ListaRecordatorioFragment">
 
     <!--Carga el layout del toolbar con el método include-->
-    <include android:id="@+id/toolbarMain" layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/reminder_list_recyclerView"

@@ -93,9 +93,7 @@ public class ListaRecordatorioFragment
 
         //Toolbar
         Toolbar toolbar = (Toolbar) v.findViewById(R.id.toolbar);
-
         AppCompatActivity activity = (AppCompatActivity) getActivity();
-
         activity.setSupportActionBar(toolbar);
         toolbar.setLogo(R.mipmap.ic_launcher);
 
