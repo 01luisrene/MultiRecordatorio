@@ -62,16 +62,16 @@
 
             <TextView
                 android:id="@+id/tv_name_reminder"
+                style="@style/textFontEntidadListTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/textFontEntidadListTableta"
                 tools:text="Adalino Mas Trigoso"/>
 
             <TextView
                 android:id="@+id/tv_message_reminder"
+                style="@style/textFontMessageListTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/textFontMessageListTableta"
                 tools:text="Este es un día muy especial para ti padre y te deseo lo mejor en este día y los que vendrán."/>
 
             <View

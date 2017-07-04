@@ -9,7 +9,7 @@
 
     <!--String para el formulario detalle recordatorio-->
     <string name="title_reminder">Titulo Recordatorio:</string>
-    <string name="entity_reminder">Entidad (Persona, Empresa, Lugar, ...):</string>
+    <string name="entity_reminder">Persona, Empresa, Lugar, ...:</string>
     <string name="type_reminder">Tipo Recordatorio:</string>
     <string name="phone_reminder">Teléfono:</string>
     <string name="message_reminder">Mensaje:</string>

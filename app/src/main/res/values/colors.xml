@@ -14,7 +14,7 @@
 
     <!--Colores item-->
     <color name="colorTitleList">#1e1e1e</color>
-    <color name="colorEntidadList">#333232</color>
+    <color name="colorEntidadList">#282727</color>
     <color name="colorMessageList">#464545</color>
 
     <!--Toolbar Transparente-->
