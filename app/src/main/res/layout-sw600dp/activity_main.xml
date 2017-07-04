@@ -9,20 +9,21 @@
     android:baselineAligned="false">
 
         <!--Fragmento A-->
-        <FrameLayout
-            android:id="@+id/container_main"
-            android:layout_weight="3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </FrameLayout>
+    <FrameLayout
+        android:id="@+id/container_main"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2">
+    </FrameLayout>
 
-        <!--Fragmento B-->
-        <fragment
-            android:id="@+id/details_frag"
-            class="com.a01luisrene.multirecordatorio.DetalleRecordatorioFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            tools:layout="@layout/fragment_detalle_recordatorio"/>
+    <!--Fragmento B-->
+    <FrameLayout
+        android:id="@+id/container_lateral_izq"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:elevation="8dp"
+        tools:ignore="UnusedAttribute">
+    </FrameLayout>
 
 </LinearLayout>

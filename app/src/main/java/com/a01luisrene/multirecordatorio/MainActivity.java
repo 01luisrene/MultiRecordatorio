@@ -30,7 +30,9 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         ListaRecordatorioFragment listaRecordatorio = new ListaRecordatorioFragment();
-        fragmentTransaction.add(R.id.container_main, listaRecordatorio);
+        DetalleRecordatorioFragment detalleRecordatorio = new DetalleRecordatorioFragment();
+        fragmentTransaction.add(R.id.container_main, listaRecordatorio, ListaRecordatorioFragment.LISTA_RECORDATORIO_FRAGMENT);
+        fragmentTransaction.add(R.id.container_lateral_izq, detalleRecordatorio, DetalleRecordatorioFragment.DETALLE_RECORDATORIO_FRAGMENT);
         fragmentTransaction.commit();
 
         /*Creación de la base de datos SQLite  */

@@ -21,6 +21,8 @@ import java.util.List;
 public class ListaRecordatorioFragment
         extends Fragment {
 
+    public static final String LISTA_RECORDATORIO_FRAGMENT = "lista_recordatorio_fragment";
+
     private RecyclerView recordatorioListRecyclerView;
     private RecordatorioListAdapter recordatorioListAdapter;
     private List<Recordatorio> listaItemsRecordatorio;
@@ -95,7 +97,7 @@ public class ListaRecordatorioFragment
         Toolbar toolbar = (Toolbar) v.findViewById(R.id.toolbar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
-        toolbar.setLogo(R.mipmap.ic_launcher);
+        //toolbar.setLogo(R.mipmap.ic_launcher);
 
         return v;
     }
