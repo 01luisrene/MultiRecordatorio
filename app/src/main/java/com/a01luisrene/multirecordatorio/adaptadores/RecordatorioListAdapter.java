@@ -28,10 +28,10 @@ public class RecordatorioListAdapter extends RecyclerView.Adapter<RecordatorioLi
 
             ViewHolder(View v) {
                 super(v);
-                id = (TextView) v.findViewById(R.id.idTextView);
-                titulo = (TextView) v.findViewById(R.id.recordatorioTitleTextView);
-                nombres = (TextView) v.findViewById(R.id.recordatorioNameTextView);
-                contenidoMensaje = (TextView) v.findViewById(R.id.recordatorioMessageTextView);
+                id = (TextView) v.findViewById(R.id.tv_id);
+                titulo = (TextView) v.findViewById(R.id.tv_title_reminder);
+                nombres = (TextView) v.findViewById(R.id.tv_name_reminder);
+                contenidoMensaje = (TextView) v.findViewById(R.id.tv_message_reminder);
             }
         }
 

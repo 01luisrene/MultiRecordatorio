@@ -1,5 +1,6 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,22 +13,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
-        android:paddingTop="@dimen/container_padding"
         android:paddingLeft="@dimen/container_padding"
-        android:paddingRight="@dimen/container_padding">
+        android:paddingRight="@dimen/container_padding"
+        android:paddingTop="@dimen/container_padding">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/lb_title"
+                style="@style/textFontMainTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_bottom_small"
-                android:text="@string/title_reminder"
-                style="@style/textFontMainTableta"/>
+                android:text="@string/title_reminder"/>
 
             <TextView
                 android:id="@+id/tv_title"
@@ -39,142 +40,147 @@
 
             <TextView
                 android:id="@+id/lb_entity"
+                style="@style/textFontMainTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/entity_reminder"
                 android:layout_marginBottom="@dimen/margin_bottom_small"
-                style="@style/textFontMainTableta"/>
+                android:text="@string/entity_reminder"/>
 
             <TextView
                 android:id="@+id/tv_entity"
+                style="@style/textFontDetailTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="INPE"
                 android:layout_marginBottom="@dimen/margin_bottom_large"
-                style="@style/textFontDetailTableta"/>
+                tools:text="INPE"/>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_bottom_large"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/lb_type_reminder"
+                        style="@style/textFontMainTableta"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/type_reminder"
                         android:layout_marginBottom="@dimen/margin_bottom_small"
-                        style="@style/textFontMainTableta"/>
+                        android:text="@string/type_reminder"/>
 
                     <Spinner
                         android:id="@+id/sp_type_reminder"
+                        style="@style/textFontDetailTableta"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/textFontDetailTableta"/>
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/lb_phone"
+                        style="@style/textFontMainTableta"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/phone_reminder"
                         android:layout_marginBottom="@dimen/margin_bottom_small"
-                        style="@style/textFontMainTableta"/>
+                        android:text="@string/phone_reminder"/>
 
                     <TextView
                         android:id="@+id/tv_phone"
+                        style="@style/textFontDetailTableta"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="954336108"
-                        style="@style/textFontDetailTableta"/>
+                        tools:text="954336108"/>
                 </LinearLayout>
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_message"
+                style="@style/textFontMainTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/message_reminder"
                 android:layout_marginBottom="@dimen/margin_bottom_small"
-                style="@style/textFontMainTableta"/>
+                android:text="@string/message_reminder"/>
 
             <EditText
                 android:id="@+id/mt_message"
+                style="@style/textFontDetailTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_bottom_large"
                 android:ems="10"
                 android:inputType="textMultiLine"
                 tools:ignore="LabelFor"
-                tools:text="Contenedor del mensaje."
+                tools:text="Contenedor del mensaje."/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_bottom_large"
-                style="@style/textFontDetailTableta"/>
+                android:orientation="vertical">
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:orientation="vertical"
-               android:layout_marginBottom="@dimen/margin_bottom_large">
-               <TextView
-                   android:id="@+id/lb_post_message_in"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:text="@string/post_message_in_reminder"
-                   android:layout_marginBottom="@dimen/margin_bottom_small"
-                   style="@style/textFontMainTableta"/>
+                <TextView
+                    android:id="@+id/lb_post_message_in"
+                    style="@style/textFontMainTableta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_bottom_small"
+                    android:text="@string/post_message_in_reminder"/>
 
-               <LinearLayout
-                   android:orientation="horizontal"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content">
-                   <CheckBox
-                       android:id="@+id/checkBox"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:text="@string/facebook_reminder"
-                       style="@style/textFontDetailTableta"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                   <CheckBox
-                       android:id="@+id/checkBox2"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:text="@string/twitter_reminder"
-                       style="@style/textFontDetailTableta"/>
+                    <CheckBox
+                        android:id="@+id/checkBox"
+                        style="@style/textFontDetailTableta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/facebook_reminder"/>
 
-                   <CheckBox
-                       android:id="@+id/checkBox3"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:text="@string/message_send_reminder"
-                       style="@style/textFontDetailTableta"/>
-               </LinearLayout>
-           </LinearLayout>
+                    <CheckBox
+                        android:id="@+id/checkBox2"
+                        style="@style/textFontDetailTableta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/twitter_reminder"/>
+
+                    <CheckBox
+                        android:id="@+id/checkBox3"
+                        style="@style/textFontDetailTableta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/message_send_reminder"/>
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/lb_date_reminder"
+                style="@style/textFontMainTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/date_reminder"
                 android:layout_marginBottom="@dimen/margin_bottom_small"
-                style="@style/textFontMainTableta"/>
+                android:text="@string/date_reminder"/>
 
             <TextView
                 android:id="@+id/tv_date"
+                style="@style/textFontDetailTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="30-06-2017"
-                style="@style/textFontDetailTableta"/>
+                tools:text="30-06-2017"/>
         </LinearLayout>
     </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

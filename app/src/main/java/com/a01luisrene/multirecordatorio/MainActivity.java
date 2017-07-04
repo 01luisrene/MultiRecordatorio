@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity
         manager.insertarTipoRecordatorio(null, "cumpleanios.png", "Cumpleaño", "1", "28-066-2017");
         manager.insertarTipoRecordatorio(null, "cita.png", "Cita", "1", "28-066-2017");
 
+        manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500", "1145454","1", "1", "1", "2017", "2017","1");
         manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Feliz cumpleaños", "1145454","1", "1", "1", "2017", "2017","1");
-        manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Feliz cumpleaños", "1145454","1", "1", "1", "2017", "2017","1");
-        manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Feliz cumpleaños", "1145454","1", "1", "1", "2017", "2017","1");
+        manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500", "1145454","1", "1", "1", "2017", "2017","1");
 
         manager.cerrar();
     }

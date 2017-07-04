@@ -42,4 +42,23 @@
         <item name="android:textStyle">italic</item>
     </style>
 
+    <!--Estilos para los items de la lista - Tableta-->
+    <style name="textFontTitleListTableta">
+        <item name="android:textColor">@color/colorTitleList</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="textFontEntidadListTableta">
+        <item name="android:textColor">@color/colorEntidadList</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="textFontMessageListTableta">
+        <item name="android:textColor">@color/colorMessageList</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 </resources>

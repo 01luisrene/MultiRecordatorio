@@ -6,4 +6,8 @@
     <!--Dimenciones para el formulario detalle recordatorio-->
     <dimen name="margin_bottom_small">4dp</dimen>
     <dimen name="margin_bottom_large">15dp</dimen>
+
+    <!--Medida de una imagen en circulo-->
+    <dimen name="circle_img">50dp</dimen>
+    <dimen name="circle_border">2dp</dimen>
 </resources>
