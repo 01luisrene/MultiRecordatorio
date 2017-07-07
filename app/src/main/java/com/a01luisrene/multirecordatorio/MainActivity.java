@@ -1,8 +1,6 @@
 package com.a01luisrene.multirecordatorio;
 
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,26 +24,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Cargar fragment en el contenedor principal
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        ListaRecordatorioFragment listaRecordatorio = new ListaRecordatorioFragment();
-        DetalleRecordatorioFragment detalleRecordatorio = new DetalleRecordatorioFragment();
-        fragmentTransaction.add(R.id.container_main, listaRecordatorio, ListaRecordatorioFragment.LISTA_RECORDATORIO_FRAGMENT);
-        fragmentTransaction.add(R.id.container_lateral_izq, detalleRecordatorio, DetalleRecordatorioFragment.DETALLE_RECORDATORIO_FRAGMENT);
-        fragmentTransaction.commit();
-
-        /*Creación de la base de datos SQLite  */
-        manager = new DataBaseManagerRecordatorios(this);
-
-        manager.insertarTipoRecordatorio(null, "cumpleanios.png", "Cumpleaño", "1", "28-066-2017");
-        manager.insertarTipoRecordatorio(null, "cita.png", "Cita", "1", "28-066-2017");
-
-        manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500", "1145454","1", "1", "1", "2017", "2017","1");
-        manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Feliz cumpleaños", "1145454","1", "1", "1", "2017", "2017","1");
-        manager.insertarRecoratorio(null, "Cumple de luis", "Luis rene","1", "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500", "1145454","1", "1", "1", "2017", "2017","1");
-
-        manager.cerrar();
+        //Cargar fragment (lista recordatorios) en el contenedor principal
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container_main, ListaRecordatorioFragment.crear())
+                .commit();
     }
 
     @Override

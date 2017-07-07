@@ -10,6 +10,8 @@ public class Recordatorio {
     private String name;
     private String contentMessage;
 
+    private Thumbnail civ_avatar_reminder;
+
     public Recordatorio() {
 
     }
@@ -62,5 +64,13 @@ public class Recordatorio {
 
     public void setContentMessage(String contentMessage) {
         this.contentMessage = contentMessage;
+    }
+
+    public Thumbnail getCiv_avatar_reminder() {
+        return civ_avatar_reminder;
+    }
+
+    public void setCiv_avatar_reminder(Thumbnail civ_avatar_reminder) {
+        this.civ_avatar_reminder = civ_avatar_reminder;
     }
 }

@@ -30,7 +30,7 @@
             android:layout_centerVertical="true">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/civ_avatar"
+                android:id="@+id/civ_avatar_reminder"
                 android:layout_width="@dimen/circle_img"
                 android:layout_height="@dimen/circle_img"
                 android:src="@mipmap/ic_launcher"

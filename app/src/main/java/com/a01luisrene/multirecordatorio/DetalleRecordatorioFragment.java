@@ -14,7 +14,7 @@ public class DetalleRecordatorioFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static DetalleRecordatorioFragment newInstance() {
+    public static DetalleRecordatorioFragment newInstance(int index) {
         DetalleRecordatorioFragment fragment = new DetalleRecordatorioFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -33,6 +33,10 @@ public class DetalleRecordatorioFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_detalle_recordatorio, container, false);
 
         return v;
+    }
+
+    public int getShownIndex() {
+        return getArguments().getInt("index", 0);
     }
 
 }

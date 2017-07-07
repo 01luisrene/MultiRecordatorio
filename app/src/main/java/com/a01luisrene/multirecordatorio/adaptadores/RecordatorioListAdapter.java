@@ -12,6 +12,8 @@ import com.a01luisrene.multirecordatorio.R;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class RecordatorioListAdapter extends RecyclerView.Adapter<RecordatorioListAdapter.ViewHolder> {
     private List<Recordatorio> mDataset;
     private Context mainContext;
@@ -25,6 +27,7 @@ public class RecordatorioListAdapter extends RecyclerView.Adapter<RecordatorioLi
             TextView titulo;
             TextView nombres;
             TextView contenidoMensaje;
+            CircleImageView civ_avatar_reminder;
 
             ViewHolder(View v) {
                 super(v);
@@ -32,6 +35,9 @@ public class RecordatorioListAdapter extends RecyclerView.Adapter<RecordatorioLi
                 titulo = (TextView) v.findViewById(R.id.tv_title_reminder);
                 nombres = (TextView) v.findViewById(R.id.tv_name_reminder);
                 contenidoMensaje = (TextView) v.findViewById(R.id.tv_message_reminder);
+                civ_avatar_reminder = (CircleImageView) v.findViewById(R.id.civ_avatar_reminder);
+
+                //v.setOnClickListener(this);
             }
         }
 
@@ -68,6 +74,10 @@ public class RecordatorioListAdapter extends RecyclerView.Adapter<RecordatorioLi
         // Devuelve el tamaño de tu conjunto de datos (invocado por el administrador de diseño)
         @Override
         public int getItemCount() {
-            return mDataset.size();
+            if (mDataset != null) {
+                return mDataset.size() > 0 ? mDataset.size() : 0;
+            } else {
+                return 0;
+            }
         }
     }
