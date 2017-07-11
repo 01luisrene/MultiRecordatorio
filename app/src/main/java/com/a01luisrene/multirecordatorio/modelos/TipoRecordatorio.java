@@ -1,23 +1,16 @@
 package com.a01luisrene.multirecordatorio.modelos;
 
-/**
- * Created by LUIS on 10/06/2017.
- */
-
 public class TipoRecordatorio {
     private String id;
+    private String imagen;
     private String tipoRecordatorio;
     private String proteccion;
+    private String fecha;
 
-    public TipoRecordatorio(){
 
-    }
-
-    public TipoRecordatorio(String id, String tipoRecordatorio, String proteccion) {
-        this.id = id;
-        this.tipoRecordatorio = tipoRecordatorio;
-        this.proteccion = proteccion;
-    }
+    /**
+     * GETTER & SETTER
+     */
 
     public String getId() {
         return id;
@@ -25,6 +18,14 @@ public class TipoRecordatorio {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     public String getTipoRecordatorio() {
@@ -42,4 +43,13 @@ public class TipoRecordatorio {
     public void setProteccion(String proteccion) {
         this.proteccion = proteccion;
     }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
 }

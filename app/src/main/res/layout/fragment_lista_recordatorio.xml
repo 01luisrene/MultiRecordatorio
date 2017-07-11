@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.a01luisrene.multirecordatorio.ListaRecordatorioFragment">
+    tools:context="com.a01luisrene.multirecordatorio.fragments.ListaRecordatorioFragment">
 
     <!--Carga el layout del toolbar con el método include-->
     <include layout="@layout/toolbar"/>
@@ -24,6 +24,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_margin="@dimen/fab_margen"
         android:src="@drawable/ic_add_24dp"/>
 </android.support.design.widget.CoordinatorLayout>

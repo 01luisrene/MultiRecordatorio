@@ -3,7 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="com.a01luisrene.multirecordatorio.DetalleRecordatorioFragment">
+              tools:context="com.a01luisrene.multirecordatorio.fragments.DetalleRecordatorioFragment">
 
     <include layout="@layout/toolbar_detail"/>
 
@@ -14,15 +14,15 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/container_margin"
-            android:layout_marginLeft="@dimen/container_margin"
-            android:layout_marginRight="@dimen/container_margin">
+            android:layout_marginTop="@dimen/contenedor_margen"
+            android:layout_marginLeft="@dimen/contenedor_margen"
+            android:layout_marginRight="@dimen/contenedor_margen">
             <TextView
                 android:id="@+id/lb_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/title_reminder"
-                android:layout_marginBottom="@dimen/margin_bottom_small"
+                android:text="@string/titulo_recordatorio"
+                android:layout_marginBottom="@dimen/margen_boton_small"
                 style="@style/textFontMainPhone"
                 />
 
@@ -31,15 +31,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Cita para entrevista personal"
-                android:layout_marginBottom="@dimen/margin_bottom_large"
+                android:layout_marginBottom="@dimen/margen_boton_large"
                 style="@style/textFontDetailPhone"/>
 
             <TextView
                 android:id="@+id/lb_entity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/entity_reminder"
-                android:layout_marginBottom="@dimen/margin_bottom_small"
+                android:text="@string/endidad_otros_recordatorio"
+                android:layout_marginBottom="@dimen/margen_boton_small"
                 style="@style/textFontMainPhone"/>
 
             <TextView
@@ -47,22 +47,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="INPE"
-                android:layout_marginBottom="@dimen/margin_bottom_large"
+                android:layout_marginBottom="@dimen/margen_boton_large"
                 style="@style/textFontDetailPhone"/>
 
             <TextView
                 android:id="@+id/lb_type_reminder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/type_reminder"
-                android:layout_marginBottom="@dimen/margin_bottom_small"
+                android:text="@string/tipo_recordatorio"
+                android:layout_marginBottom="@dimen/margen_boton_small"
                 style="@style/textFontMainPhone"/>
 
             <Spinner
                 android:id="@+id/sp_type_reminder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom_large"
+                android:layout_marginBottom="@dimen/margen_boton_large"
                 style="@style/textFontDetailPhone"
                 />
 
@@ -70,8 +70,8 @@
                 android:id="@+id/lb_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/phone_reminder"
-                android:layout_marginBottom="@dimen/margin_bottom_small"
+                android:text="@string/teleforno_recordatorio"
+                android:layout_marginBottom="@dimen/margen_boton_small"
                 style="@style/textFontMainPhone"/>
 
             <TextView
@@ -79,15 +79,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="954336108"
-                android:layout_marginBottom="@dimen/margin_bottom_large"
+                android:layout_marginBottom="@dimen/margen_boton_large"
                 style="@style/textFontDetailPhone"/>
 
             <TextView
                 android:id="@+id/tv_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/message_reminder"
-                android:layout_marginBottom="@dimen/margin_bottom_small"
+                android:text="@string/mensaje_recordatorio"
+                android:layout_marginBottom="@dimen/margen_boton_small"
                 style="@style/textFontMainPhone"/>
 
             <EditText
@@ -98,47 +98,47 @@
                 android:inputType="textMultiLine"
                 tools:ignore="LabelFor"
                 tools:text="Contenedor del mensaje."
-                android:layout_marginBottom="@dimen/margin_bottom_large"
+                android:layout_marginBottom="@dimen/margen_boton_large"
                 style="@style/textFontDetailPhone"/>
 
             <TextView
                 android:id="@+id/lb_post_message_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/post_message_in_reminder"
-                android:layout_marginBottom="@dimen/margin_bottom_small"
+                android:text="@string/enviar_mensaje_en_recordatorio"
+                android:layout_marginBottom="@dimen/margen_boton_small"
                 style="@style/textFontMainPhone"/>
 
             <CheckBox
                 android:id="@+id/checkBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/facebook_reminder"
-                android:layout_marginBottom="@dimen/margin_bottom_small"
+                android:text="@string/facebook_recordatorio"
+                android:layout_marginBottom="@dimen/margen_boton_small"
                 style="@style/textFontDetailPhone"/>
 
             <CheckBox
                 android:id="@+id/checkBox2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/twitter_reminder"
-                android:layout_marginBottom="@dimen/margin_bottom_small"
+                android:text="@string/twitter_recordatorio"
+                android:layout_marginBottom="@dimen/margen_boton_small"
                 style="@style/textFontDetailPhone"/>
 
             <CheckBox
                 android:id="@+id/checkBox3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/message_send_reminder"
-                android:layout_marginBottom="@dimen/margin_bottom_small"
+                android:text="@string/enviar_mensaje_recordatorio"
+                android:layout_marginBottom="@dimen/margen_boton_small"
                 style="@style/textFontDetailPhone"/>
 
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/date_reminder"
-                android:layout_marginBottom="@dimen/margin_bottom_small"
+                android:text="@string/fecha_recordatorio"
+                android:layout_marginBottom="@dimen/margen_boton_small"
                 style="@style/textFontMainPhone"/>
 
             <EditText

@@ -1,5 +1,6 @@
 package com.a01luisrene.multirecordatorio;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.a01luisrene.multirecordatorio.fragments.ListaRecordatorioFragment;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
+import com.a01luisrene.multirecordatorio.ui.TipoRecordatorioActivity;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener,
@@ -55,6 +58,10 @@ public class MainActivity extends AppCompatActivity
                 return true;
             case R.id.action_settings:
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.tipo_recordatorio:
+                Intent intent = new Intent(MainActivity.this, TipoRecordatorioActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

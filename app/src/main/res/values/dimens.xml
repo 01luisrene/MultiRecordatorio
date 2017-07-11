@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="fab_margin">10dp</dimen>
-    <dimen name="container_margin">10dp</dimen>
-    <dimen name="container_padding">10dp</dimen>
+    <dimen name="fab_margen">10dp</dimen>
+    <dimen name="contenedor_margen">10dp</dimen>
+    <dimen name="contenedor_relleno">10dp</dimen>
     <!--Dimenciones para el formulario detalle recordatorio-->
-    <dimen name="margin_bottom_small">4dp</dimen>
-    <dimen name="margin_bottom_large">15dp</dimen>
+    <dimen name="margen_boton_small">4dp</dimen>
+    <dimen name="margen_boton_large">15dp</dimen>
 
-    <!--Medida de una imagen en circulo-->
-    <dimen name="circle_img">50dp</dimen>
-    <dimen name="circle_border">2dp</dimen>
+    <!--Medida imagen en circulo del toolbar detalle recordatorio (tablet) & lista recordatorios-->
+    <dimen name="img_circulo_tamanio">50dp</dimen>
+    <dimen name="img_circulo_borde">2dp</dimen>
+
+    <!--Medida imagen en circulo para un nuevo tipo de recordatorio-->
+    <dimen name="img_circulo_tamanio_tipo_recordatorio">150dp</dimen>
+    <dimen name="img_circulo_borde_tipo_recordatorio">3dp</dimen>
 </resources>

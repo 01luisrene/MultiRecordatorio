@@ -9,16 +9,10 @@ public class Recordatorio {
     private String title;
     private String name;
     private String contentMessage;
-
     private Thumbnail civ_avatar_reminder;
 
     public Recordatorio() {
 
-    }
-
-    public Recordatorio(String id, String title) {
-        this.id = id;
-        this.title = title;
     }
 
     public Recordatorio(String id, String title, String name, String contentMessage) {
@@ -28,7 +22,7 @@ public class Recordatorio {
         this.contentMessage = contentMessage;
     }
 
-    /*
+    /**
     *
     * GETTER & SETTER
     *

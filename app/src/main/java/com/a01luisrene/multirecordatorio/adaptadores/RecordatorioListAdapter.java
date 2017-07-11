@@ -35,7 +35,7 @@ public class RecordatorioListAdapter extends RecyclerView.Adapter<RecordatorioLi
                 titulo = (TextView) v.findViewById(R.id.tv_title_reminder);
                 nombres = (TextView) v.findViewById(R.id.tv_name_reminder);
                 contenidoMensaje = (TextView) v.findViewById(R.id.tv_message_reminder);
-                civ_avatar_reminder = (CircleImageView) v.findViewById(R.id.civ_avatar_reminder);
+                civ_avatar_reminder = (CircleImageView) v.findViewById(R.id.civ_imagen);
 
                 //v.setOnClickListener(this);
             }

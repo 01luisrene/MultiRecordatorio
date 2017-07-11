@@ -1,4 +1,4 @@
-package com.a01luisrene.multirecordatorio;
+package com.a01luisrene.multirecordatorio.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.adaptadores.RecordatorioListAdapter;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorio;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
@@ -21,17 +23,15 @@ import com.a01luisrene.multirecordatorio.ui.DetalleRecordatorioActivity;
 
 import java.util.List;
 
-public class ListaRecordatorioFragment
-        extends Fragment {
-
-    boolean mDualPane;
-    int mCurCheckPosition = 0;
-    public static final String LISTA_RECORDATORIO_FRAGMENT = "lista_recordatorio_fragment";
+public class ListaRecordatorioFragment extends Fragment {
 
     private RecyclerView recordatorioListRecyclerView;
     private RecordatorioListAdapter recordatorioListAdapter;
     private List<Recordatorio> listaItemsRecordatorio;
     private DataBaseManagerRecordatorios manager;
+
+    boolean mDualPane;
+    int mCurCheckPosition = 0;
 
     public ListaRecordatorioFragment() {
         // Required empty public constructor
@@ -116,7 +116,7 @@ public class ListaRecordatorioFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        View detailsReminderFrame = getActivity().findViewById(R.id.container_lateral_izq);
+        View detailsReminderFrame = getActivity().findViewById(R.id.container_lateral);
 
         mDualPane = detailsReminderFrame != null && detailsReminderFrame.getVisibility() == View.VISIBLE;
 
@@ -132,41 +132,47 @@ public class ListaRecordatorioFragment
 
     }
 
-    /**
-     * Helper function to show the details of a selected item, either by
-     * displaying a fragment in-place in the current UI, or starting a
-     * whole new activity in which it is displayed.
-     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("curChoice", mCurCheckPosition);
+    }
+    //TODO: ver esta linea de código
+    //@Override
+    public void onListItemClick(List<Recordatorio> l, View v, int position, long id) {
+        showDetails(position);
+    }
+
     void showDetails(int index) {
         mCurCheckPosition = index;
 
         if (mDualPane) {
-            // We can display everything in-place with fragments, so update
-            // the list to highlight the selected item and show the data.
-            //getListView().setItemChecked(index, true);
+            //TODO: verificar esta liena de código
+            //getActivity().setItemChecked(index, true);
 
             // Compruebe qué fragmento se muestra actualmente, reemplácelo si es necesario.
             DetalleRecordatorioFragment details = (DetalleRecordatorioFragment)
-                    getFragmentManager().findFragmentById(R.id.container_lateral_izq);
+                    getFragmentManager().findFragmentById(R.id.container_lateral);
             if (details == null || details.getShownIndex() != index) {
                 // Make new fragment to show this selection.
                 details = DetalleRecordatorioFragment.newInstance(index);
 
-                // Execute a transaction, replacing any existing fragment
-                // with this one inside the frame.
+                // Ejecutar una transacción, reemplazando cualquier fragmento existente
+                // con éste dentro del marco.
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 if (index == 0) {
-                    ft.replace(R.id.container_lateral_izq, details);
+                    ft.replace(R.id.container_lateral, details);
                 } else {
-                    ft.replace(R.id.container_detail_reminder, details);
+                    //TODO: chekear
+                    Toast.makeText(getActivity(), "Ver por que fragment reemplazar", Toast.LENGTH_SHORT).show();
                 }
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.commit();
             }
 
         } else {
-            // Otherwise we need to launch a new activity to display
-            // the dialog fragment with selected text.
+            // De lo contrario, debemos lanzar una nueva actividad para mostrar
+            // el fragmento de diálogo con el texto seleccionado.
             Intent intent = new Intent();
             intent.setClass(getActivity(), DetalleRecordatorioActivity.class);
             intent.putExtra("index", index);

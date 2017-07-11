@@ -186,9 +186,9 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
      * METODOS PARA LA TABLA TIPO RECORDATORIOS
      */
     private ContentValues generarContentValuesTipoRecordatorio(String id,
-                                                               String iconoRecordatorio,
+                                                               byte[] iconoRecordatorio,
                                                                String tipoRecordatorio,
-                                                               String proteccion,
+                                                               int proteccion,
                                                                String fechaCreacion){
 
         ContentValues valores = new ContentValues();
@@ -203,9 +203,9 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     }
     @Override
     public void insertarTipoRecordatorio(String id,
-                                         String iconoRecordatorio,
+                                         byte[] iconoRecordatorio,
                                          String tipoRecordatorio,
-                                         String proteccion,
+                                         int proteccion,
                                          String fechaCreacion) {
         super.getDb().insert(TablasDb.TablaTipoRecordatorio.TABLE_NAME,null, generarContentValuesTipoRecordatorio(
                 id,

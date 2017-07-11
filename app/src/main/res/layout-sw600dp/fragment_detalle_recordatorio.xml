@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.a01luisrene.multirecordatorio.DetalleRecordatorioFragment">
+    tools:context="com.a01luisrene.multirecordatorio.fragments.DetalleRecordatorioFragment">
 
     <include layout="@layout/toolbar_detail"/>
 
@@ -13,9 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
-        android:paddingLeft="@dimen/container_padding"
-        android:paddingRight="@dimen/container_padding"
-        android:paddingTop="@dimen/container_padding">
+        android:paddingLeft="@dimen/contenedor_relleno"
+        android:paddingRight="@dimen/contenedor_relleno"
+        android:paddingTop="@dimen/contenedor_relleno">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,15 +27,15 @@
                 style="@style/textFontMainTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom_small"
-                android:text="@string/title_reminder"/>
+                android:layout_marginBottom="@dimen/margen_boton_small"
+                android:text="@string/titulo_recordatorio"/>
 
             <TextView
                 android:id="@+id/tv_title"
                 style="@style/textFontDetailTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom_large"
+                android:layout_marginBottom="@dimen/margen_boton_large"
                 tools:text="Cita para entrevista personal"/>
 
             <TextView
@@ -43,21 +43,21 @@
                 style="@style/textFontMainTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom_small"
-                android:text="@string/entity_reminder"/>
+                android:layout_marginBottom="@dimen/margen_boton_small"
+                android:text="@string/endidad_otros_recordatorio"/>
 
             <TextView
                 android:id="@+id/tv_entity"
                 style="@style/textFontDetailTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom_large"
+                android:layout_marginBottom="@dimen/margen_boton_large"
                 tools:text="INPE"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom_large"
+                android:layout_marginBottom="@dimen/margen_boton_large"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
@@ -72,8 +72,8 @@
                         style="@style/textFontMainTableta"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_bottom_small"
-                        android:text="@string/type_reminder"/>
+                        android:layout_marginBottom="@dimen/margen_boton_small"
+                        android:text="@string/tipo_recordatorio"/>
 
                     <Spinner
                         android:id="@+id/sp_type_reminder"
@@ -93,8 +93,8 @@
                         style="@style/textFontMainTableta"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_bottom_small"
-                        android:text="@string/phone_reminder"/>
+                        android:layout_marginBottom="@dimen/margen_boton_small"
+                        android:text="@string/teleforno_recordatorio"/>
 
                     <TextView
                         android:id="@+id/tv_phone"
@@ -111,15 +111,15 @@
                 style="@style/textFontMainTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom_small"
-                android:text="@string/message_reminder"/>
+                android:layout_marginBottom="@dimen/margen_boton_small"
+                android:text="@string/mensaje_recordatorio"/>
 
             <EditText
                 android:id="@+id/mt_message"
                 style="@style/textFontDetailTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom_large"
+                android:layout_marginBottom="@dimen/margen_boton_large"
                 android:ems="10"
                 android:inputType="textMultiLine"
                 tools:ignore="LabelFor"
@@ -128,7 +128,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom_large"
+                android:layout_marginBottom="@dimen/margen_boton_large"
                 android:orientation="vertical">
 
                 <TextView
@@ -136,8 +136,8 @@
                     style="@style/textFontMainTableta"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_bottom_small"
-                    android:text="@string/post_message_in_reminder"/>
+                    android:layout_marginBottom="@dimen/margen_boton_small"
+                    android:text="@string/enviar_mensaje_en_recordatorio"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -149,21 +149,21 @@
                         style="@style/textFontDetailTableta"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/facebook_reminder"/>
+                        android:text="@string/facebook_recordatorio"/>
 
                     <CheckBox
                         android:id="@+id/checkBox2"
                         style="@style/textFontDetailTableta"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/twitter_reminder"/>
+                        android:text="@string/twitter_recordatorio"/>
 
                     <CheckBox
                         android:id="@+id/checkBox3"
                         style="@style/textFontDetailTableta"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/message_send_reminder"/>
+                        android:text="@string/enviar_mensaje_recordatorio"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -172,8 +172,8 @@
                 style="@style/textFontMainTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom_small"
-                android:text="@string/date_reminder"/>
+                android:layout_marginBottom="@dimen/margen_boton_small"
+                android:text="@string/fecha_recordatorio"/>
 
             <TextView
                 android:id="@+id/tv_date"

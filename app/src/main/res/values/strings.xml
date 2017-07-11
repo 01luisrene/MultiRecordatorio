@@ -1,21 +1,32 @@
 <resources>
     <string name="app_name">Multi Recordatorio</string>
-    <string name="action_settings">Configuraciones</string>
-    <string name="action_add">Agregar</string>
-    <string name="action_search">Buscar</string>
-    <string name="action_edit">Editar</string>
-    <string name="action_delete">Eliminar</string>
-    <string name="action_back">Atrás</string>
+    <string name="accion_configuraciones">Configuraciones</string>
+    <string name="accion_agregar">Agregar</string>
+    <string name="accion_buscar">Buscar</string>
+    <string name="accion_editar">Editar</string>
+    <string name="accion_eliminar">Eliminar</string>
+    <string name="accion_atras">Atrás</string>
 
     <!--String para el formulario detalle recordatorio-->
-    <string name="title_reminder">Titulo Recordatorio:</string>
-    <string name="entity_reminder">Persona, Empresa, Lugar, ...:</string>
-    <string name="type_reminder">Tipo Recordatorio:</string>
-    <string name="phone_reminder">Teléfono:</string>
-    <string name="message_reminder">Mensaje:</string>
-    <string name="post_message_in_reminder">Publicar mensaje en:</string>
-    <string name="facebook_reminder">Facebook</string>
-    <string name="twitter_reminder">Twitter</string>
-    <string name="message_send_reminder">Mensaje</string>
-    <string name="date_reminder">Fecha recordatorio:</string>
+    <string name="titulo_recordatorio">Titulo Recordatorio:</string>
+    <string name="endidad_otros_recordatorio">Persona, Empresa, Lugar, ...:</string>
+    <string name="tipo_recordatorio">Tipo Recordatorio:</string>
+    <string name="teleforno_recordatorio">Teléfono:</string>
+    <string name="mensaje_recordatorio">Mensaje:</string>
+    <string name="enviar_mensaje_en_recordatorio">Publicar mensaje en:</string>
+    <string name="facebook_recordatorio">Facebook</string>
+    <string name="twitter_recordatorio">Twitter</string>
+    <string name="enviar_mensaje_recordatorio">Mensaje</string>
+    <string name="fecha_recordatorio">Fecha recordatorio:</string>
+
+    <!--String para formulario tipo recordatorio-->
+    <string name="seleccionar_imagen">Seleccionar imagen</string>
+    <string name="titulo_tipo_recordatorio">Titulo recordatorio</string>
+    <string name="formato_fecha">DD/MM/YYYY</string>
+    <string name="mensaje_agregado_satisfactoriamente">Agregado correctamente 😃</string>
+
+    <!--Texto de eventos-->
+    <string name="boton_eliminar">Eliminar</string>
+    <string name="boton_actualizar">Actualizar</string>
+    <string name="boton_guardar">Guardar</string>
 </resources>

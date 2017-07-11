@@ -30,12 +30,12 @@
             android:layout_centerVertical="true">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/civ_avatar_reminder"
-                android:layout_width="@dimen/circle_img"
-                android:layout_height="@dimen/circle_img"
+                android:id="@+id/civ_imagen"
+                android:layout_width="@dimen/img_circulo_tamanio"
+                android:layout_height="@dimen/img_circulo_tamanio"
                 android:src="@mipmap/ic_launcher"
                 card_view:civ_border_color="@color/colorCircleList"
-                card_view:civ_border_width="@dimen/circle_border"/>
+                card_view:civ_border_width="@dimen/img_circulo_borde"/>
         </LinearLayout>
 
         <LinearLayout

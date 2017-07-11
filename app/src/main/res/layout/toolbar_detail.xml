@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_arrow_24dp"
-        android:contentDescription="@string/action_back"
+        android:contentDescription="@string/accion_atras"
         android:layout_alignTop="@+id/ib_edit"
         android:layout_alignParentStart="true"/>
 
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_edit_24dp"
-        android:contentDescription="@string/action_edit"
+        android:contentDescription="@string/accion_editar"
         android:layout_marginEnd="10dp"
         android:layout_alignTop="@+id/ib_delete"
         android:layout_toStartOf="@+id/ib_delete"/>
@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_delete_24dp"
-        android:contentDescription="@string/action_delete"
+        android:contentDescription="@string/accion_eliminar"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"/>
 
