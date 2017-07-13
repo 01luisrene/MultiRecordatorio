@@ -23,10 +23,18 @@
     <string name="seleccionar_imagen">Seleccionar imagen</string>
     <string name="titulo_tipo_recordatorio">Titulo recordatorio</string>
     <string name="formato_fecha">DD/MM/YYYY</string>
-    <string name="mensaje_agregado_satisfactoriamente">Agregado correctamente 😃</string>
+    <string name="mensaje_agregado_satisfactoriamente">Agregado correctamente</string>
+    <string name="dialog_titulo">Necesito tu permiso</string>
+    <string name="dialog_mensaje">Necesito permiso para poder ver tus fotos e imágenes.</string>
+    <string name="dialog_mensaje_cancelar">ouch :(</string>
+    <string name="seleccionar_app_imagen">Selecciona app de imagen</string>
+    <string name="permiso_denegado">¡No tienes permiso para ver fotos o imágenes!</string>
+    <string name="error_titulo_tipo_recordatorio">Ingrese un titulo de recordatorio</string>
 
     <!--Texto de eventos-->
     <string name="boton_eliminar">Eliminar</string>
     <string name="boton_actualizar">Actualizar</string>
     <string name="boton_guardar">Guardar</string>
+    <string name="boton_cancelar">Cancelar</string>
+    <string name="boton_ok">Ok</string>
 </resources>

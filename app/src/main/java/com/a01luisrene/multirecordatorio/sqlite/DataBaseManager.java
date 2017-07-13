@@ -73,7 +73,7 @@ public abstract class DataBaseManager {
      */
 
     abstract public void insertarTipoRecordatorio(String id,
-                                                  byte[] iconoRecordatorio,
+                                                  String iconoRecordatorio,
                                                   String tipoRecordatorio,
                                                   int proteccion,
                                                   String fechaCreacion);

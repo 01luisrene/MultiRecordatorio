@@ -1,5 +1,7 @@
 package com.a01luisrene.multirecordatorio.ui;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -15,10 +17,17 @@ public class TipoRecordatorioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tipo_recordatorio);
 
+        AgregarTipoRecordatorioFragment fragment = new AgregarTipoRecordatorioFragment();
+
         getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.container_main_type_reminder, fragment)
+                .commit();
+        //Código para reemplazar un fragment
+        /*getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container_main_type_reminder, AgregarTipoRecordatorioFragment.crear())
                 .commit();
-
+        */
     }
 }

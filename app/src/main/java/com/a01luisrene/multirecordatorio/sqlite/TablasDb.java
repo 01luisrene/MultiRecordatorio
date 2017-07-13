@@ -25,7 +25,7 @@ public class TablasDb {
         public static final String CN_STATE = "estado_recordatorio";
 
         /*[CÓDIGO PARA GENERAR LA TABLA]*/
-        public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " ("
+        public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
                 + CN_ID + " integer PRIMARY KEY AUTOINCREMENT,"
                 + CN_TITLE + " text NOT NULL,"
                 + CN_NAME_OTHER + " tex NOT NULL,"
@@ -54,9 +54,9 @@ public class TablasDb {
         public static final String CN_CREATION_DATE = "fecha_creacion";
 
         /*[CÓDIGO PARA GENERAR LA TABLA]*/
-        public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " ("
+        public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
                 + CN_ID + " integer PRIMARY KEY AUTOINCREMENT,"
-                + CN_ICON_REMINDER + " blob NULL,"
+                + CN_ICON_REMINDER + " text NULL,"
                 + CN_REMINDER_TYPE + " text NOT NULL,"
                 + CN_PROTECTION + " integer NOT NULL,"
                 + CN_CREATION_DATE + " text NOT NULL);";
@@ -66,19 +66,23 @@ public class TablasDb {
         /*[NOMBRE DE LA TABLA]*/
         public static final String TABLE_NAME = "usuarios";
 
-        /*[COLUMNAS PARA LA TABLA TIPO DE RECORDATORIO]*/
+        /*[COLUMNAS PARA LA TABLA USUARIO]*/
         public static final String CN_ID = "_id";
+        public static final String CN_AVATAR = "avatar";
         public static final String CN_USER = "user";
         public static final String CN_PASSWORD = "password";
+        public static final String CN_CONFIRM_PASSWORD = "confirmar_password";
         public static final String CN_EMAIL = "correo_electronico";
         public static final String CN_CREATION_DATE = "fecha_creacion";
         public static final String CN_STATE = "estado";
 
         /*[CÓDIGO PARA GENERAR LA TABLA]*/
-        public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " ("
+        public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
                 + CN_ID + " integer PRIMARY KEY AUTOINCREMENT,"
+                + CN_AVATAR + "blob,"
                 + CN_USER + " text NOT NULL,"
                 + CN_PASSWORD + " text NOT NULL,"
+                + CN_CONFIRM_PASSWORD + " text NOT NULL,"
                 + CN_EMAIL + " text NOT NULL,"
                 + CN_CREATION_DATE + " text NOT NULL,"
                 + CN_STATE + " integer NOT NULL);";
