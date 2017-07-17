@@ -5,13 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.a01luisrene.multirecordatorio.modelos.Recordatorio;
+import com.a01luisrene.multirecordatorio.modelos.TipoRecordatorio;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by LUIS on 04/06/2017.
- */
 
 public class DataBaseManagerRecordatorios extends DataBaseManager {
 
@@ -134,7 +132,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                 TablasDb.TablaRecordatorios.CN_NAME_OTHER,
                 TablasDb.TablaRecordatorios.CN_CONTENT_MESSAGE};
         //query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy)
-        return super.getDb().query(TablasDb.TablaRecordatorios.TABLE_NAME, columnas, null, null, null, null, null);
+        return super.getDb().query(TablasDb.TablaRecordatorios.TABLE_NAME, columnas, null, null, null, null, TablasDb.TablaRecordatorios.CN_ID + " DESC");
     }
 
     @Override
@@ -238,7 +236,12 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
 
     @Override
     public Cursor cargarCursorTipoRecordatorios() {
-        return null;
+
+        String[] columnas = new String[]{TablasDb.TablaTipoRecordatorio.CN_ID,
+                TablasDb.TablaTipoRecordatorio.CN_ICON_REMINDER,
+                TablasDb.TablaTipoRecordatorio.CN_REMINDER_TYPE};
+        //query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy)
+        return super.getDb().query(TablasDb.TablaRecordatorios.TABLE_NAME, columnas, null, null, null, null, TablasDb.TablaTipoRecordatorio.CN_ID + " DESC");
     }
 
     @Override
@@ -249,5 +252,22 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     @Override
     public Boolean compruebaRegistroTipoRecordatorio(String id) {
         return null;
+    }
+
+    public List<TipoRecordatorio> getTipoRecordatoriosList(){
+        List<TipoRecordatorio> list = new ArrayList<>();
+
+        Cursor cursor = cargarCursorRecordatorios();
+
+        while (cursor.moveToNext()){
+            TipoRecordatorio recordatorio = new TipoRecordatorio();
+            recordatorio.setId(cursor.getString(0));
+            recordatorio.setImagen(cursor.getString(1));
+            recordatorio.setTipoRecordatorio(cursor.getString(2));
+
+            list.add(recordatorio);
+        }
+
+        return list;
     }
 }

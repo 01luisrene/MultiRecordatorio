@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="fab_margen">10dp</dimen>
+    <dimen name="fab_margen">16dp</dimen>
+    <!--Navigation Drawer-->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+
     <dimen name="contenedor_margen">10dp</dimen>
     <dimen name="contenedor_relleno">10dp</dimen>
     <!--Dimenciones para el formulario detalle recordatorio-->
@@ -10,6 +16,8 @@
     <!--Medida imagen en circulo del toolbar detalle recordatorio (tablet) & lista recordatorios-->
     <dimen name="img_circulo_tamanio">50dp</dimen>
     <dimen name="img_circulo_borde">2dp</dimen>
+
+    <dimen name="img_circulo_lista_tipo_recordatorio">80dp</dimen>
 
     <!--Medida imagen en circulo para un nuevo tipo de recordatorio-->
     <dimen name="img_circulo_tamanio_tipo_recordatorio">150dp</dimen>

@@ -2,10 +2,16 @@ package com.a01luisrene.multirecordatorio;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,26 +24,42 @@ import com.a01luisrene.multirecordatorio.ui.TipoRecordatorioActivity;
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener,
         SearchView.OnQueryTextListener,
-        MenuItemCompat.OnActionExpandListener{
+        MenuItemCompat.OnActionExpandListener, NavigationView.OnNavigationItemSelectedListener {
 
-    private DataBaseManagerRecordatorios manager;
+    private DataBaseManagerRecordatorios mManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mManager = new DataBaseManagerRecordatorios(this);
+
+        mManager.insertarRecoratorio(null, "hola", "Inpe", "2", "Holas mundo","9585222", "1", "1", "1", "2017", "2018", "1");
+        mManager.cerrar();
 
         //Cargar fragment (lista recordatorios) en el contenedor principal
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container_main, ListaRecordatorioFragment.crear())
                 .commit();
+
+        Toolbar toolbar_main = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar_main);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar_main, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         //Listener para el EditText
@@ -101,6 +123,40 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this,"Crear un nuevo recordatorio", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     // @Override

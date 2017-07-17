@@ -21,7 +21,7 @@ public class TipoRecordatorioActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.container_main_type_reminder, fragment)
+                .add(R.id.cm_tipo_recordatorio, fragment)
                 .commit();
         //Código para reemplazar un fragment
         /*getSupportFragmentManager()

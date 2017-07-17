@@ -6,6 +6,7 @@
     <string name="accion_editar">Editar</string>
     <string name="accion_eliminar">Eliminar</string>
     <string name="accion_atras">Atrás</string>
+    <string name="hint_buscar">Buscar...</string>
 
     <!--String para el formulario detalle recordatorio-->
     <string name="titulo_recordatorio">Titulo Recordatorio:</string>
@@ -37,4 +38,8 @@
     <string name="boton_guardar">Guardar</string>
     <string name="boton_cancelar">Cancelar</string>
     <string name="boton_ok">Ok</string>
+
+    <!--Navigation Drawer-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
