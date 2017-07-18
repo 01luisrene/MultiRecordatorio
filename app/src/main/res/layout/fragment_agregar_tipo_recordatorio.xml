@@ -14,7 +14,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        app:civ_border_color="@color/colorCircleList"
+        app:civ_border_color="@color/color_borde_imagen_circular"
         app:civ_border_width="@dimen/img_circulo_borde_tipo_recordatorio"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

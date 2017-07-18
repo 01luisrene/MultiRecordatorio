@@ -17,9 +17,4 @@
         android:title="@string/accion_configuraciones"
         android:orderInCategory="100"
         app:showAsAction="never"/>
-    <item
-        android:id="@+id/tipo_recordatorio"
-        android:title="Nuevo tipo recordatorio"
-        app:showAsAction="withText"
-        android:orderInCategory="100"/>
 </menu>

@@ -8,18 +8,8 @@
           app:showAsAction="ifRoom|collapseActionView"
           app:actionViewClass="android.support.v7.widget.SearchView" />
     <item
-        android:id="@+id/action_add"
-        android:title="@string/accion_agregar"
-        android:orderInCategory="100"
-        app:showAsAction="never"/>
-    <item
         android:id="@+id/action_settings"
         android:title="@string/accion_configuraciones"
         android:orderInCategory="100"
         app:showAsAction="never"/>
-    <item
-        android:id="@+id/tipo_recordatorio"
-        android:title="Nuevo tipo recordatorio"
-        app:showAsAction="withText"
-        android:orderInCategory="100"/>
 </menu>
