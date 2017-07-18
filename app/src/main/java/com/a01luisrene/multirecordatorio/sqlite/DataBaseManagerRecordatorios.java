@@ -39,7 +39,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
         valores.put(TablasDb.TablaRecordatorios.CN_ID, id);
         valores.put(TablasDb.TablaRecordatorios.CN_TITLE, titulo);
         valores.put(TablasDb.TablaRecordatorios.CN_NAME_OTHER, nombres_otros);
-        valores.put(TablasDb.TablaRecordatorios.CN_REMINDER_TYPE, tipoRecordatorio);
+        valores.put(TablasDb.TablaRecordatorios.CN_TYPE_REMINDER, tipoRecordatorio);
         valores.put(TablasDb.TablaRecordatorios.CN_PHONE, telefono);
         valores.put(TablasDb.TablaRecordatorios.CN_CONTENT_MESSAGE, contenidoMensaje);
         valores.put(TablasDb.TablaRecordatorios.CN_SEND_MESSAGE, envioMensaje);
@@ -191,8 +191,8 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
 
         ContentValues valores = new ContentValues();
         valores.put(TablasDb.TablaTipoRecordatorio.CN_ID, id);
-        valores.put(TablasDb.TablaTipoRecordatorio.CN_ICON_REMINDER, iconoRecordatorio);
-        valores.put(TablasDb.TablaTipoRecordatorio.CN_REMINDER_TYPE, tipoRecordatorio);
+        valores.put(TablasDb.TablaTipoRecordatorio.CN_IMAGE_REMINDER, iconoRecordatorio);
+        valores.put(TablasDb.TablaTipoRecordatorio.CN_TYPE_REMINDER, tipoRecordatorio);
         valores.put(TablasDb.TablaTipoRecordatorio.CN_PROTECTION, proteccion);
         valores.put(TablasDb.TablaTipoRecordatorio.CN_CREATION_DATE, fechaCreacion);
 
@@ -238,8 +238,8 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     public Cursor cargarCursorTipoRecordatorios() {
 
         String[] columnas = new String[]{TablasDb.TablaTipoRecordatorio.CN_ID,
-                TablasDb.TablaTipoRecordatorio.CN_ICON_REMINDER,
-                TablasDb.TablaTipoRecordatorio.CN_REMINDER_TYPE};
+                TablasDb.TablaTipoRecordatorio.CN_IMAGE_REMINDER,
+                TablasDb.TablaTipoRecordatorio.CN_TYPE_REMINDER};
         //query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy)
         return super.getDb().query(TablasDb.TablaRecordatorios.TABLE_NAME, columnas, null, null, null, null, TablasDb.TablaTipoRecordatorio.CN_ID + " DESC");
     }

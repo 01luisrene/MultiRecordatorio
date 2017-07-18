@@ -14,7 +14,7 @@ public class TablasDb {
         public static final String CN_ID = "_id";
         public static final String CN_TITLE = "Titulo";
         public static final String CN_NAME_OTHER = "entidad_otros";
-        public static final String CN_REMINDER_TYPE = "tipo_recordatorio";
+        public static final String CN_TYPE_REMINDER = "tipo_recordatorio";
         public static final String CN_CONTENT_MESSAGE = "contenido_mensaje";
         public static final String CN_PHONE = "telefono";
         public static final String CN_SEND_MESSAGE = "ennviar_mensaje";
@@ -29,7 +29,7 @@ public class TablasDb {
                 + CN_ID + " integer PRIMARY KEY AUTOINCREMENT,"
                 + CN_TITLE + " text NOT NULL,"
                 + CN_NAME_OTHER + " tex NOT NULL,"
-                + CN_REMINDER_TYPE + " text NOT NULL,"
+                + CN_TYPE_REMINDER + " text NOT NULL,"
                 + CN_PHONE + " text NULL,"
                 + CN_CONTENT_MESSAGE + " text NULL,"
                 + CN_SEND_MESSAGE + " integer NOT NULL,"
@@ -38,7 +38,7 @@ public class TablasDb {
                 + CN_CREATION_DATE + " text NOT NULL,"
                 + CN_REMINDER_DATE + " text NOT NULL,"
                 + CN_STATE + " integer NOT NULL,"
-                + "FOREIGN KEY("+TablaRecordatorios.CN_REMINDER_TYPE+") REFERENCES "+TablaTipoRecordatorio.TABLE_NAME+"("+TablaTipoRecordatorio.CN_ID+")"
+                + "FOREIGN KEY("+TablaRecordatorios.CN_TYPE_REMINDER +") REFERENCES "+TablaTipoRecordatorio.TABLE_NAME+"("+TablaTipoRecordatorio.CN_ID+")"
                 + ");";
     }
 
@@ -48,16 +48,16 @@ public class TablasDb {
 
         /*[COLUMNAS PARA LA TABLA TIPO DE RECORDATORIO]*/
         public static final String CN_ID = "_id";
-        public static final String CN_ICON_REMINDER = "icono_recordatorio";
-        public static final String CN_REMINDER_TYPE = "tipo_recordatorio";
+        public static final String CN_IMAGE_REMINDER = "imagen_recordatorio";
+        public static final String CN_TYPE_REMINDER = "tipo_recordatorio";
         public static final String CN_PROTECTION = "proteccion";
         public static final String CN_CREATION_DATE = "fecha_creacion";
 
         /*[CÓDIGO PARA GENERAR LA TABLA]*/
         public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
                 + CN_ID + " integer PRIMARY KEY AUTOINCREMENT,"
-                + CN_ICON_REMINDER + " text NULL,"
-                + CN_REMINDER_TYPE + " text NOT NULL,"
+                + CN_IMAGE_REMINDER + " text NULL,"
+                + CN_TYPE_REMINDER + " text NOT NULL,"
                 + CN_PROTECTION + " integer NOT NULL,"
                 + CN_CREATION_DATE + " text NOT NULL);";
     }

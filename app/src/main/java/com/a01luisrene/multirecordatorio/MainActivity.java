@@ -3,6 +3,7 @@ package com.a01luisrene.multirecordatorio;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -34,7 +35,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         mManager = new DataBaseManagerRecordatorios(this);
 
-        mManager.insertarRecoratorio(null, "hola", "Inpe", "2", "Holas mundo","9585222", "1", "1", "1", "2017", "2018", "1");
+        mManager.insertarTipoRecordatorio(null, "", "Cumpleaños", 0, "2017");
+        mManager.insertarRecoratorio(null, "hola", "Inpe", "1", "Holas mundo","9585222", "1", "1", "1", "2017", "2018", "1");
         mManager.cerrar();
 
         //Cargar fragment (lista recordatorios) en el contenedor principal
@@ -43,12 +45,15 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.container_main, ListaRecordatorioFragment.crear())
                 .commit();
 
-        Toolbar toolbar_main = (Toolbar) findViewById(R.id.toolbar_main);
-        setSupportActionBar(toolbar_main);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar_main, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -75,15 +80,8 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()){
-            case R.id.action_add:
-                Toast.makeText(this, "Agregar", Toast.LENGTH_SHORT).show();
-                return true;
             case R.id.action_settings:
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.tipo_recordatorio:
-                Intent intent = new Intent(MainActivity.this, TipoRecordatorioActivity.class);
-                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

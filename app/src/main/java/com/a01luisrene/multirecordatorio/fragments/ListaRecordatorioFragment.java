@@ -81,33 +81,12 @@ public class ListaRecordatorioFragment extends Fragment {
 
         recordatorioListRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        final FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
 
-        fab.setOnClickListener((View.OnClickListener) getActivity());
-
-        recordatorioListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
-        {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
-            {
-                if (dy > 0 || dy < 0 && fab.isShown())
-                    fab.hide();
-            }
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState)
-            {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE)
-                    fab.show();
-
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
-
-        //Toolbar
+        /*Toolbar
         Toolbar toolbar = (Toolbar) v.findViewById(R.id.toolbar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
-        //toolbar.setLogo(R.mipmap.ic_launcher);
+        //toolbar.setLogo(R.mipmap.ic_launcher);*/
 
         return v;
     }

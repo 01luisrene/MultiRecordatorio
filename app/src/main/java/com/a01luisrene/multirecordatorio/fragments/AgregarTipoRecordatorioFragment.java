@@ -5,11 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -21,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
@@ -38,12 +39,12 @@ import static android.app.Activity.RESULT_OK;
 
 public class AgregarTipoRecordatorioFragment extends Fragment implements View.OnClickListener {
 
-    public static final String IMAGE_SELECT_ALL_TYPE = "image/*";
+    private static final String IMAGE_SELECT_ALL_TYPE = "image/*";
     private static final String REGEX_LATINOS = "^[a-zA-Z áÁéÉíÍóÓúÚñÑüÜ]+$";
     private static final int PROTECCION = 0;
     private static final int REQUEST_CODE_GALLERY = 1;
     private static final int READ_STORAGE_PERMISSION = 2;
-    private DataBaseManagerRecordatorios manager;
+    private DataBaseManagerRecordatorios mManager;
     private CircleImageView mCivImagen;
     private EditText mEtTituloRecordatorio;
     private TextInputLayout mTilTituloTipoRecordatorio;
@@ -78,7 +79,7 @@ public class AgregarTipoRecordatorioFragment extends Fragment implements View.On
         View v = inflater.inflate(R.layout.fragment_agregar_tipo_recordatorio, container, false);
 
         //Asignamos nuestro manager que contiene nuestros metodos CRUD
-        manager = new DataBaseManagerRecordatorios(getActivity());
+        mManager = new DataBaseManagerRecordatorios(getActivity());
 
         //Asignado los id a las variables
         mCivImagen = (CircleImageView) v.findViewById(R.id.civ_imagen);
@@ -136,7 +137,7 @@ public class AgregarTipoRecordatorioFragment extends Fragment implements View.On
                     validarDatos();
                 }catch (Exception e){
                     //Mensaje de error
-                    Toast.makeText(getActivity(), "Error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    mostrarMensaje("Error:" + e.getMessage(), 0);
                 }
                 break;
         }
@@ -150,14 +151,14 @@ public class AgregarTipoRecordatorioFragment extends Fragment implements View.On
         boolean bolTituloTipoRecordatorio = esTituloRecordatorioValido(titulo);
         //Condicionamos a true
         if (bolTituloTipoRecordatorio) {
-            manager.insertarTipoRecordatorio(
+            mManager.insertarTipoRecordatorio(
                     null,
                     mRutaImagen,
                     tituloTipoRecordatorio,
                     PROTECCION,
                     fechaHora());
             //Mensaje de save registro
-            Toast.makeText(getActivity(),getString(R.string.mensaje_agregado_satisfactoriamente),Toast.LENGTH_SHORT).show();
+            mostrarMensaje(getString(R.string.mensaje_agregado_satisfactoriamente), 1);
             mCivImagen.setImageResource(R.drawable.ic_image_150dp);
             mEtTituloRecordatorio.setText("");
             mRutaImagen = null;
@@ -191,7 +192,7 @@ public class AgregarTipoRecordatorioFragment extends Fragment implements View.On
                 verGaleria();
             }
         }else {
-            Toast.makeText(getActivity(), getString(R.string.permiso_denegado), Toast.LENGTH_SHORT).show();
+            mostrarMensaje(getString(R.string.permiso_denegado), 0);
         }
     }
 
@@ -266,9 +267,22 @@ public class AgregarTipoRecordatorioFragment extends Fragment implements View.On
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Desplegar mensaje de lamentación
-                        Toast.makeText(getActivity(), getString(R.string.dialog_mensaje_cancelar), Toast.LENGTH_SHORT).show();
+                        mostrarMensaje(getString(R.string.dialog_mensaje_cancelar), 0);
                     }
                 })
                 .show();
+    }
+
+    private void mostrarMensaje(String mensaje, int estado){
+        Snackbar snackbar = Snackbar.make(getView(), mensaje, Snackbar.LENGTH_LONG);
+        //Color de boton de accion
+        View snackBarView = snackbar.getView();
+        if(estado == 1)
+            //color de fondo
+            snackBarView.setBackgroundColor(Color.argb(255, 76, 175, 80));
+        else if(estado == 0){
+            snackBarView.setBackgroundColor(Color.argb(255, 239, 83, 80));
+        }
+        snackbar.show();
     }
 }
