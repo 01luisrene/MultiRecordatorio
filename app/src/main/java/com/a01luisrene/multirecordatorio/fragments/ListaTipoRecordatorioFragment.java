@@ -68,28 +68,6 @@ public class ListaTipoRecordatorioFragment extends Fragment{
 
         mTipoRecordatorioListRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        final FloatingActionButton fabNuevoTipoRecordatorio = (FloatingActionButton) v.findViewById(R.id.fab_nuevo_tipo_recordatorio);
-
-        mTipoRecordatorioListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
-        {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
-            {
-                if (dy > 0 || dy < 0 && fabNuevoTipoRecordatorio.isShown())
-                    fabNuevoTipoRecordatorio.hide();
-            }
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState)
-            {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE)
-                    fabNuevoTipoRecordatorio.show();
-
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
-
-        setHasOptionsMenu(true);
-
         return v;
     }
 }

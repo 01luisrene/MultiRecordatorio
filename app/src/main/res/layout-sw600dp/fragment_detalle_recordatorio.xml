@@ -3,182 +3,232 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.a01luisrene.multirecordatorio.fragments.DetalleRecordatorioFragment">
 
-    <include layout="@layout/toolbar_detail"/>
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <ScrollView
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapser"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <ImageView
+                android:id="@+id/iv_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/descripcion_cover"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax"/>
+
+            <android.support.v7.widget.Toolbar
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/toolbar_detail"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/transparent"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:paddingLeft="@dimen/contenedor_relleno"
-        android:paddingRight="@dimen/contenedor_relleno"
-        android:paddingTop="@dimen/contenedor_relleno">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/contenedor_margen"
+            android:layout_marginLeft="@dimen/contenedor_margen"
+            android:layout_marginRight="@dimen/contenedor_margen">
 
-            <TextView
-                android:id="@+id/lb_title"
-                style="@style/textFontMainTableta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margen_boton_small"
-                android:text="@string/titulo_recordatorio"/>
+        <TextView
+            android:id="@+id/lb_title"
+            style="@style/textFontMainTableta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margen_boton_small"
+            android:text="@string/titulo_recordatorio"/>
 
-            <TextView
-                android:id="@+id/tv_title"
-                style="@style/textFontDetailTableta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margen_boton_large"
-                tools:text="Cita para entrevista personal"/>
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/textFontDetailTableta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margen_boton_large"
+            tools:text="Cita para entrevista personal"/>
 
-            <TextView
-                android:id="@+id/lb_entity"
-                style="@style/textFontMainTableta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margen_boton_small"
-                android:text="@string/endidad_otros_recordatorio"/>
+        <TextView
+            android:id="@+id/lb_entity"
+            style="@style/textFontMainTableta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margen_boton_small"
+            android:text="@string/endidad_otros_recordatorio"/>
 
-            <TextView
-                android:id="@+id/tv_entity"
-                style="@style/textFontDetailTableta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margen_boton_large"
-                tools:text="INPE"/>
+        <TextView
+            android:id="@+id/tv_entity"
+            style="@style/textFontDetailTableta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margen_boton_large"
+            tools:text="INPE"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margen_boton_large"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/lb_type_reminder"
-                        style="@style/textFontMainTableta"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margen_boton_small"
-                        android:text="@string/tipo_recordatorio"/>
-
-                    <Spinner
-                        android:id="@+id/sp_type_reminder"
-                        style="@style/textFontDetailTableta"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/lb_phone"
-                        style="@style/textFontMainTableta"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margen_boton_small"
-                        android:text="@string/teleforno_recordatorio"/>
-
-                    <TextView
-                        android:id="@+id/tv_phone"
-                        style="@style/textFontDetailTableta"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:text="954336108"/>
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_message"
-                style="@style/textFontMainTableta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margen_boton_small"
-                android:text="@string/mensaje_recordatorio"/>
-
-            <EditText
-                android:id="@+id/mt_message"
-                style="@style/textFontDetailTableta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margen_boton_large"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                tools:ignore="LabelFor"
-                tools:text="Contenedor del mensaje."/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margen_boton_large"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margen_boton_large"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/lb_post_message_in"
+                    android:id="@+id/lb_type_reminder"
                     style="@style/textFontMainTableta"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margen_boton_small"
-                    android:text="@string/enviar_mensaje_en_recordatorio"/>
+                    android:text="@string/tipo_recordatorio"/>
 
-                <LinearLayout
+                <Spinner
+                    android:id="@+id/sp_type_reminder"
+                    style="@style/textFontDetailTableta"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <CheckBox
-                        android:id="@+id/checkBox"
-                        style="@style/textFontDetailTableta"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/facebook_recordatorio"/>
-
-                    <CheckBox
-                        android:id="@+id/checkBox2"
-                        style="@style/textFontDetailTableta"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/twitter_recordatorio"/>
-
-                    <CheckBox
-                        android:id="@+id/checkBox3"
-                        style="@style/textFontDetailTableta"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/enviar_mensaje_recordatorio"/>
-                </LinearLayout>
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/lb_phone"
+                    style="@style/textFontMainTableta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margen_boton_small"
+                    android:text="@string/teleforno_recordatorio"/>
+
+                <TextView
+                    android:id="@+id/tv_phone"
+                    style="@style/textFontDetailTableta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="954336108"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_message"
+            style="@style/textFontMainTableta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margen_boton_small"
+            android:text="@string/mensaje_recordatorio"/>
+
+        <EditText
+            android:id="@+id/mt_message"
+            style="@style/textFontDetailTableta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margen_boton_large"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            tools:ignore="LabelFor"
+            tools:text="Contenedor del mensaje."/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margen_boton_large"
+            android:orientation="vertical">
+
             <TextView
-                android:id="@+id/lb_date_reminder"
+                android:id="@+id/lb_post_message_in"
                 style="@style/textFontMainTableta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margen_boton_small"
-                android:text="@string/fecha_recordatorio"/>
+                android:text="@string/enviar_mensaje_en_recordatorio"/>
 
-            <TextView
-                android:id="@+id/tv_date"
-                style="@style/textFontDetailTableta"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="30-06-2017"/>
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkBox"
+                    style="@style/textFontDetailTableta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/facebook_recordatorio"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox2"
+                    style="@style/textFontDetailTableta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/twitter_recordatorio"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox3"
+                    style="@style/textFontDetailTableta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enviar_mensaje_recordatorio"/>
+            </LinearLayout>
+
         </LinearLayout>
-    </ScrollView>
+
+        <TextView
+            android:id="@+id/lb_date_reminder"
+            style="@style/textFontMainTableta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margen_boton_small"
+            android:text="@string/fecha_recordatorio"/>
+
+        <TextView
+            android:id="@+id/tv_date"
+            style="@style/textFontDetailTableta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="30-06-2017"/>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margen"
+        android:src="@drawable/ic_edit_24dp"
+        app:borderWidth="0dp"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|right|end" />
 </android.support.design.widget.CoordinatorLayout>

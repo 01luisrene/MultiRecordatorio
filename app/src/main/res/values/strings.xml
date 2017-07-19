@@ -7,10 +7,13 @@
     <string name="accion_eliminar">Eliminar</string>
     <string name="accion_atras">Atrás</string>
     <string name="hint_buscar">Buscar...</string>
+    <!--Titulos App Bar-->
+    <string name="lista_recordatorios">Lista recordatorios</string>
+    <string name="lista_tipo_recordatorios">Lista tipo recordatorios</string>
 
     <!--String para el formulario detalle recordatorio-->
     <string name="titulo_recordatorio">Titulo Recordatorio:</string>
-    <string name="endidad_otros_recordatorio">Persona, Empresa, Lugar, ...:</string>
+    <string name="endidad_otros_recordatorio">Persona, Empresa, otros:</string>
     <string name="tipo_recordatorio">Tipo Recordatorio:</string>
     <string name="teleforno_recordatorio">Teléfono:</string>
     <string name="mensaje_recordatorio">Mensaje:</string>
@@ -19,6 +22,7 @@
     <string name="twitter_recordatorio">Twitter</string>
     <string name="enviar_mensaje_recordatorio">Mensaje</string>
     <string name="fecha_recordatorio">Fecha recordatorio:</string>
+    <string name="descripcion_cover">Imagen principal del recordatorio</string>
 
     <!--String para formulario tipo recordatorio-->
     <string name="seleccionar_imagen">Seleccionar imagen</string>
@@ -42,4 +46,6 @@
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="salir">Salir</string>
+    <string name="opciones">Opciones</string>
 </resources>

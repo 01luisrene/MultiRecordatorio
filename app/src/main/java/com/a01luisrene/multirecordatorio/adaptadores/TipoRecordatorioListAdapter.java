@@ -64,8 +64,7 @@ public class TipoRecordatorioListAdapter extends RecyclerView.Adapter<TipoRecord
             //Cargo la imagen con la ayuda de la librería picasso
             Picasso.with(mMainContext)
                     .load(R.drawable.ic_image_150dp)
-                    .placeholder(R.drawable.ic_image_150dp)
-                    .error(R.drawable.ic_image_150dp)
+                    .resize(350, 350)
                     .into(holder.civAvatarTipoRecordatorio);
         }else{
             //Cargo la imagen con la ayuda de la librería picasso

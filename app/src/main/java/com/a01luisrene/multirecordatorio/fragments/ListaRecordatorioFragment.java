@@ -2,15 +2,20 @@ package com.a01luisrene.multirecordatorio.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -22,6 +27,7 @@ import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.ui.DetalleRecordatorioActivity;
 
 import java.util.List;
+import java.util.zip.Inflater;
 
 public class ListaRecordatorioFragment extends Fragment {
 
@@ -81,12 +87,6 @@ public class ListaRecordatorioFragment extends Fragment {
 
         recordatorioListRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-
-        /*Toolbar
-        Toolbar toolbar = (Toolbar) v.findViewById(R.id.toolbar);
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        //toolbar.setLogo(R.mipmap.ic_launcher);*/
 
         return v;
     }

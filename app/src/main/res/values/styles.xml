@@ -19,6 +19,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.TranslucentSystemBars" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
     <!--Estilos para el formulario detalle - tablet-->
     <style name="textFontMainTableta">
         <item name="android:textSize">26sp</item>

@@ -2,34 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_add_24dp"
-            android:title="Import"/>
+            android:id="@+id/nav_lista_recordatorios"
+            android:icon="@drawable/ic_image_150dp"
+            android:title="@string/lista_recordatorios"/>
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_arrow_24dp"
-            android:title="Gallery"/>
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_delete_24dp"
-            android:title="Slideshow"/>
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_edit_24dp"
-            android:title="Tools"/>
+            android:id="@+id/nav_Lista_tipo_recordatorios"
+            android:icon="@drawable/ic_image_150dp"
+            android:title="@string/lista_tipo_recordatorios"/>
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/opciones">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_add_24dp"
-                android:title="Share"/>
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_add_24dp"
-                android:title="Send"/>
+                android:id="@+id/nav_salir"
+                android:icon="@drawable/ic_exit_to_app_24dp"
+                android:title="@string/salir"/>
         </menu>
     </item>
 
