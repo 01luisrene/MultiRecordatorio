@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="fab_margen">16dp</dimen>
-    <!--Navigation Drawer-->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
 
     <dimen name="contenedor_margen">10dp</dimen>
     <dimen name="contenedor_relleno">10dp</dimen>
@@ -15,15 +10,22 @@
     <dimen name="margen_boton_large">15dp</dimen>
 
     <!--Medida imagen en circulo del toolbar detalle recordatorio (tablet) & lista recordatorios-->
-    <dimen name="img_circulo_tamanio">50dp</dimen>
-    <dimen name="img_circulo_borde">2dp</dimen>
-
-    <dimen name="img_circulo_lista_tipo_recordatorio">80dp</dimen>
-
+    <dimen name="civ_dimension_lista_recordatorios">60dp</dimen>
+    <dimen name="civ_borde">2dp</dimen>
+    <dimen name="civ_dimension_lista_tipo_recordatorio">@dimen/civ_dimension_lista_recordatorios</dimen>
+    <!--Dimensiones para civ de Nafigation Drawer-->
+    <dimen name="civ_dimension_nd">70dp</dimen>
     <!--Medida imagen en circulo para un nuevo tipo de recordatorio-->
-    <dimen name="img_circulo_tamanio_tipo_recordatorio">150dp</dimen>
-    <dimen name="img_circulo_borde_tipo_recordatorio">3dp</dimen>
+    <dimen name="civ_dimension_tipo_recordatorio">150dp</dimen>
+    <dimen name="civ_borde_tipo_recordatorio">3dp</dimen>
 
-    <!--Master Detail-->
+    <!--Detalle del fragment-->
     <dimen name="detail_elevation">8dp</dimen>
+
+    <!--Navigation Drawer-->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+
 </resources>

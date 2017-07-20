@@ -1,26 +1,12 @@
 package com.a01luisrene.multirecordatorio.modelos;
 
-/**
- * Created by LUIS on 04/06/2017.
- */
-
 public class Recordatorio {
     private String id;
     private String title;
     private String name;
+    private String imagen;
     private String contentMessage;
-    private Thumbnail civ_avatar_reminder;
 
-    public Recordatorio() {
-
-    }
-
-    public Recordatorio(String id, String title, String name, String contentMessage) {
-        this.id = id;
-        this.title = title;
-        this.name = name;
-        this.contentMessage = contentMessage;
-    }
 
     /**
     *
@@ -52,6 +38,14 @@ public class Recordatorio {
         this.name = name;
     }
 
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
     public String getContentMessage() {
         return contentMessage;
     }
@@ -60,11 +54,5 @@ public class Recordatorio {
         this.contentMessage = contentMessage;
     }
 
-    public Thumbnail getCiv_avatar_reminder() {
-        return civ_avatar_reminder;
-    }
 
-    public void setCiv_avatar_reminder(Thumbnail civ_avatar_reminder) {
-        this.civ_avatar_reminder = civ_avatar_reminder;
-    }
 }

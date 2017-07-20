@@ -1,9 +1,5 @@
 package com.a01luisrene.multirecordatorio.sqlite;
 
-/**
- * Created by LUIS on 12/06/2017.
- */
-
 public class TablasDb {
 
     public static class TablaRecordatorios {
@@ -44,12 +40,12 @@ public class TablasDb {
 
     public static class TablaTipoRecordatorio{
         /*[NOMBRE DE LA TABLA]*/
-        public static final String TABLE_NAME = "tipo_recordatorios";
+        public static final String TABLE_NAME = "categoria_recordatorios";
 
         /*[COLUMNAS PARA LA TABLA TIPO DE RECORDATORIO]*/
         public static final String CN_ID = "_id";
         public static final String CN_IMAGE_REMINDER = "imagen_recordatorio";
-        public static final String CN_TYPE_REMINDER = "tipo_recordatorio";
+        public static final String CN_TYPE_REMINDER = "categoria_texto";
         public static final String CN_PROTECTION = "proteccion";
         public static final String CN_CREATION_DATE = "fecha_creacion";
 

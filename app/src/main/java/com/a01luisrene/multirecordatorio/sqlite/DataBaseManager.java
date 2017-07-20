@@ -4,10 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-/**
- * Created by LUIS on 01/06/2017.
- */
-
 public abstract class DataBaseManager {
 
     private DbHelper dbHelper;

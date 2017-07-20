@@ -24,6 +24,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/contenedor_civ_imagen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -31,19 +32,19 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/civ_imagen"
-                android:layout_width="@dimen/img_circulo_tamanio"
-                android:layout_height="@dimen/img_circulo_tamanio"
+                android:layout_width="@dimen/civ_dimension_lista_recordatorios"
+                android:layout_height="@dimen/civ_dimension_lista_recordatorios"
                 android:src="@mipmap/ic_launcher"
                 card_view:civ_border_color="@color/color_borde_imagen_circular"
-                card_view:civ_border_width="@dimen/img_circulo_borde"/>
+                card_view:civ_border_width="@dimen/civ_borde"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="60dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/contenedor_civ_imagen"
             android:divider="@drawable/divider"
             android:orientation="vertical">
 

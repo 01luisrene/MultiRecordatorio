@@ -2,22 +2,18 @@ package com.a01luisrene.multirecordatorio.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.a01luisrene.multirecordatorio.R;
@@ -27,24 +23,21 @@ import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.ui.DetalleRecordatorioActivity;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
-public class ListaRecordatorioFragment extends Fragment {
+public class ListaRecordatorioFragment extends Fragment implements View.OnClickListener {
 
+    public static final String FRAGMENT_LISTA_RECORDATORIO = "fragment_lista_recordatorio";
     private RecyclerView recordatorioListRecyclerView;
     private RecordatorioListAdapter recordatorioListAdapter;
     private List<Recordatorio> listaItemsRecordatorio;
-    private DataBaseManagerRecordatorios manager;
+    private DataBaseManagerRecordatorios mManager;
+    private TextView mListaVacia;
 
     boolean mDualPane;
     int mCurCheckPosition = 0;
 
     public ListaRecordatorioFragment() {
         // Required empty public constructor
-    }
-
-    public static ListaRecordatorioFragment crear() {
-        return new ListaRecordatorioFragment();
     }
 
     public static ListaRecordatorioFragment newInstance() {
@@ -69,7 +62,8 @@ public class ListaRecordatorioFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_lista_recordatorio, container, false);
 
-        recordatorioListRecyclerView = (RecyclerView) v.findViewById(R.id.reminder_list_recyclerView);
+        mListaVacia = (TextView) v.findViewById(R.id.lista_vacia);
+        recordatorioListRecyclerView = (RecyclerView) v.findViewById(R.id.rv_lista_recordatorio);
 
         recordatorioListRecyclerView.setHasFixedSize(true);
 
@@ -77,9 +71,9 @@ public class ListaRecordatorioFragment extends Fragment {
 
         recordatorioListRecyclerView.setLayoutManager(linearLayoutManager);
 
-        manager = new DataBaseManagerRecordatorios(getActivity());
+        mManager = new DataBaseManagerRecordatorios(getActivity());
 
-        listaItemsRecordatorio = manager.getRecordatoriosList();
+        listaItemsRecordatorio = mManager.getRecordatoriosList();
 
         recordatorioListAdapter =  new RecordatorioListAdapter(listaItemsRecordatorio, getActivity());
 
@@ -87,8 +81,69 @@ public class ListaRecordatorioFragment extends Fragment {
 
         recordatorioListRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        final FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab_agregar_recordatorio);
+
+        fab.setOnClickListener(this);
+
+        //Mostrar o Ocultar botón flotante
+        recordatorioListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                if (dy > 0 || dy < 0 && fab.isShown())
+                    fab.hide();
+            }
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState)
+            {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                    fab.show();
+
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
+        if (listaItemsRecordatorio.isEmpty()) {
+            mListaVacia.setVisibility(View.VISIBLE);
+            recordatorioListRecyclerView.setVisibility(View.GONE);
+        } else {
+            mListaVacia.setVisibility(View.GONE);
+            recordatorioListRecyclerView.setVisibility(View.VISIBLE);
+        }
+
 
         return v;
+    }
+
+    @Override
+    public void onClick(View v) {
+        boolean fragmentTrasaccion = false;
+        Fragment fragment = null;
+        String titulo = null;
+        String fragTag = null;
+        switch (v.getId()){
+            case R.id.fab_agregar_recordatorio:
+                fragment = new AgregarRecordatorioFragment();
+                fragTag = AgregarRecordatorioFragment.FRAGMENT_AGREGAR_RECORDATORIOS;
+                titulo = getString(R.string.fab_agregar_recordatorio);
+                fragmentTrasaccion = true;
+                break;
+        }
+
+        if(fragmentTrasaccion){
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            Fragment fragmentByTag = fragmentManager.findFragmentByTag(fragTag);
+            if (fragmentByTag == null){
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                fragmentManager.beginTransaction();
+                transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+                transaction.replace(R.id.fl_contenedor_principal, fragment, fragTag);
+                transaction.commit();
+            }
+
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(titulo);
+        }
     }
 
     @Override

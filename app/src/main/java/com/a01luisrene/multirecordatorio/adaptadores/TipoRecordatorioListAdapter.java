@@ -22,7 +22,8 @@ public class TipoRecordatorioListAdapter extends RecyclerView.Adapter<TipoRecord
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Cada elemento de datos es sólo una cadena en este caso
-        TextView id,titulo;
+        TextView id;
+        TextView titulo;
         CircleImageView civAvatarTipoRecordatorio;
         ViewHolder(View v) {
             super(v);
@@ -43,7 +44,7 @@ public class TipoRecordatorioListAdapter extends RecyclerView.Adapter<TipoRecord
     public TipoRecordatorioListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.tipo_recordatorio_lista_item, parent, false);
+                .inflate(R.layout.recordatorio_categoria_lista_item, parent, false);
         // Establecer el tamaño de la vista, los márgenes, los rellenos y los parámetros de diseño
 
         return new ViewHolder(v);
@@ -53,8 +54,9 @@ public class TipoRecordatorioListAdapter extends RecyclerView.Adapter<TipoRecord
     //Reemplazar el contenido de una vista (invocada por el gestor de diseño)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        //cargo el id del tipo recordatorio
+
         holder.id.setText(mDataset.get(position).getId());
+        holder.titulo.setText(mDataset.get(position).getCategorioRecordatorio());
 
         //Almaceno el valor devuelto la la ruta de imagen en string
         String valorImagen = mDataset.get(position).getImagen();
@@ -75,8 +77,6 @@ public class TipoRecordatorioListAdapter extends RecyclerView.Adapter<TipoRecord
                     .into(holder.civAvatarTipoRecordatorio);
         }
 
-        //Muestro el titulo de tipo recordatorio
-        holder.titulo.setText(mDataset.get(position).getTipoRecordatorio());
     }
     //Devuelve el tamaño de tu conjunto de datos (invocado por el administrador de diseño)
     @Override

@@ -9,25 +9,25 @@ import android.widget.TextView;
 
 import com.a01luisrene.multirecordatorio.modelos.Recordatorio;
 import com.a01luisrene.multirecordatorio.R;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecordatorioListAdapter extends RecyclerView.Adapter<RecordatorioListAdapter.ViewHolder> {
-    private List<Recordatorio> mDataset;
-    private Context mainContext;
 
-    // Provide a reference to the views for each data item
-        // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
+    private List<Recordatorio> mDataset;
+    private Context mMainContext;
+
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
+            // Cada elemento de datos es sólo una cadena en este caso
             TextView id;
             TextView titulo;
             TextView nombres;
             TextView contenidoMensaje;
-            CircleImageView civ_avatar_reminder;
+            CircleImageView civImagenRecordatorio;
 
             ViewHolder(View v) {
                 super(v);
@@ -35,16 +35,14 @@ public class RecordatorioListAdapter extends RecyclerView.Adapter<RecordatorioLi
                 titulo = (TextView) v.findViewById(R.id.tv_title_reminder);
                 nombres = (TextView) v.findViewById(R.id.tv_name_reminder);
                 contenidoMensaje = (TextView) v.findViewById(R.id.tv_message_reminder);
-                civ_avatar_reminder = (CircleImageView) v.findViewById(R.id.civ_imagen);
-
-                //v.setOnClickListener(this);
+                civImagenRecordatorio = (CircleImageView) v.findViewById(R.id.civ_imagen);
             }
         }
 
         // Proporcionar un constructor adecuado (depende del tipo de conjunto de datos)
         public RecordatorioListAdapter(List<Recordatorio> mDataset, Context mainContext) {
             this.mDataset = mDataset;
-            this.mainContext = mainContext;
+            this.mMainContext = mainContext;
         }
 
         // Crear nuevas vistas (invocadas por el gestor de diseño)
@@ -59,16 +57,53 @@ public class RecordatorioListAdapter extends RecyclerView.Adapter<RecordatorioLi
         }
 
 
-    //Reemplazar el contenido de una vista (invocada por el gestor de diseño)
+        //Reemplazar el contenido de una vista (invocada por el gestor de diseño)
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            // - Obtener elemento de su conjunto de datos en esta posición
-            // - Reemplazar el contenido de la vista con ese elemento
+
             holder.id.setText(mDataset.get(position).getId());
             holder.titulo.setText(mDataset.get(position).getTitle());
             holder.nombres.setText(mDataset.get(position).getName());
-            holder.contenidoMensaje.setText(mDataset.get(position).getContentMessage());
 
+            /**
+             * TEXTO DEL CONTENIDO MENSAJE FORMATEADO
+             */
+            //Almaceno el valor de la cadena devuelta del contenido mensaje
+            String cadenaMensaje = mDataset.get(position).getContentMessage();
+            //creo la variable que almacenara el texto formateado
+            String cadenaFormateada = "";
+            //Condiciono para saber si la cadena tiene mas de 70 caracteres
+            if(cadenaMensaje.length() > 70){
+                //Agrego ellipsis al texto si es mayor de 70
+                cadenaFormateada = cadenaMensaje.substring(0, 70) + "...";
+            }else{
+                //Muestro el texto original
+                cadenaFormateada = cadenaMensaje;
+            }
+            //cargo los valores devueltos en el EditText
+            holder.contenidoMensaje.setText(cadenaFormateada);
+
+            /**
+             * CARGO IMAGEN CON PICASSO
+             */
+            //Almaceno el valor devuelto la la ruta de imagen en string
+            String valorImagen = mDataset.get(position).getImagen();
+
+            //Condiciono para manejar si el valor devuelto es null
+            if(valorImagen == null ||  valorImagen.isEmpty()){
+                //Cargo la imagen con la ayuda de la librería picasso
+                Picasso.with(mMainContext)
+                        .load(R.drawable.ic_image_150dp)
+                        .resize(350, 350)
+                        .into(holder.civImagenRecordatorio);
+            }else{
+                //Cargo la imagen con la ayuda de la librería picasso
+                Picasso.with(mMainContext)
+                        .load(new File(mDataset.get(position).getImagen()))
+                        .resize(350, 350)
+                        .error(R.drawable.ic_image_150dp)
+                        .into(holder.civImagenRecordatorio);
+            }
         }
 
         // Devuelve el tamaño de tu conjunto de datos (invocado por el administrador de diseño)

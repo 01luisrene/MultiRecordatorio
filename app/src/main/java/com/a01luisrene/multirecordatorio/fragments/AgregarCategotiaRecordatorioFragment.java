@@ -37,8 +37,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
-public class AgregarTipoRecordatorioFragment extends Fragment implements View.OnClickListener {
-
+public class AgregarCategotiaRecordatorioFragment extends Fragment implements View.OnClickListener {
+    public static final String FRAGMENT_AGREGAR_CATEGORIA_RECORDATORIOS = "fragment_agregar_categoria_recordatorios";
     private static final String IMAGE_SELECT_ALL_TYPE = "image/*";
     private static final String REGEX_LATINOS = "^[a-zA-Z áÁéÉíÍóÓúÚñÑüÜ]+$";
     private static final int PROTECCION = 0;
@@ -53,16 +53,16 @@ public class AgregarTipoRecordatorioFragment extends Fragment implements View.On
     private Uri mUri;
     private String mRutaImagen;
 
-    public AgregarTipoRecordatorioFragment() {
+    public AgregarCategotiaRecordatorioFragment() {
         // Required empty public constructor
     }
 
-    public static AgregarTipoRecordatorioFragment crear() {
-        return new AgregarTipoRecordatorioFragment();
+    public static AgregarCategotiaRecordatorioFragment crear() {
+        return new AgregarCategotiaRecordatorioFragment();
     }
 
-    public static AgregarTipoRecordatorioFragment newInstance(String param1, String param2) {
-        AgregarTipoRecordatorioFragment fragment = new AgregarTipoRecordatorioFragment();
+    public static AgregarCategotiaRecordatorioFragment newInstance(String param1, String param2) {
+        AgregarCategotiaRecordatorioFragment fragment = new AgregarCategotiaRecordatorioFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -76,7 +76,7 @@ public class AgregarTipoRecordatorioFragment extends Fragment implements View.On
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_agregar_tipo_recordatorio, container, false);
+        View v = inflater.inflate(R.layout.fragment_agregar_categoria_recordatorios, container, false);
 
         //Asignamos nuestro manager que contiene nuestros metodos CRUD
         mManager = new DataBaseManagerRecordatorios(getActivity());
@@ -250,9 +250,9 @@ public class AgregarTipoRecordatorioFragment extends Fragment implements View.On
     private void mostrarExplicacion(final int tipoPeticion) {
 
         new AlertDialog.Builder(getActivity())
-                .setTitle(getString(R.string.dialog_titulo))
-                .setMessage(getString(R.string.dialog_mensaje))
-                .setPositiveButton(getString(R.string.boton_ok), new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.sb_titulo))
+                .setMessage(getString(R.string.sb_mensaje))
+                .setPositiveButton(getString(R.string.boton_aceptar), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //pedir permiso
@@ -267,7 +267,7 @@ public class AgregarTipoRecordatorioFragment extends Fragment implements View.On
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Desplegar mensaje de lamentación
-                        mostrarMensaje(getString(R.string.dialog_mensaje_cancelar), 0);
+                        mostrarMensaje(getString(R.string.sb_mensaje_cancelar), 0);
                     }
                 })
                 .show();

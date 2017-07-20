@@ -30,12 +30,12 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_ver_tipo_recordatorio"
-            android:layout_width="@dimen/img_circulo_lista_tipo_recordatorio"
-            android:layout_height="@dimen/img_circulo_lista_tipo_recordatorio"
+            android:layout_width="@dimen/civ_dimension_lista_tipo_recordatorio"
+            android:layout_height="@dimen/civ_dimension_lista_tipo_recordatorio"
             android:src="@mipmap/ic_launcher"
             android:layout_centerVertical="true"
             card_view:civ_border_color="@color/color_borde_imagen_circular"
-            card_view:civ_border_width="@dimen/img_circulo_borde"/>
+            card_view:civ_border_width="@dimen/civ_borde"/>
 
         <TextView
             android:id="@+id/tv_ver_titulo_tipo_recordatorio"

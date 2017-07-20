@@ -7,9 +7,9 @@
     <string name="accion_eliminar">Eliminar</string>
     <string name="accion_atras">Atrás</string>
     <string name="hint_buscar">Buscar...</string>
-    <!--Titulos App Bar-->
-    <string name="lista_recordatorios">Lista recordatorios</string>
-    <string name="lista_tipo_recordatorios">Lista tipo recordatorios</string>
+
+    <!--Lista recordatorios-->
+    <string name="lista_vacia">No hay resultados</string>
 
     <!--String para el formulario detalle recordatorio-->
     <string name="titulo_recordatorio">Titulo Recordatorio:</string>
@@ -27,11 +27,10 @@
     <!--String para formulario tipo recordatorio-->
     <string name="seleccionar_imagen">Seleccionar imagen</string>
     <string name="titulo_tipo_recordatorio">Titulo recordatorio</string>
-    <string name="formato_fecha">DD/MM/YYYY</string>
     <string name="mensaje_agregado_satisfactoriamente">Datos Agregados correctamente</string>
-    <string name="dialog_titulo">Necesito tu permiso</string>
-    <string name="dialog_mensaje">Necesito permiso para poder ver tus fotos e imágenes.</string>
-    <string name="dialog_mensaje_cancelar">ouch :(</string>
+    <string name="sb_titulo">Necesito tu permiso</string>
+    <string name="sb_mensaje">Necesito tu permiso para poder ver las fotos e imágenes.</string>
+    <string name="sb_mensaje_cancelar">ouch :(</string>
     <string name="seleccionar_app_imagen">Selecciona app de imagen</string>
     <string name="permiso_denegado">¡No tienes permiso para ver fotos o imágenes!</string>
     <string name="error_titulo_tipo_recordatorio">Ingrese un titulo de recordatorio válido</string>
@@ -41,11 +40,18 @@
     <string name="boton_actualizar">Actualizar</string>
     <string name="boton_guardar">Guardar</string>
     <string name="boton_cancelar">Cancelar</string>
-    <string name="boton_ok">Ok</string>
+    <string name="boton_aceptar">Aceptar</string>
 
     <!--Navigation Drawer-->
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="salir">Salir</string>
-    <string name="opciones">Opciones</string>
+    <string name="nd_open">Open navigation drawer</string>
+    <string name="nd_close">Close navigation drawer</string>
+    <string name="nd_salir">Salir</string>
+    <string name="nd_opciones">Opciones</string>
+    <string name="nd_recordatorios">Recordatorios</string>
+    <string name="nd_tipo_recordatorios">Categorías</string>
+    <string name="nd_eslogan">"¡Tus recuerdos siempre presentes!</string>
+    <string name="nd_descripcion_logo">Logo de la app</string>
+
+    <!--FAB Botón-->
+    <string name="fab_agregar_recordatorio">Nuevo recordatorio</string>
 </resources>

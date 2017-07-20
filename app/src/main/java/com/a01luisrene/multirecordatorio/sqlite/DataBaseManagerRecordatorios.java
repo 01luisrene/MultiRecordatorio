@@ -130,9 +130,22 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
         String[] columnas = new String[]{TablasDb.TablaRecordatorios.CN_ID,
                 TablasDb.TablaRecordatorios.CN_TITLE,
                 TablasDb.TablaRecordatorios.CN_NAME_OTHER,
+                TablasDb.TablaRecordatorios.CN_TYPE_REMINDER,
                 TablasDb.TablaRecordatorios.CN_CONTENT_MESSAGE};
         //query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy)
-        return super.getDb().query(TablasDb.TablaRecordatorios.TABLE_NAME, columnas, null, null, null, null, TablasDb.TablaRecordatorios.CN_ID + " DESC");
+        return super.getDb().rawQuery("SELECT  R."+TablasDb.TablaRecordatorios.CN_ID
+                +", R."+ TablasDb.TablaRecordatorios.CN_TITLE
+                +", R."+ TablasDb.TablaRecordatorios.CN_NAME_OTHER
+                +", R."+ TablasDb.TablaRecordatorios.CN_CONTENT_MESSAGE
+                +", TR."+ TablasDb.TablaTipoRecordatorio.CN_IMAGE_REMINDER
+                +" FROM "
+                +TablasDb.TablaRecordatorios.TABLE_NAME +" R,"
+                +TablasDb.TablaTipoRecordatorio.TABLE_NAME+ " TR  WHERE "
+                +" R."+ TablasDb.TablaRecordatorios.CN_TYPE_REMINDER
+                +" =  TR."+TablasDb.TablaTipoRecordatorio.CN_ID
+                +" ORDER BY "
+                + "R."+TablasDb.TablaRecordatorios.CN_ID
+                + " DESC", null);
     }
 
     @Override
@@ -142,7 +155,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                 TablasDb.TablaRecordatorios.CN_NAME_OTHER,
                 TablasDb.TablaRecordatorios.CN_CONTENT_MESSAGE};
         String[] args = new String[]{titulo};
-
+        //query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy)
         return super.getDb().query(TablasDb.TablaRecordatorios.TABLE_NAME, columnas, TablasDb.TablaRecordatorios.CN_TITLE + "=?", args, null, null, null);
     }
 
@@ -150,7 +163,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     @Override
     public Boolean compruebaRegistroRecordatorio(String id){
         boolean existe = true;
-        Cursor resultSet = super.getDb().rawQuery("SELECT * FROM " + TablasDb.TablaRecordatorios.TABLE_NAME + " WHERE " + TablasDb.TablaRecordatorios.CN_ID + "=" + id, null);
+        Cursor resultSet = super.getDb().rawQuery("SELECT _id FROM " + TablasDb.TablaRecordatorios.TABLE_NAME + " WHERE " + TablasDb.TablaRecordatorios.CN_ID + "=" + id, null);
 
         if(resultSet.getCount() <= 0)
             existe = false;
@@ -172,6 +185,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
             recordatorio.setTitle(cursor.getString(1));
             recordatorio.setName(cursor.getString(2));
             recordatorio.setContentMessage(cursor.getString(3));
+            recordatorio.setImagen(cursor.getString(4));
 
             list.add(recordatorio);
         }
@@ -263,7 +277,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
             TipoRecordatorio recordatorio = new TipoRecordatorio();
             recordatorio.setId(cursor.getString(0));
             recordatorio.setImagen(cursor.getString(1));
-            recordatorio.setTipoRecordatorio(cursor.getString(2));
+            recordatorio.setCategorioRecordatorio(cursor.getString(2));
 
             list.add(recordatorio);
         }

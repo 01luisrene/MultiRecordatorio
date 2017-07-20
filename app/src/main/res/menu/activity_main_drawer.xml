@@ -6,19 +6,19 @@
         <item
             android:id="@+id/nav_lista_recordatorios"
             android:icon="@drawable/ic_image_150dp"
-            android:title="@string/lista_recordatorios"/>
+            android:title="@string/nd_recordatorios"/>
         <item
-            android:id="@+id/nav_Lista_tipo_recordatorios"
+            android:id="@+id/nav_Lista_categoria_recordatorios"
             android:icon="@drawable/ic_image_150dp"
-            android:title="@string/lista_tipo_recordatorios"/>
+            android:title="@string/nd_tipo_recordatorios"/>
     </group>
 
-    <item android:title="@string/opciones">
+    <item android:title="@string/nd_opciones">
         <menu>
             <item
                 android:id="@+id/nav_salir"
                 android:icon="@drawable/ic_exit_to_app_24dp"
-                android:title="@string/salir"/>
+                android:title="@string/nd_salir"/>
         </menu>
     </item>
 
