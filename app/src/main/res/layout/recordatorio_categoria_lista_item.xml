@@ -39,7 +39,7 @@
 
         <TextView
             android:id="@+id/tv_ver_titulo_tipo_recordatorio"
-            style="@style/textFontTitleListTableta"
+            style="@style/lista_texto_principal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

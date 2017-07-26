@@ -29,8 +29,9 @@ import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.util.Calendar;
-import java.util.TimeZone;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -44,7 +45,6 @@ public class AgregarCategotiaRecordatorioFragment extends Fragment implements Vi
     private static final int PROTECCION = 0;
     private static final int REQUEST_CODE_GALLERY = 1;
     private static final int READ_STORAGE_PERMISSION = 2;
-    private DataBaseManagerRecordatorios mManager;
     private CircleImageView mCivImagen;
     private EditText mEtTituloRecordatorio;
     private TextInputLayout mTilTituloTipoRecordatorio;
@@ -52,6 +52,7 @@ public class AgregarCategotiaRecordatorioFragment extends Fragment implements Vi
     private Button mBtGuardarTipoRecordatorio, mBtSeleccionarImagen;
     private Uri mUri;
     private String mRutaImagen;
+    private DataBaseManagerRecordatorios mManager;
 
     public AgregarCategotiaRecordatorioFragment() {
         // Required empty public constructor
@@ -146,9 +147,9 @@ public class AgregarCategotiaRecordatorioFragment extends Fragment implements Vi
     private void validarDatos() {
         //Almacena el valor del campo titulo tipo recordatorio
         String tituloTipoRecordatorio = mEtTituloRecordatorio.getText().toString();
-
         String titulo = mTilTituloTipoRecordatorio.getEditText().getText().toString();
         boolean bolTituloTipoRecordatorio = esTituloRecordatorioValido(titulo);
+
         //Condicionamos a true
         if (bolTituloTipoRecordatorio) {
             mManager.insertarTipoRecordatorio(
@@ -227,24 +228,13 @@ public class AgregarCategotiaRecordatorioFragment extends Fragment implements Vi
         }
     }
 
-    //Función que devuelve la fecha y hora del sistema personalizado
+    //Función que devuelve la fecha y hora del sistema
     public String fechaHora(){
-        final Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-        int dia = calendar.get(Calendar.DAY_OF_MONTH);
-        int mes = calendar.get(Calendar.MONTH);
-        int anio = calendar.get(Calendar.YEAR);
-        int hora = calendar.get(Calendar.HOUR);
-        int minuto = calendar.get(Calendar.MINUTE);
-        int segundos = calendar.get(Calendar.SECOND);
 
-        mFecha = String.valueOf(dia)
-                + "/" + String.valueOf(mes)
-                + "/" + String.valueOf(anio)
-                + " " + String.valueOf(hora)
-                + ":" + String.valueOf(minuto)
-                + ":" + String.valueOf(segundos);
+        String dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
-        return mFecha;
+        return dateString;
+
     }
 
     private void mostrarExplicacion(final int tipoPeticion) {

@@ -5,6 +5,19 @@ public class TipoRecordatorio {
     private String imagen;
     private String categorioRecordatorio;
 
+    /**
+     * CONSTRUCTOR
+     */
+
+    public TipoRecordatorio() {
+
+    }
+
+    public TipoRecordatorio(String id, String imagen, String categorioRecordatorio) {
+        this.id = id;
+        this.imagen = imagen;
+        this.categorioRecordatorio = categorioRecordatorio;
+    }
 
     /**
      * GETTER & SETTER

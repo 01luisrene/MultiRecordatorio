@@ -17,11 +17,20 @@
 
         <FrameLayout
             android:id="@+id/fl_contenedor_principal"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_agregar_recordatorio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margen"
+            android:src="@drawable/ic_add_24dp"/>
 
     </android.support.design.widget.CoordinatorLayout>
+
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

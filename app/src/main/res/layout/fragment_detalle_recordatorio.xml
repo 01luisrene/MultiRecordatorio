@@ -15,14 +15,14 @@
         android:layout_height="wrap_content"
         android:text="@string/titulo_recordatorio"
         android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/textFontMainPhone"/>
+        style="@style/texto_principal"/>
 
     <TextView
         android:id="@+id/tv_titulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margen_boton_large"
-        style="@style/textFontDetailPhone"/>
+        style="@style/texto_detalle"/>
 
     <TextView
         android:id="@+id/lb_entidad_otros"
@@ -30,14 +30,14 @@
         android:layout_height="wrap_content"
         android:text="@string/endidad_otros_recordatorio"
         android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/textFontMainPhone"/>
+        style="@style/texto_principal"/>
 
     <TextView
         android:id="@+id/tv_entidad_otros"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margen_boton_large"
-        style="@style/textFontDetailPhone"/>
+        style="@style/texto_detalle"/>
 
     <TextView
         android:id="@+id/lb_telefono"
@@ -45,14 +45,14 @@
         android:layout_height="wrap_content"
         android:text="@string/teleforno_recordatorio"
         android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/textFontMainPhone"/>
+        style="@style/texto_principal"/>
 
     <TextView
         android:id="@+id/tv_telefono"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margen_boton_large"
-        style="@style/textFontDetailPhone"/>
+        style="@style/texto_detalle"/>
 
     <TextView
         android:id="@+id/lb_mensaje"
@@ -60,11 +60,11 @@
         android:layout_height="wrap_content"
         android:text="@string/mensaje_recordatorio"
         android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/textFontMainPhone"/>
+        style="@style/texto_principal"/>
 
     <TextView
         android:id="@+id/tv_mensaje"
-        style="@style/textFontDetailPhone"
+        style="@style/texto_detalle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margen_boton_large"/>
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:text="@string/enviar_mensaje_en_recordatorio"
         android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/textFontMainPhone"/>
+        style="@style/texto_principal"/>
 
     <CheckBox
         android:id="@+id/cb_facebook"
@@ -83,7 +83,7 @@
         android:layout_height="wrap_content"
         android:text="@string/facebook_recordatorio"
         android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/textFontDetailPhone"/>
+        style="@style/texto_detalle"/>
 
     <CheckBox
         android:id="@+id/cb_twtter"
@@ -91,7 +91,7 @@
         android:layout_height="wrap_content"
         android:text="@string/twitter_recordatorio"
         android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/textFontDetailPhone"/>
+        style="@style/texto_detalle"/>
 
     <CheckBox
         android:id="@+id/cb_mensaje"
@@ -99,11 +99,11 @@
         android:layout_height="wrap_content"
         android:text="@string/enviar_mensaje_recordatorio"
         android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/textFontDetailPhone"/>
+        style="@style/texto_detalle"/>
 
     <TextView
         android:id="@+id/lb_fecha_recordatorio"
-        style="@style/textFontMainPhone"
+        style="@style/texto_principal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margen_boton_small"
@@ -113,5 +113,5 @@
         android:id="@+id/tv_fecha_recordatorio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/textFontDetailPhone"/>
+        style="@style/texto_detalle"/>
 </LinearLayout>

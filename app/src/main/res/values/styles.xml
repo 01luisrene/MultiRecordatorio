@@ -1,5 +1,5 @@
 <resources>
-    <!-- Tema de la aplicación base. -->
+    <!-- Tema de la aplicación. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Personaliza tu tema aquí. -->
         <item name="colorPrimary">@color/primary</item>
@@ -8,6 +8,9 @@
         <item name="android:windowBackground">@color/color_fondo</item>
         <item name="android:textColorPrimary">@color/primary_text</item>
         <item name="android:textColor">@color/secondary_text</item>
+
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
@@ -19,43 +22,32 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.TranslucentSystemBars" parent="AppTheme">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-    </style>
-
-    <!--Estilos para el formulario detalle - tablet-->
-    <style name="textFontMainTableta">
-        <item name="android:textSize">26sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="textFontDetailTableta">
-        <item name="android:textSize">22sp</item>
-        <item name="android:textStyle">italic</item>
-    </style>
-
-    <!--Estilos para el formulario detalle - phone-->
-    <style name="textFontMainPhone">
+    <!--Estilos para el formulario detalle-->
+    <style name="texto_principal">
         <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-    <style name="textFontDetailPhone">
+    <style name="texto_detalle">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">italic</item>
     </style>
 
-    <!--Estilos para los items de la lista - Tableta-->
-    <style name="textFontTitleListTableta">
+    <!--Estilos para los items de la lista -->
+    <style name="lista_texto_principal">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-    <style name="textFontEntidadListTableta">
+    <style name="lista_subtitulo">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">normal</item>
     </style>
-    <style name="textFontMessageListTableta">
+    <style name="lista_mensaje">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
+    </style>
+
+    <!--lista vacía-->
+    <style name="lista_vacia">
+        <item name="android:textSize">18sp</item>
     </style>
 </resources>

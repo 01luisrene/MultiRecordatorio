@@ -16,6 +16,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     public DataBaseManagerRecordatorios(Context context) {
         super(context);
     }
+
     @Override
     public void cerrar(){
         super.getDb().close();
@@ -36,18 +37,18 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                                                String estadoRecordatorio){
 
         ContentValues valores = new ContentValues();
-        valores.put(TablasDb.TablaRecordatorios.CN_ID, id);
-        valores.put(TablasDb.TablaRecordatorios.CN_TITLE, titulo);
-        valores.put(TablasDb.TablaRecordatorios.CN_NAME_OTHER, nombres_otros);
-        valores.put(TablasDb.TablaRecordatorios.CN_TYPE_REMINDER, tipoRecordatorio);
-        valores.put(TablasDb.TablaRecordatorios.CN_PHONE, telefono);
-        valores.put(TablasDb.TablaRecordatorios.CN_CONTENT_MESSAGE, contenidoMensaje);
-        valores.put(TablasDb.TablaRecordatorios.CN_SEND_MESSAGE, envioMensaje);
-        valores.put(TablasDb.TablaRecordatorios.CN_FACEBOOK, publicarFacebook);
-        valores.put(TablasDb.TablaRecordatorios.CN_TWITTER, publicarTwitter);
-        valores.put(TablasDb.TablaRecordatorios.CN_CREATION_DATE, fechaCreacion);
-        valores.put(TablasDb.TablaRecordatorios.CN_REMINDER_DATE, fechaRecordatorio);
-        valores.put(TablasDb.TablaRecordatorios.CN_STATE, estadoRecordatorio);
+        valores.put(RecordatorioDataBaseHelper.TablaRecordatorios.CN_ID, id);
+        valores.put(RecordatorioDataBaseHelper.TablaRecordatorios.CN_TITLE, titulo);
+        valores.put(RecordatorioDataBaseHelper.TablaRecordatorios.CN_NAME_OTHER, nombres_otros);
+        valores.put(RecordatorioDataBaseHelper.TablaRecordatorios.CN_TYPE_REMINDER, tipoRecordatorio);
+        valores.put(RecordatorioDataBaseHelper.TablaRecordatorios.CN_PHONE, telefono);
+        valores.put(RecordatorioDataBaseHelper.TablaRecordatorios.CN_CONTENT_MESSAGE, contenidoMensaje);
+        valores.put(RecordatorioDataBaseHelper.TablaRecordatorios.CN_SEND_MESSAGE, envioMensaje);
+        valores.put(RecordatorioDataBaseHelper.TablaRecordatorios.CN_FACEBOOK, publicarFacebook);
+        valores.put(RecordatorioDataBaseHelper.TablaRecordatorios.CN_TWITTER, publicarTwitter);
+        valores.put(RecordatorioDataBaseHelper.TablaRecordatorios.CN_CREATION_DATE, fechaCreacion);
+        valores.put(RecordatorioDataBaseHelper.TablaRecordatorios.CN_REMINDER_DATE, fechaRecordatorio);
+        valores.put(RecordatorioDataBaseHelper.TablaRecordatorios.CN_STATE, estadoRecordatorio);
 
         return valores;
 
@@ -67,7 +68,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                                     String fechaRecordatorio,
                                     String estadoRecordatorio) {
         //db.insert(TABLA, NullColumnHack, ContentValues)
-        super.getDb().insert(TablasDb.TablaRecordatorios.TABLE_NAME, null, generarContentValues(id,
+        super.getDb().insert(RecordatorioDataBaseHelper.TablaRecordatorios.TABLE_NAME, null, generarContentValues(id,
                 titulo,
                 nombresOtros,
                 tipoRecordatorio,
@@ -96,7 +97,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                                       String estadoRecordatorio) {
 
         String[] args = new String[]{id};
-        super.getDb().update(TablasDb.TablaRecordatorios.TABLE_NAME, generarContentValues(id,
+        super.getDb().update(RecordatorioDataBaseHelper.TablaRecordatorios.TABLE_NAME, generarContentValues(id,
                 titulo,
                 nombresOtros,
                 tipoRecordatorio,
@@ -107,63 +108,63 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                 publicarTwitter,
                 fechaCreacion,
                 fechaRecordatorio,
-                estadoRecordatorio), TablasDb.TablaRecordatorios.CN_ID + "=?",args);
+                estadoRecordatorio), RecordatorioDataBaseHelper.TablaRecordatorios.CN_ID + "=?",args);
     }
 
     @Override
     public void eliminarRecordatorio(String id) {
 
         String[] args = new String[]{id};
-        super.getDb().delete(TablasDb.TablaRecordatorios.TABLE_NAME, TablasDb.TablaRecordatorios.CN_ID + "=?", args);
+        super.getDb().delete(RecordatorioDataBaseHelper.TablaRecordatorios.TABLE_NAME, RecordatorioDataBaseHelper.TablaRecordatorios.CN_ID + "=?", args);
 
     }
 
     @Override
     public void eliminarRecordatorios() {
 
-        super.getDb().execSQL("DELETE FROM " + TablasDb.TablaRecordatorios.TABLE_NAME + ";");
+        super.getDb().execSQL("DELETE FROM " + RecordatorioDataBaseHelper.TablaRecordatorios.TABLE_NAME + ";");
 
     }
 
     @Override
     public Cursor cargarCursorRecordatorios() {
-        String[] columnas = new String[]{TablasDb.TablaRecordatorios.CN_ID,
-                TablasDb.TablaRecordatorios.CN_TITLE,
-                TablasDb.TablaRecordatorios.CN_NAME_OTHER,
-                TablasDb.TablaRecordatorios.CN_TYPE_REMINDER,
-                TablasDb.TablaRecordatorios.CN_CONTENT_MESSAGE};
+        String[] columnas = new String[]{RecordatorioDataBaseHelper.TablaRecordatorios.CN_ID,
+                RecordatorioDataBaseHelper.TablaRecordatorios.CN_TITLE,
+                RecordatorioDataBaseHelper.TablaRecordatorios.CN_NAME_OTHER,
+                RecordatorioDataBaseHelper.TablaRecordatorios.CN_TYPE_REMINDER,
+                RecordatorioDataBaseHelper.TablaRecordatorios.CN_CONTENT_MESSAGE};
         //query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy)
-        return super.getDb().rawQuery("SELECT  R."+TablasDb.TablaRecordatorios.CN_ID
-                +", R."+ TablasDb.TablaRecordatorios.CN_TITLE
-                +", R."+ TablasDb.TablaRecordatorios.CN_NAME_OTHER
-                +", R."+ TablasDb.TablaRecordatorios.CN_CONTENT_MESSAGE
-                +", TR."+ TablasDb.TablaTipoRecordatorio.CN_IMAGE_REMINDER
+        return super.getDb().rawQuery("SELECT  R."+ RecordatorioDataBaseHelper.TablaRecordatorios.CN_ID
+                +", R."+ RecordatorioDataBaseHelper.TablaRecordatorios.CN_TITLE
+                +", R."+ RecordatorioDataBaseHelper.TablaRecordatorios.CN_NAME_OTHER
+                +", R."+ RecordatorioDataBaseHelper.TablaRecordatorios.CN_CONTENT_MESSAGE
+                +", TR."+ RecordatorioDataBaseHelper.TablaTipoRecordatorio.CN_IMAGE_REMINDER
                 +" FROM "
-                +TablasDb.TablaRecordatorios.TABLE_NAME +" R,"
-                +TablasDb.TablaTipoRecordatorio.TABLE_NAME+ " TR  WHERE "
-                +" R."+ TablasDb.TablaRecordatorios.CN_TYPE_REMINDER
-                +" =  TR."+TablasDb.TablaTipoRecordatorio.CN_ID
+                + RecordatorioDataBaseHelper.TablaRecordatorios.TABLE_NAME +" R,"
+                + RecordatorioDataBaseHelper.TablaTipoRecordatorio.TABLE_NAME+ " TR  WHERE "
+                +" R."+ RecordatorioDataBaseHelper.TablaRecordatorios.CN_TYPE_REMINDER
+                +" =  TR."+ RecordatorioDataBaseHelper.TablaTipoRecordatorio.CN_ID
                 +" ORDER BY "
-                + "R."+TablasDb.TablaRecordatorios.CN_ID
+                + "R."+ RecordatorioDataBaseHelper.TablaRecordatorios.CN_ID
                 + " DESC", null);
     }
 
     @Override
     public Cursor buscarRecordatorio(String titulo) {
-        String[] columnas = new String[]{TablasDb.TablaRecordatorios.CN_ID,
-                TablasDb.TablaRecordatorios.CN_TITLE,
-                TablasDb.TablaRecordatorios.CN_NAME_OTHER,
-                TablasDb.TablaRecordatorios.CN_CONTENT_MESSAGE};
+        String[] columnas = new String[]{RecordatorioDataBaseHelper.TablaRecordatorios.CN_ID,
+                RecordatorioDataBaseHelper.TablaRecordatorios.CN_TITLE,
+                RecordatorioDataBaseHelper.TablaRecordatorios.CN_NAME_OTHER,
+                RecordatorioDataBaseHelper.TablaRecordatorios.CN_CONTENT_MESSAGE};
         String[] args = new String[]{titulo};
         //query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy)
-        return super.getDb().query(TablasDb.TablaRecordatorios.TABLE_NAME, columnas, TablasDb.TablaRecordatorios.CN_TITLE + "=?", args, null, null, null);
+        return super.getDb().query(RecordatorioDataBaseHelper.TablaRecordatorios.TABLE_NAME, columnas, RecordatorioDataBaseHelper.TablaRecordatorios.CN_TITLE + "=?", args, null, null, null);
     }
 
     //Comprobar si existe un registro por el valor de un dato
     @Override
     public Boolean compruebaRegistroRecordatorio(String id){
         boolean existe = true;
-        Cursor resultSet = super.getDb().rawQuery("SELECT _id FROM " + TablasDb.TablaRecordatorios.TABLE_NAME + " WHERE " + TablasDb.TablaRecordatorios.CN_ID + "=" + id, null);
+        Cursor resultSet = super.getDb().rawQuery("SELECT _id FROM " + RecordatorioDataBaseHelper.TablaRecordatorios.TABLE_NAME + " WHERE " + RecordatorioDataBaseHelper.TablaRecordatorios.CN_ID + "=" + id, null);
 
         if(resultSet.getCount() <= 0)
             existe = false;
@@ -182,9 +183,9 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
         while (cursor.moveToNext()){
             Recordatorio recordatorio = new Recordatorio();
             recordatorio.setId(cursor.getString(0));
-            recordatorio.setTitle(cursor.getString(1));
-            recordatorio.setName(cursor.getString(2));
-            recordatorio.setContentMessage(cursor.getString(3));
+            recordatorio.setTitulo(cursor.getString(1));
+            recordatorio.setentidadOtros(cursor.getString(2));
+            recordatorio.setContenidoMensaje(cursor.getString(3));
             recordatorio.setImagen(cursor.getString(4));
 
             list.add(recordatorio);
@@ -204,11 +205,11 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                                                                String fechaCreacion){
 
         ContentValues valores = new ContentValues();
-        valores.put(TablasDb.TablaTipoRecordatorio.CN_ID, id);
-        valores.put(TablasDb.TablaTipoRecordatorio.CN_IMAGE_REMINDER, iconoRecordatorio);
-        valores.put(TablasDb.TablaTipoRecordatorio.CN_TYPE_REMINDER, tipoRecordatorio);
-        valores.put(TablasDb.TablaTipoRecordatorio.CN_PROTECTION, proteccion);
-        valores.put(TablasDb.TablaTipoRecordatorio.CN_CREATION_DATE, fechaCreacion);
+        valores.put(RecordatorioDataBaseHelper.TablaTipoRecordatorio.CN_ID, id);
+        valores.put(RecordatorioDataBaseHelper.TablaTipoRecordatorio.CN_IMAGE_REMINDER, iconoRecordatorio);
+        valores.put(RecordatorioDataBaseHelper.TablaTipoRecordatorio.CN_TYPE_REMINDER, tipoRecordatorio);
+        valores.put(RecordatorioDataBaseHelper.TablaTipoRecordatorio.CN_PROTECTION, proteccion);
+        valores.put(RecordatorioDataBaseHelper.TablaTipoRecordatorio.CN_CREATION_DATE, fechaCreacion);
 
         return valores;
 
@@ -219,7 +220,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                                          String tipoRecordatorio,
                                          int proteccion,
                                          String fechaCreacion) {
-        super.getDb().insert(TablasDb.TablaTipoRecordatorio.TABLE_NAME,null, generarContentValuesTipoRecordatorio(
+        super.getDb().insert(RecordatorioDataBaseHelper.TablaTipoRecordatorio.TABLE_NAME,null, generarContentValuesTipoRecordatorio(
                 id,
                 iconoRecordatorio,
                 tipoRecordatorio,
@@ -251,11 +252,11 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     @Override
     public Cursor cargarCursorTipoRecordatorios() {
 
-        String[] columnas = new String[]{TablasDb.TablaTipoRecordatorio.CN_ID,
-                TablasDb.TablaTipoRecordatorio.CN_IMAGE_REMINDER,
-                TablasDb.TablaTipoRecordatorio.CN_TYPE_REMINDER};
+        String[] columnas = new String[]{RecordatorioDataBaseHelper.TablaTipoRecordatorio.CN_ID,
+                RecordatorioDataBaseHelper.TablaTipoRecordatorio.CN_IMAGE_REMINDER,
+                RecordatorioDataBaseHelper.TablaTipoRecordatorio.CN_TYPE_REMINDER};
         //query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy)
-        return super.getDb().query(TablasDb.TablaRecordatorios.TABLE_NAME, columnas, null, null, null, null, TablasDb.TablaTipoRecordatorio.CN_ID + " DESC");
+        return super.getDb().query(RecordatorioDataBaseHelper.TablaRecordatorios.TABLE_NAME, columnas, null, null, null, null, RecordatorioDataBaseHelper.TablaTipoRecordatorio.CN_ID + " DESC");
     }
 
     @Override

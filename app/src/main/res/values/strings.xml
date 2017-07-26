@@ -8,9 +8,6 @@
     <string name="accion_atras">Atrás</string>
     <string name="hint_buscar">Buscar...</string>
 
-    <!--Lista recordatorios-->
-    <string name="lista_vacia">No hay resultados</string>
-
     <!--String para el formulario detalle recordatorio-->
     <string name="titulo_recordatorio">Titulo Recordatorio:</string>
     <string name="endidad_otros_recordatorio">Persona, Empresa, otros:</string>
@@ -28,8 +25,8 @@
     <string name="seleccionar_imagen">Seleccionar imagen</string>
     <string name="titulo_tipo_recordatorio">Titulo recordatorio</string>
     <string name="mensaje_agregado_satisfactoriamente">Datos Agregados correctamente</string>
-    <string name="sb_titulo">Necesito tu permiso</string>
-    <string name="sb_mensaje">Necesito tu permiso para poder ver las fotos e imágenes.</string>
+    <string name="sb_titulo">Autorización</string>
+    <string name="sb_mensaje">Necesito permiso para acceder a las fotos e imágenes de tu dispositivo.</string>
     <string name="sb_mensaje_cancelar">ouch :(</string>
     <string name="seleccionar_app_imagen">Selecciona app de imagen</string>
     <string name="permiso_denegado">¡No tienes permiso para ver fotos o imágenes!</string>
@@ -45,13 +42,30 @@
     <!--Navigation Drawer-->
     <string name="nd_open">Open navigation drawer</string>
     <string name="nd_close">Close navigation drawer</string>
-    <string name="nd_salir">Salir</string>
-    <string name="nd_opciones">Opciones</string>
-    <string name="nd_recordatorios">Recordatorios</string>
-    <string name="nd_tipo_recordatorios">Categorías</string>
+
     <string name="nd_eslogan">"¡Tus recuerdos siempre presentes!</string>
     <string name="nd_descripcion_logo">Logo de la app</string>
 
+    <string name="nd_home">Inicio</string>
+    <string name="nd_titulo_lista">Ver lista de:</string>
+    <string name="nd_recordatorios">Recordatorios</string>
+    <string name="nd_tipo_recordatorios">Categorías</string>
+    <string name="nd_recordatorios_archivados">Recordatorios archivados</string>
+
+    <string name="nd_titulo_nuevo">Agregar nuevo(a):</string>
+    <string name="nd_nuevo_recordatorio">Nuevo recordatorio</string>
+    <string name="nd_nueva_categoria">Categoría</string>
+
+    <string name="nd_titulo_opciones">Opciones</string>
+    <string name="nd_salir">Salir</string>
+
     <!--FAB Botón-->
     <string name="fab_agregar_recordatorio">Nuevo recordatorio</string>
+
+    <!--Nombres de listas vacías-->
+    <string name="l_recordatorios">recordatorios</string>
+    <string name="l_recordatorios_archivados">recordatorios archivados</string>
+    <string name="l_categoria_recordatorios">categoria de recordatorios</string>
+    <!--Mensaje de lista vacía-->
+    <string name="lista_vacia">No hay %1$s para mostrar.</string>
 </resources>

@@ -50,7 +50,7 @@
     </android.support.v4.widget.DrawerLayout>
 
    <FrameLayout
-       android:id="@+id/container_lateral"
+       android:id="@+id/fl_contenedor_lateral"
        android:layout_width="0dp"
        android:layout_height="match_parent"
        android:layout_weight="3"

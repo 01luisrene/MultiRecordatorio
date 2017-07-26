@@ -6,12 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 
 public abstract class DataBaseManager {
 
-    private DbHelper dbHelper;
+    private RecordatorioDataBaseHelper mRecordatoriosDbHelper;
     private SQLiteDatabase db;
     public DataBaseManager(Context context) {
 
-        dbHelper = new DbHelper(context);
-        db = dbHelper.getWritableDatabase();
+        mRecordatoriosDbHelper = RecordatorioDataBaseHelper.getInstance(context);
+        db = mRecordatoriosDbHelper.getWritableDatabase();
 
     }
 
@@ -95,12 +95,12 @@ public abstract class DataBaseManager {
     *
     * GETTER & SETTER
     **/
-    public DbHelper getDbHelper() {
-        return dbHelper;
+    public RecordatorioDataBaseHelper getRecordatoriosDbHelper() {
+        return mRecordatoriosDbHelper;
     }
 
-    public void setDbHelper(DbHelper dbHelper) {
-        this.dbHelper = dbHelper;
+    public void setRecordatoriosDbHelper(RecordatorioDataBaseHelper recordatoriosDbHelper) {
+        this.mRecordatoriosDbHelper = recordatoriosDbHelper;
     }
 
     public SQLiteDatabase getDb() {

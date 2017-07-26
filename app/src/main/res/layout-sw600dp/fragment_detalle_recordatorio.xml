@@ -60,7 +60,7 @@
 
         <TextView
             android:id="@+id/lb_title"
-            style="@style/textFontMainTableta"
+            style="@style/texto_principal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margen_boton_small"
@@ -68,7 +68,7 @@
 
         <TextView
             android:id="@+id/tv_title"
-            style="@style/textFontDetailTableta"
+            style="@style/texto_detalle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margen_boton_large"
@@ -76,7 +76,7 @@
 
         <TextView
             android:id="@+id/lb_entity"
-            style="@style/textFontMainTableta"
+            style="@style/texto_principal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margen_boton_small"
@@ -84,7 +84,7 @@
 
         <TextView
             android:id="@+id/tv_entity"
-            style="@style/textFontDetailTableta"
+            style="@style/texto_detalle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margen_boton_large"
@@ -105,7 +105,7 @@
 
                 <TextView
                     android:id="@+id/lb_type_reminder"
-                    style="@style/textFontMainTableta"
+                    style="@style/texto_principal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margen_boton_small"
@@ -113,7 +113,7 @@
 
                 <Spinner
                     android:id="@+id/sp_type_reminder"
-                    style="@style/textFontDetailTableta"
+                    style="@style/texto_detalle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -126,7 +126,7 @@
 
                 <TextView
                     android:id="@+id/lb_phone"
-                    style="@style/textFontMainTableta"
+                    style="@style/texto_principal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margen_boton_small"
@@ -134,7 +134,7 @@
 
                 <TextView
                     android:id="@+id/tv_phone"
-                    style="@style/textFontDetailTableta"
+                    style="@style/texto_detalle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="954336108"/>
@@ -144,7 +144,7 @@
 
         <TextView
             android:id="@+id/tv_message"
-            style="@style/textFontMainTableta"
+            style="@style/texto_principal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margen_boton_small"
@@ -152,7 +152,7 @@
 
         <EditText
             android:id="@+id/mt_message"
-            style="@style/textFontDetailTableta"
+            style="@style/texto_detalle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margen_boton_large"
@@ -169,7 +169,7 @@
 
             <TextView
                 android:id="@+id/lb_post_message_in"
-                style="@style/textFontMainTableta"
+                style="@style/texto_principal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margen_boton_small"
@@ -182,21 +182,21 @@
 
                 <CheckBox
                     android:id="@+id/checkBox"
-                    style="@style/textFontDetailTableta"
+                    style="@style/texto_detalle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/facebook_recordatorio"/>
 
                 <CheckBox
                     android:id="@+id/checkBox2"
-                    style="@style/textFontDetailTableta"
+                    style="@style/texto_detalle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/twitter_recordatorio"/>
 
                 <CheckBox
                     android:id="@+id/checkBox3"
-                    style="@style/textFontDetailTableta"
+                    style="@style/texto_detalle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/enviar_mensaje_recordatorio"/>
@@ -206,7 +206,7 @@
 
         <TextView
             android:id="@+id/lb_date_reminder"
-            style="@style/textFontMainTableta"
+            style="@style/texto_principal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margen_boton_small"
@@ -214,7 +214,7 @@
 
         <TextView
             android:id="@+id/tv_date"
-            style="@style/textFontDetailTableta"
+            style="@style/texto_detalle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="30-06-2017"/>

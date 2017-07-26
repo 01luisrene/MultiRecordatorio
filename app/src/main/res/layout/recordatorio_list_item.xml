@@ -56,21 +56,21 @@
 
             <TextView
                 android:id="@+id/tv_title_reminder"
-                style="@style/textFontTitleListTableta"
+                style="@style/lista_texto_principal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Cumpleaños de mi padre"/>
 
             <TextView
                 android:id="@+id/tv_name_reminder"
-                style="@style/textFontEntidadListTableta"
+                style="@style/lista_subtitulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Adalino Mas Trigoso"/>
 
             <TextView
                 android:id="@+id/tv_message_reminder"
-                style="@style/textFontMessageListTableta"
+                style="@style/lista_mensaje"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Este es un día muy especial para ti padre y te deseo lo mejor en este día y los que vendrán."/>

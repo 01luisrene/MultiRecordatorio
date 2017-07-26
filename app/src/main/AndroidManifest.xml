@@ -23,7 +23,7 @@
         <activity android:name=".ui.DetalleRecordatorioActivity">
 
         </activity>
-        <activity android:name=".ui.TipoRecordatorioActivity">
+        <activity android:name=".ui.CategoriaRecordatorioActivity">
 
         </activity>
     </application>

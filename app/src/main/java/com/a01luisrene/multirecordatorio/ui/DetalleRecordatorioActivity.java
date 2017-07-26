@@ -3,10 +3,8 @@ package com.a01luisrene.multirecordatorio.ui;
 import android.content.res.Configuration;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,9 +13,9 @@ import android.widget.Toast;
 
 import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.fragments.DetalleRecordatorioFragment;
-import com.a01luisrene.multirecordatorio.fragments.ListaRecordatorioFragment;
 
 public class DetalleRecordatorioActivity extends AppCompatActivity implements View.OnClickListener {
+
     private CollapsingToolbarLayout mCollapsingToolbarLayout = null;
     private FloatingActionButton mFabEditar;
 
@@ -25,24 +23,30 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_recordatorio);
+
+        /*
         if (getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE) {
             finish();
             return;
         }
-/*
+        */
+
         if (savedInstanceState == null) {
-            //Durante la configuración inicial, conecte el fragmento de detalles.
-           // DetalleRecordatorioFragment details = new DetalleRecordatorioFragment();
-           // details.setArguments(getIntent().getExtras());
-            //getFragmentManager().beginTransaction().add(R.id.container_detail_reminder, details).commit();
+
+            // Añadir fragmento de detalle
+            DetalleRecordatorioFragment detalleRecordatorioFragment = new DetalleRecordatorioFragment();
+            Bundle arguments = new Bundle();
+            arguments.putString(DetalleRecordatorioFragment.ID_RECORDATORIO,
+                    getIntent().getStringExtra(DetalleRecordatorioFragment.ID_RECORDATORIO));
+
+            detalleRecordatorioFragment.setArguments(arguments);
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fl_contenedor_lateral, detalleRecordatorioFragment)
+                    .commit();
+
         }
-*/
-        DetalleRecordatorioFragment details = new DetalleRecordatorioFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container_detail, details)
-                .commit();
 
         //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
@@ -55,6 +59,7 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
 
         mFabEditar = (FloatingActionButton) findViewById(R.id.fab_editar);
         mFabEditar.setOnClickListener(this);
+
     }
 
     @Override

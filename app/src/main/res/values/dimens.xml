@@ -28,4 +28,7 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
 
+    <!--margen negativo de lista vacía restamos la altura del toolbar-->
+    <dimen name="lista_vacia">-56dp</dimen>
+
 </resources>
