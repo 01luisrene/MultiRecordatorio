@@ -1,8 +1,8 @@
 package com.a01luisrene.multirecordatorio.ui;
 
 import android.content.res.Configuration;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,39 +12,33 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.a01luisrene.multirecordatorio.R;
-import com.a01luisrene.multirecordatorio.fragments.DetalleRecordatorioFragment;
+import com.a01luisrene.multirecordatorio.fragments.DetalleRecordatorioFragmento;
+import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 
 public class DetalleRecordatorioActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private CollapsingToolbarLayout mCollapsingToolbarLayout = null;
     private FloatingActionButton mFabEditar;
+
+    private DetalleRecordatorioFragmento mDetalleRecordatorioFragmento;
+    private Recordatorios itemsRecordatorios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_recordatorio);
 
-        /*
-        if (getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE) {
+        //Cierro la actividad si el dispositivo en orientación LANDSCAPE
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             finish();
             return;
         }
-        */
 
+        itemsRecordatorios = getIntent().getParcelableExtra(DetalleRecordatorioFragmento.ID_RECORDATORIO);
         if (savedInstanceState == null) {
-
-            // Añadir fragmento de detalle
-            DetalleRecordatorioFragment detalleRecordatorioFragment = new DetalleRecordatorioFragment();
-            Bundle arguments = new Bundle();
-            arguments.putString(DetalleRecordatorioFragment.ID_RECORDATORIO,
-                    getIntent().getStringExtra(DetalleRecordatorioFragment.ID_RECORDATORIO));
-
-            detalleRecordatorioFragment.setArguments(arguments);
-
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fl_contenedor_lateral, detalleRecordatorioFragment)
-                    .commit();
+             mDetalleRecordatorioFragmento = DetalleRecordatorioFragmento.newInstance(itemsRecordatorios);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fl_contenedor_detalle, mDetalleRecordatorioFragmento);
+            ft.commit();
 
         }
 
@@ -54,9 +48,6 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapser);
-        mCollapsingToolbarLayout.setTitle("Cumpleaños");
-
         mFabEditar = (FloatingActionButton) findViewById(R.id.fab_editar);
         mFabEditar.setOnClickListener(this);
 
@@ -64,18 +55,15 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.detail, menu);
+        //getMenuInflater().inflate(R.menu.detail, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.action_eliminar:
-                Toast.makeText(this, "Eliminar", Toast.LENGTH_SHORT).show();
-                return true;
             case android.R.id.home:
-                Toast.makeText(this, "Atras", Toast.LENGTH_SHORT).show();
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

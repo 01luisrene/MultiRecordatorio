@@ -11,10 +11,10 @@ import com.a01luisrene.multirecordatorio.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AgregarRecordatorioFragment#newInstance} factory method to
+ * Use the {@link AgregarRecordatorioFragmento#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AgregarRecordatorioFragment extends Fragment {
+public class AgregarRecordatorioFragmento extends Fragment {
     public static final String FRAGMENT_AGREGAR_RECORDATORIOS = "fragment_agregar_recordatorio";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class AgregarRecordatorioFragment extends Fragment {
     private String mParam2;
 
 
-    public AgregarRecordatorioFragment() {
+    public AgregarRecordatorioFragmento() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class AgregarRecordatorioFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AgregarRecordatorioFragment.
+     * @return A new instance of fragment AgregarRecordatorioFragmento.
      */
     // TODO: Rename and change types and number of parameters
-    public static AgregarRecordatorioFragment newInstance(String param1, String param2) {
-        AgregarRecordatorioFragment fragment = new AgregarRecordatorioFragment();
+    public static AgregarRecordatorioFragmento newInstance(String param1, String param2) {
+        AgregarRecordatorioFragmento fragment = new AgregarRecordatorioFragmento();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

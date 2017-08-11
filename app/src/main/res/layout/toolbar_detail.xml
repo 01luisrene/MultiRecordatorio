@@ -9,8 +9,8 @@
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image"
-        android:layout_width="@dimen/civ_dimension_lista_recordatorios"
-        android:layout_height="@dimen/civ_dimension_lista_recordatorios"
+        android:layout_width="@dimen/civ_lista_recordatorios"
+        android:layout_height="@dimen/civ_lista_recordatorios"
         android:src="@mipmap/ic_launcher_round"
         app:civ_border_width="@dimen/civ_borde"
         app:civ_border_color="@color/color_borde_imagen_circular"

@@ -4,14 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="@dimen/contenedor_margen"
+    android:paddingRight="@dimen/contenedor_margen"
     android:orientation="vertical"
-    tools:context="com.a01luisrene.multirecordatorio.fragments.ListaRecordatorioFragment">
+    tools:context="com.a01luisrene.multirecordatorio.fragments.ListaRecordatoriosFragmento">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_lista_recordatorio"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical">
+
+    </android.support.v7.widget.RecyclerView>
 
     <TextView
         android:id="@+id/lista_vacia"

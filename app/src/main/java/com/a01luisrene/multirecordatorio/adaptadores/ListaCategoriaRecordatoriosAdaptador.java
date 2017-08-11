@@ -8,17 +8,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.a01luisrene.multirecordatorio.R;
-import com.a01luisrene.multirecordatorio.modelos.TipoRecordatorio;
+import com.a01luisrene.multirecordatorio.modelos.CategoriaRecordatorios;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class TipoRecordatorioListAdapter extends RecyclerView.Adapter<TipoRecordatorioListAdapter.ViewHolder> {
-    private List<TipoRecordatorio> mDataset;
+public class ListaCategoriaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaCategoriaRecordatoriosAdaptador.ViewHolder> {
+    private List<CategoriaRecordatorios> mDataset;
     private Context mMainContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -35,14 +34,14 @@ public class TipoRecordatorioListAdapter extends RecyclerView.Adapter<TipoRecord
     }
 
     // Proporcionar un constructor adecuado (depende del tipo de conjunto de datos)
-    public TipoRecordatorioListAdapter(List<TipoRecordatorio> mDataset, Context mainContext) {
+    public ListaCategoriaRecordatoriosAdaptador(List<CategoriaRecordatorios> mDataset, Context mainContext) {
         this.mDataset = mDataset;
         this.mMainContext = mainContext;
     }
 
     // Crear nuevas vistas (invocadas por el gestor de diseño)
     @Override
-    public TipoRecordatorioListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ListaCategoriaRecordatoriosAdaptador.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recordatorio_categoria_lista_item, parent, false);
@@ -82,10 +81,6 @@ public class TipoRecordatorioListAdapter extends RecyclerView.Adapter<TipoRecord
     //Devuelve el tamaño de tu conjunto de datos (invocado por el administrador de diseño)
     @Override
     public int getItemCount() {
-        if (mDataset != null) {
-            return mDataset.size() > 0 ? mDataset.size() : 0;
-        } else {
-            return 0;
-        }
+        return mDataset.size();
     }
 }

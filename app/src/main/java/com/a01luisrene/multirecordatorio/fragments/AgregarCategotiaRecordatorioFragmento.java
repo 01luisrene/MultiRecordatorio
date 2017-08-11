@@ -38,10 +38,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
-public class AgregarCategotiaRecordatorioFragment extends Fragment implements View.OnClickListener {
+public class AgregarCategotiaRecordatorioFragmento extends Fragment implements View.OnClickListener {
     public static final String FRAGMENT_AGREGAR_CATEGORIA_RECORDATORIOS = "fragment_agregar_categoria_recordatorios";
     private static final String IMAGE_SELECT_ALL_TYPE = "image/*";
-    private static final String REGEX_LATINOS = "^[a-zA-Z áÁéÉíÍóÓúÚñÑüÜ]+$";
+    private static final String REGEX_LATINOS = "^[a-zA-Z0-9 áÁéÉíÍóÓúÚñÑüÜ]+$";
     private static final int PROTECCION = 0;
     private static final int REQUEST_CODE_GALLERY = 1;
     private static final int READ_STORAGE_PERMISSION = 2;
@@ -54,19 +54,8 @@ public class AgregarCategotiaRecordatorioFragment extends Fragment implements Vi
     private String mRutaImagen;
     private DataBaseManagerRecordatorios mManager;
 
-    public AgregarCategotiaRecordatorioFragment() {
+    public AgregarCategotiaRecordatorioFragmento() {
         // Required empty public constructor
-    }
-
-    public static AgregarCategotiaRecordatorioFragment crear() {
-        return new AgregarCategotiaRecordatorioFragment();
-    }
-
-    public static AgregarCategotiaRecordatorioFragment newInstance(String param1, String param2) {
-        AgregarCategotiaRecordatorioFragment fragment = new AgregarCategotiaRecordatorioFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -83,7 +72,7 @@ public class AgregarCategotiaRecordatorioFragment extends Fragment implements Vi
         mManager = new DataBaseManagerRecordatorios(getActivity());
 
         //Asignado los id a las variables
-        mCivImagen = (CircleImageView) v.findViewById(R.id.civ_imagen);
+        mCivImagen = (CircleImageView) v.findViewById(R.id.civ_categoria_recordatorio);
         mBtSeleccionarImagen = (Button) v.findViewById(R.id.bt_seleccionar_imagen);
         mEtTituloRecordatorio = (EditText) v.findViewById(R.id.et_titulo_recordatorio);
         mBtGuardarTipoRecordatorio = (Button) v.findViewById(R.id.bt_guardar_tipo_recordatorio);

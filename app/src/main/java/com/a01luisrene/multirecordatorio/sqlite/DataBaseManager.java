@@ -8,15 +8,12 @@ public abstract class DataBaseManager {
 
     private RecordatorioDataBaseHelper mRecordatoriosDbHelper;
     private SQLiteDatabase db;
+
     public DataBaseManager(Context context) {
 
         mRecordatoriosDbHelper = RecordatorioDataBaseHelper.getInstance(context);
         db = mRecordatoriosDbHelper.getWritableDatabase();
 
-    }
-
-    public void cerrar(){
-        db.close();
     }
 
     /**
@@ -95,12 +92,13 @@ public abstract class DataBaseManager {
     *
     * GETTER & SETTER
     **/
+
     public RecordatorioDataBaseHelper getRecordatoriosDbHelper() {
         return mRecordatoriosDbHelper;
     }
 
     public void setRecordatoriosDbHelper(RecordatorioDataBaseHelper recordatoriosDbHelper) {
-        this.mRecordatoriosDbHelper = recordatoriosDbHelper;
+        mRecordatoriosDbHelper = recordatoriosDbHelper;
     }
 
     public SQLiteDatabase getDb() {
@@ -110,5 +108,4 @@ public abstract class DataBaseManager {
     public void setDb(SQLiteDatabase db) {
         this.db = db;
     }
-
 }

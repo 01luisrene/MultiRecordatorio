@@ -10,27 +10,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.a01luisrene.multirecordatorio.R;
-import com.a01luisrene.multirecordatorio.adaptadores.TipoRecordatorioListAdapter;
-import com.a01luisrene.multirecordatorio.modelos.TipoRecordatorio;
+import com.a01luisrene.multirecordatorio.adaptadores.ListaCategoriaRecordatoriosAdaptador;
+import com.a01luisrene.multirecordatorio.modelos.CategoriaRecordatorios;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 
 import java.util.List;
 
 
-public class ListaCategoriaRecordatoriosFragment extends Fragment{
+public class ListaCategoriaRecordatoriosFragmento extends Fragment{
 
     public static final String FRAGMENT_CATEGORIA_RECORDATORIO = "fragment_lista_categoria_recordatorios";
     private RecyclerView mTipoRecordatorioListRecyclerView;
-    private TipoRecordatorioListAdapter mTipoRecordatorioListAdapter;
-    private List<TipoRecordatorio> mListaItemsTipoRecordatorio;
+    private ListaCategoriaRecordatoriosAdaptador mListaCategoriaRecordatoriosAdaptador;
+    private List<CategoriaRecordatorios> mListaItemsCategoriaRecordatorios;
     private DataBaseManagerRecordatorios mManager;
 
-    public ListaCategoriaRecordatoriosFragment() {
+    public ListaCategoriaRecordatoriosFragmento() {
         // Required empty public constructor
     }
 
-    public static ListaCategoriaRecordatoriosFragment newInstance(String param1, String param2) {
-        ListaCategoriaRecordatoriosFragment fragment = new ListaCategoriaRecordatoriosFragment();
+    public static ListaCategoriaRecordatoriosFragmento newInstance(String param1, String param2) {
+        ListaCategoriaRecordatoriosFragmento fragment = new ListaCategoriaRecordatoriosFragmento();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -57,11 +57,11 @@ public class ListaCategoriaRecordatoriosFragment extends Fragment{
 
         mManager = new DataBaseManagerRecordatorios(getActivity());
 
-        mListaItemsTipoRecordatorio = mManager.getTipoRecordatoriosList();
+        mListaItemsCategoriaRecordatorios = mManager.getTipoRecordatoriosList();
 
-        mTipoRecordatorioListAdapter =  new TipoRecordatorioListAdapter(mListaItemsTipoRecordatorio, getActivity());
+        mListaCategoriaRecordatoriosAdaptador =  new ListaCategoriaRecordatoriosAdaptador(mListaItemsCategoriaRecordatorios, getActivity());
 
-        mTipoRecordatorioListRecyclerView.setAdapter(mTipoRecordatorioListAdapter);
+        mTipoRecordatorioListRecyclerView.setAdapter(mListaCategoriaRecordatoriosAdaptador);
 
         mTipoRecordatorioListRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

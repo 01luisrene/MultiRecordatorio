@@ -8,16 +8,9 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:foreground="?selectableItemBackground"
-        android:layout_marginBottom="0dp"
-        card_view:cardBackgroundColor="@color/transparente"
-        card_view:cardCornerRadius="0dp"
-        card_view:cardElevation="0dp"
-        card_view:contentPaddingTop="6dp"
-        card_view:contentPaddingLeft="6dp"
-        card_view:contentPaddingRight="6dp"
-        card_view:contentPaddingBottom="0dp"
-        card_view:cardUseCompatPadding="false"
-        card_view:cardPreventCornerOverlap="false">
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="4dp"
+        card_view:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -25,28 +18,31 @@
 
         <LinearLayout
             android:id="@+id/contenedor_civ_imagen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true">
+            android:layout_width="100dp"
+            android:layout_height="120dp"
+            android:layout_alignTop="@+id/linearLayout"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/civ_imagen"
-                android:layout_width="@dimen/civ_dimension_lista_recordatorios"
-                android:layout_height="@dimen/civ_dimension_lista_recordatorios"
+            <ImageView
+                android:id="@+id/civ_categoria_recordatorio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/descripcion_imagen_lista_item"
                 android:src="@mipmap/ic_launcher"
-                card_view:civ_border_color="@color/color_borde_imagen_circular"
-                card_view:civ_border_width="@dimen/civ_borde"/>
+                android:scaleType="centerCrop"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
+            android:paddingTop="6dp"
+            android:layout_marginEnd="6dp"
+            android:paddingBottom="6dp"
             android:layout_toEndOf="@+id/contenedor_civ_imagen"
-            android:divider="@drawable/divider"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/linearLayout">
 
             <TextView
                 android:id="@+id/tv_id"
@@ -56,7 +52,7 @@
 
             <TextView
                 android:id="@+id/tv_title_reminder"
-                style="@style/lista_texto_principal"
+                style="@style/lista_titulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Cumpleaños de mi padre"/>
@@ -74,12 +70,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Este es un día muy especial para ti padre y te deseo lo mejor en este día y los que vendrán."/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/divider"/>
         </LinearLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

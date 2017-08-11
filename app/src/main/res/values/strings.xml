@@ -14,11 +14,11 @@
     <string name="tipo_recordatorio">Tipo Recordatorio:</string>
     <string name="teleforno_recordatorio">Teléfono:</string>
     <string name="mensaje_recordatorio">Mensaje:</string>
-    <string name="enviar_mensaje_en_recordatorio">Publicar mensaje en:</string>
+    <string name="enviar_mensaje_en_recordatorio">Enviar mensaje a:</string>
     <string name="facebook_recordatorio">Facebook</string>
     <string name="twitter_recordatorio">Twitter</string>
-    <string name="enviar_mensaje_recordatorio">Mensaje</string>
-    <string name="fecha_recordatorio">Fecha recordatorio:</string>
+    <string name="enviar_mensaje_recordatorio">Teléfono Inteligente</string>
+    <string name="fecha_recordatorio">Fecha del recordatorio:</string>
     <string name="descripcion_cover">Imagen principal del recordatorio</string>
 
     <!--String para formulario tipo recordatorio-->
@@ -28,7 +28,7 @@
     <string name="sb_titulo">Autorización</string>
     <string name="sb_mensaje">Necesito permiso para acceder a las fotos e imágenes de tu dispositivo.</string>
     <string name="sb_mensaje_cancelar">ouch :(</string>
-    <string name="seleccionar_app_imagen">Selecciona app de imagen</string>
+    <string name="seleccionar_app_imagen">Seleccionar una aplicación</string>
     <string name="permiso_denegado">¡No tienes permiso para ver fotos o imágenes!</string>
     <string name="error_titulo_tipo_recordatorio">Ingrese un titulo de recordatorio válido</string>
 
@@ -39,26 +39,6 @@
     <string name="boton_cancelar">Cancelar</string>
     <string name="boton_aceptar">Aceptar</string>
 
-    <!--Navigation Drawer-->
-    <string name="nd_open">Open navigation drawer</string>
-    <string name="nd_close">Close navigation drawer</string>
-
-    <string name="nd_eslogan">"¡Tus recuerdos siempre presentes!</string>
-    <string name="nd_descripcion_logo">Logo de la app</string>
-
-    <string name="nd_home">Inicio</string>
-    <string name="nd_titulo_lista">Ver lista de:</string>
-    <string name="nd_recordatorios">Recordatorios</string>
-    <string name="nd_tipo_recordatorios">Categorías</string>
-    <string name="nd_recordatorios_archivados">Recordatorios archivados</string>
-
-    <string name="nd_titulo_nuevo">Agregar nuevo(a):</string>
-    <string name="nd_nuevo_recordatorio">Nuevo recordatorio</string>
-    <string name="nd_nueva_categoria">Categoría</string>
-
-    <string name="nd_titulo_opciones">Opciones</string>
-    <string name="nd_salir">Salir</string>
-
     <!--FAB Botón-->
     <string name="fab_agregar_recordatorio">Nuevo recordatorio</string>
 
@@ -66,6 +46,14 @@
     <string name="l_recordatorios">recordatorios</string>
     <string name="l_recordatorios_archivados">recordatorios archivados</string>
     <string name="l_categoria_recordatorios">categoria de recordatorios</string>
+
     <!--Mensaje de lista vacía-->
     <string name="lista_vacia">No hay %1$s para mostrar.</string>
+
+    <!--Descripción de imagenes-->
+    <string name="descripcion_imagen_lista_item">Imagen de la categoría recordatorio</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

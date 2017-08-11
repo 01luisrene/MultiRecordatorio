@@ -4,8 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.a01luisrene.multirecordatorio.R;
-import com.a01luisrene.multirecordatorio.fragments.AgregarCategotiaRecordatorioFragment;
-import com.a01luisrene.multirecordatorio.fragments.ListaCategoriaRecordatoriosFragment;
+import com.a01luisrene.multirecordatorio.fragments.AgregarCategotiaRecordatorioFragmento;
 
 
 public class CategoriaRecordatorioActivity extends AppCompatActivity{
@@ -15,7 +14,7 @@ public class CategoriaRecordatorioActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categoria_recordatorio);
 
-        AgregarCategotiaRecordatorioFragment fragment = new AgregarCategotiaRecordatorioFragment();
+        AgregarCategotiaRecordatorioFragmento fragment = new AgregarCategotiaRecordatorioFragmento();
 
         if (savedInstanceState == null){
             getSupportFragmentManager()

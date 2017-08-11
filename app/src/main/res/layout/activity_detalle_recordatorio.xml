@@ -14,7 +14,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapser"
+            android:id="@+id/ct_recordatorio"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="?attr/colorPrimary"
@@ -38,16 +38,12 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
+    <!--Contenedor principal de datos-->
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/fl_contenedor_detalle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <!--Contenedor principal de datos-->
-        <FrameLayout
-            android:id="@+id/container_detail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
 
     </android.support.v4.widget.NestedScrollView>
 
