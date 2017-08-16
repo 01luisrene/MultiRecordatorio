@@ -1,4 +1,4 @@
-package com.a01luisrene.multirecordatorio.fragments;
+package com.a01luisrene.multirecordatorio.fragmentos;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -23,15 +23,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
+import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -39,7 +38,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static android.app.Activity.RESULT_OK;
 
 public class AgregarCategotiaRecordatorioFragmento extends Fragment implements View.OnClickListener {
-    public static final String FRAGMENT_AGREGAR_CATEGORIA_RECORDATORIOS = "fragment_agregar_categoria_recordatorios";
     private static final String IMAGE_SELECT_ALL_TYPE = "image/*";
     private static final String REGEX_LATINOS = "^[a-zA-Z0-9 áÁéÉíÍóÓúÚñÑüÜ]+$";
     private static final int PROTECCION = 0;
@@ -123,12 +121,7 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
                 break;
 
             case R.id.bt_guardar_tipo_recordatorio:
-                try{
-                    validarDatos();
-                }catch (Exception e){
-                    //Mensaje de error
-                    mostrarMensaje("Error:" + e.getMessage(), 0);
-                }
+                validarDatos();
                 break;
         }
     }
@@ -141,17 +134,23 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
 
         //Condicionamos a true
         if (bolTituloTipoRecordatorio) {
-            mManager.insertarTipoRecordatorio(
+            try{
+            mManager.insertarCategoriaRecordatorio(
                     null,
                     mRutaImagen,
                     tituloTipoRecordatorio,
                     PROTECCION,
-                    fechaHora());
-            //Mensaje de save registro
-            mostrarMensaje(getString(R.string.mensaje_agregado_satisfactoriamente), 1);
-            mCivImagen.setImageResource(R.drawable.ic_image_150dp);
-            mEtTituloRecordatorio.setText("");
-            mRutaImagen = null;
+                    Utilidades.fechaHora());
+            }catch (Exception e){
+                //Mensaje de error
+                mostrarMensaje(getString(R.string.error_al_guardar), 0);
+            }finally {
+                //Mensaje de registro guardado con exito
+                mostrarMensaje(getString(R.string.mensaje_agregado_satisfactoriamente), 1);
+                mCivImagen.setImageResource(R.drawable.ic_image_150dp);
+                mEtTituloRecordatorio.setText("");
+                mRutaImagen = null;
+            }
         }
 
     }
@@ -193,9 +192,10 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
         if(requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK && data != null){
             mUri = data.getData();
             File imageFile = new File(getRealPathFromURI(mUri));
-            String foto = imageFile.getPath();
+
             //Guarda la ruta de la imagen seleccionada en un cadena
-            mRutaImagen = foto.toString();
+            mRutaImagen = imageFile.getPath();
+
             //Muestro la imagen seleccionada
             Picasso.with(getContext()).load(new File(mRutaImagen)).error(R.drawable.ic_image_150dp).noFade().into(mCivImagen);
         }
@@ -215,15 +215,6 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
                 cursor.close();
             }
         }
-    }
-
-    //Función que devuelve la fecha y hora del sistema
-    public String fechaHora(){
-
-        String dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-
-        return dateString;
-
     }
 
     private void mostrarExplicacion(final int tipoPeticion) {
@@ -253,9 +244,14 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
     }
 
     private void mostrarMensaje(String mensaje, int estado){
+        //Contenedor padre
+
         Snackbar snackbar = Snackbar.make(getView(), mensaje, Snackbar.LENGTH_LONG);
         //Color de boton de accion
         View snackBarView = snackbar.getView();
+        //Cambiando el color del texto
+        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
         if(estado == 1)
             //color de fondo
             snackBarView.setBackgroundColor(Color.argb(255, 76, 175, 80));

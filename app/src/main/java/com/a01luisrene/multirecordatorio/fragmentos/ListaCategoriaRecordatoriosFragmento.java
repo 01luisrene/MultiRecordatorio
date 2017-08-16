@@ -1,4 +1,4 @@
-package com.a01luisrene.multirecordatorio.fragments;
+package com.a01luisrene.multirecordatorio.fragmentos;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -57,7 +57,7 @@ public class ListaCategoriaRecordatoriosFragmento extends Fragment{
 
         mManager = new DataBaseManagerRecordatorios(getActivity());
 
-        mListaItemsCategoriaRecordatorios = mManager.getTipoRecordatoriosList();
+        mListaItemsCategoriaRecordatorios = mManager.getListaCategoriaRecordatorios();
 
         mListaCategoriaRecordatoriosAdaptador =  new ListaCategoriaRecordatoriosAdaptador(mListaItemsCategoriaRecordatorios, getActivity());
 

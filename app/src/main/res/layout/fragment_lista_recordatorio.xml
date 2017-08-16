@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/contenedor_margen"
     android:paddingRight="@dimen/contenedor_margen"
     android:orientation="vertical"
-    tools:context="com.a01luisrene.multirecordatorio.fragments.ListaRecordatoriosFragmento">
+    tools:context="com.a01luisrene.multirecordatorio.fragmentos.ListaRecordatoriosFragmento">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_lista_recordatorio"

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.a01luisrene.multirecordatorio.fragments.ListaRecordatoriosFragmento;
+import com.a01luisrene.multirecordatorio.fragmentos.ListaRecordatoriosFragmento;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
@@ -21,7 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecordatoriosAdaptador.ViewHolder> {
 
-    private List<Recordatorios> mListaRecordatorios;
+    private List<Recordatorios> mListaItemsRecordatorios;
     private Context mContext;
 
     //Variable para la comunicación al fragment que contiene la lista
@@ -29,11 +29,11 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
 
 
     //Proporcionar un constructor adecuado (depende del tipo de conjunto de datos)
-    public ListaRecordatoriosAdaptador(List<Recordatorios> listaRecordatorios,
+    public ListaRecordatoriosAdaptador(List<Recordatorios> listaItemsRecordatorios,
                                        Context context,
                                        ListaRecordatoriosFragmento.OnItemSelectedListener itemClickListener) {
 
-        this.mListaRecordatorios = listaRecordatorios;
+        this.mListaItemsRecordatorios = listaItemsRecordatorios;
         this.mContext = context;
         this.itemClickListener = itemClickListener;
     }
@@ -95,19 +95,19 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                 /**
                  * CARGO IMAGEN CON PICASSO
                  */
-                //Condiciono para manejar si el valor devuelto es null [sirve para API recientes]
-                if(valorImagen == null ||  valorImagen.isEmpty()){
-                    //Cargo la imagen con la ayuda de la librería picasso
-                    Picasso.with(context)
-                            .load(R.drawable.ic_image_150dp)
-                            .error(R.drawable.ic_image_150dp)
-                            .resize(350, 350)
-                            .into(ivImagenRecordatorio);
-                }else{
+                //Condiciono para manejar si el valor devuelto es vacío
+                if(!valorImagen.isEmpty()){
                     //Cargo la imagen con la ayuda de la librería picasso
                     Picasso.with(context)
                             .load(new File(valorImagen))
                             .error(R.drawable.ic_image_150dp)
+                            .into(ivImagenRecordatorio);
+
+                }else{
+                    Picasso.with(context)
+                            .load(R.drawable.ic_image_150dp)
+                            .error(R.drawable.ic_image_150dp)
+                            .resize(350, 350)
                             .into(ivImagenRecordatorio);
                 }
 
@@ -115,19 +115,19 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                 /**
                  * CARGO IMAGEN CON PICASSO
                  */
-                //Condiciono para manejar si el valor devuelto es null [sirve para API recientes]
-                if(valorImagen == null ||  valorImagen.isEmpty()){
-                    //Cargo la imagen con la ayuda de la librería picasso
-                    Picasso.with(context)
-                            .load(R.drawable.ic_image_150dp)
-                            .error(R.drawable.ic_image_150dp)
-                            .resize(350, 350)
-                            .into(civImagenRecordatorio);
-                }else{
+                //Condiciono para manejar si el valor devuelto es vacío
+                if(!valorImagen.isEmpty()){
                     //Cargo la imagen con la ayuda de la librería picasso
                     Picasso.with(context)
                             .load(new File(valorImagen))
                             .error(R.drawable.ic_image_150dp)
+                            .into(civImagenRecordatorio);
+
+                }else{
+                    Picasso.with(context)
+                            .load(R.drawable.ic_image_150dp)
+                            .error(R.drawable.ic_image_150dp)
+                            .resize(350, 350)
                             .into(civImagenRecordatorio);
                 }
             }
@@ -158,7 +158,7 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        Recordatorios items = mListaRecordatorios.get(position);
+        Recordatorios items = mListaItemsRecordatorios.get(position);
 
         holder.bind(mContext, items, itemClickListener);
 
@@ -166,6 +166,6 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
 
     // Devuelve el tamaño de tu conjunto de datos (invocado por el administrador de diseño)
     @Override
-    public int getItemCount() {return mListaRecordatorios.size();}
+    public int getItemCount() {return mListaItemsRecordatorios.size();}
 
 }

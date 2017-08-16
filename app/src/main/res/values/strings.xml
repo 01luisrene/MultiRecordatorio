@@ -6,22 +6,32 @@
     <string name="accion_editar">Editar</string>
     <string name="accion_eliminar">Eliminar</string>
     <string name="accion_atras">Atrás</string>
-    <string name="hint_buscar">Buscar...</string>
+    <string name="hint_buscar">Buscar&#8230;</string>
 
-    <!--String para el formulario detalle recordatorio-->
+    <!--Formulario agregar recordatorio-->
+    <string name="nuevo_titulo_recordatorio">Título del recordatorio</string>
+    <string name="nuevo_entidad_otros">Nombre, empresa, lugar, &#8230;</string>
+    <string name="nuevo_telefono_recordatorio">Teléfono</string>
+    <string name="nuevo_mensaje_recordatorio">Mensaje del recordatorio</string>
+    <string name="buscar_contacto">Contacto</string>
+    <string name="nuevo_titulo_fecha_recordatorio">Fecha del recordatorio:</string>
+    <string name="nuevo_fecha_recordatorio">DD/MM/AAAA</string>
+    <string name="nuevo_hora_recordatorio">HH:MM</string>
+
+    <!---Formulario detalle recordatorio-->
     <string name="titulo_recordatorio">Titulo Recordatorio:</string>
     <string name="endidad_otros_recordatorio">Persona, Empresa, otros:</string>
     <string name="tipo_recordatorio">Tipo Recordatorio:</string>
     <string name="teleforno_recordatorio">Teléfono:</string>
     <string name="mensaje_recordatorio">Mensaje:</string>
-    <string name="enviar_mensaje_en_recordatorio">Enviar mensaje a:</string>
+    <string name="preferencias_recordatorio">Preferencias:</string>
     <string name="facebook_recordatorio">Facebook</string>
-    <string name="twitter_recordatorio">Twitter</string>
-    <string name="enviar_mensaje_recordatorio">Teléfono Inteligente</string>
+    <string name="twitter_recordatorio">Twittear</string>
+    <string name="enviar_mensaje_recordatorio">Enviar mensaje</string>
     <string name="fecha_recordatorio">Fecha del recordatorio:</string>
     <string name="descripcion_cover">Imagen principal del recordatorio</string>
 
-    <!--String para formulario tipo recordatorio-->
+    <!--Formulario agregar categoría recordatorio-->
     <string name="seleccionar_imagen">Seleccionar imagen</string>
     <string name="titulo_tipo_recordatorio">Titulo recordatorio</string>
     <string name="mensaje_agregado_satisfactoriamente">Datos Agregados correctamente</string>
@@ -32,15 +42,16 @@
     <string name="permiso_denegado">¡No tienes permiso para ver fotos o imágenes!</string>
     <string name="error_titulo_tipo_recordatorio">Ingrese un titulo de recordatorio válido</string>
 
-    <!--Texto de eventos-->
+    <!--Nombres de botones-->
     <string name="boton_eliminar">Eliminar</string>
     <string name="boton_actualizar">Actualizar</string>
     <string name="boton_guardar">Guardar</string>
     <string name="boton_cancelar">Cancelar</string>
     <string name="boton_aceptar">Aceptar</string>
 
-    <!--FAB Botón-->
-    <string name="fab_agregar_recordatorio">Nuevo recordatorio</string>
+    <!--Titulos para agregar nuevos elementos-->
+    <string name="agregar_recordatorio">Nuevo recordatorio</string>
+    <string name="agregar_categoria_recordatorio">Nuevo categoría</string>
 
     <!--Nombres de listas vacías-->
     <string name="l_recordatorios">recordatorios</string>
@@ -53,7 +64,7 @@
     <!--Descripción de imagenes-->
     <string name="descripcion_imagen_lista_item">Imagen de la categoría recordatorio</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--Mensajes de errores-->
+    <string name="error_al_guardar">Error: no se pudo guardar los datos!</string>
 
 </resources>

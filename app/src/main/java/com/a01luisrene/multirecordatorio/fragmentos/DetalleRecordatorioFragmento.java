@@ -1,8 +1,6 @@
-package com.a01luisrene.multirecordatorio.fragments;
+package com.a01luisrene.multirecordatorio.fragmentos;
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
@@ -41,7 +39,6 @@ public class DetalleRecordatorioFragmento extends Fragment {
         Bundle args = new Bundle();
         args.putParcelable(ID_RECORDATORIO, recordatorios);
         fragmentDetalle.setArguments(args);
-
         return fragmentDetalle;
     }
 
@@ -64,18 +61,13 @@ public class DetalleRecordatorioFragmento extends Fragment {
             if (mCtRecordatorio != null && mIvImagenRecordatorio != null) {
                 mCtRecordatorio.setTitle(mItemRecordatorio.getCategoriaRecordatorio());
 
-                //Condiciona para cargar el ImageView [solo si devuelve un valor no nulo ni vacío]
+                //Condiciona para cargar el ImageView [solo si devuelve un valor diferente a nulo]
                 if(mValorImagen != null){
 
                     Picasso.with(getContext())
                             .load(new File(mValorImagen))
                             .into(mIvImagenRecordatorio);
 
-                }else{
-
-                    Picasso.with(getContext())
-                            .load(R.drawable.ic_image_150dp)
-                            .error(R.drawable.ic_image_150dp).into(mIvImagenRecordatorio);
                 }
             }
         }
@@ -86,6 +78,7 @@ public class DetalleRecordatorioFragmento extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_detalle_recordatorio, container, false);
+
         if(mItemRecordatorio != null) {
             ((TextView) v.findViewById(R.id.recordatorio_id)).setText(mItemRecordatorio.getId());
             ((TextView) v.findViewById(R.id.tv_titulo)).setText(mItemRecordatorio.getTitulo());
@@ -103,22 +96,32 @@ public class DetalleRecordatorioFragmento extends Fragment {
             mValorMensaje = mItemRecordatorio.getEnvioMensaje();
 
             //Condición para el checkbox facebook
-            if (mValorFacebook.equals("1"))
+            if (mValorFacebook.equals("1")){
                 mCbFacebook.setChecked(true);
-            else
+                mCbFacebook.setClickable(false);
+            } else {
                 mCbFacebook.setChecked(false);
+                mCbFacebook.setEnabled(false);
+            }
 
             //Condición para el checkbox twitter
-            if (mValorTwitter.equals("1"))
+            if (mValorTwitter.equals("1")) {
                 mCbTwitter.setChecked(true);
-            else
+                mCbTwitter.setClickable(false);
+            }else {
                 mCbTwitter.setChecked(false);
+                mCbTwitter.setEnabled(false);
+            }
 
             //Condición para el checkbox mensaje
-            if (mValorMensaje.equals("1"))
+            if (mValorMensaje.equals("1")) {
                 mCbMensaje.setChecked(true);
-            else
+                mCbMensaje.setClickable(false);
+            }else {
                 mCbMensaje.setChecked(false);
+                mCbMensaje.setEnabled(false);
+            }
+
 
             //TODO: crear una función para dividir la fecha de publicaicón
             ((TextView) v.findViewById(R.id.tv_fecha_recordatorio)).setText(mItemRecordatorio.getFechaPublicacionRecordatorio());

@@ -1,6 +1,7 @@
 package com.a01luisrene.multirecordatorio.ui;
 
 import android.content.res.Configuration;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -11,14 +12,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.a01luisrene.multirecordatorio.MainActivity;
 import com.a01luisrene.multirecordatorio.R;
-import com.a01luisrene.multirecordatorio.fragments.DetalleRecordatorioFragmento;
+import com.a01luisrene.multirecordatorio.fragmentos.AgregarRecordatorioFragmento;
+import com.a01luisrene.multirecordatorio.fragmentos.DetalleRecordatorioFragmento;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 
 public class DetalleRecordatorioActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private CollapsingToolbarLayout mCtRecordatorio;
     private FloatingActionButton mFabEditar;
-
     private DetalleRecordatorioFragmento mDetalleRecordatorioFragmento;
     private Recordatorios itemsRecordatorios;
 
@@ -27,20 +30,7 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_recordatorio);
 
-        //Cierro la actividad si el dispositivo en orientación LANDSCAPE
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            finish();
-            return;
-        }
-
-        itemsRecordatorios = getIntent().getParcelableExtra(DetalleRecordatorioFragmento.ID_RECORDATORIO);
-        if (savedInstanceState == null) {
-             mDetalleRecordatorioFragmento = DetalleRecordatorioFragmento.newInstance(itemsRecordatorios);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fl_contenedor_detalle, mDetalleRecordatorioFragmento);
-            ft.commit();
-
-        }
+        mCtRecordatorio = (CollapsingToolbarLayout) findViewById(R.id.ct_recordatorio);
 
         //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
@@ -50,6 +40,42 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
 
         mFabEditar = (FloatingActionButton) findViewById(R.id.fab_editar);
         mFabEditar.setOnClickListener(this);
+
+        //Cierro la actividad si el dispositivo en orientación LANDSCAPE
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            finish();
+            return;
+        }
+
+        if (savedInstanceState == null) {
+
+            Bundle datos = this.getIntent().getExtras();
+            int agregarRecordatorioFragmento = datos.getInt(MainActivity.CARGAR_NUEVO_RECORDATORIO_FRAGMENTO);
+
+            if(agregarRecordatorioFragmento == 1){
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fl_contenedor_detalle, new AgregarRecordatorioFragmento())
+                        .commit();
+
+                //Oculto el botón editar
+                mFabEditar.hide();
+                mCtRecordatorio.setTitle(getString(R.string.agregar_recordatorio));
+
+
+            }else{
+
+                itemsRecordatorios = getIntent().getParcelableExtra(DetalleRecordatorioFragmento.ID_RECORDATORIO);
+
+                mDetalleRecordatorioFragmento = DetalleRecordatorioFragmento.newInstance(itemsRecordatorios);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fl_contenedor_detalle, mDetalleRecordatorioFragmento);
+                ft.commit();
+                mFabEditar.show();
+            }
+
+
+        }
 
     }
 

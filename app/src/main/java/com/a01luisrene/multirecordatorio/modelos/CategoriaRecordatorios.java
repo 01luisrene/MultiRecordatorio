@@ -47,4 +47,10 @@ public class CategoriaRecordatorios {
         this.categorioRecordatorio = categorioRecordatorio;
     }
 
+    //Spinner
+    public String toString(){
+        //Nombre del campo a mostrar en el combo
+        return categorioRecordatorio;
+    }
+
 }

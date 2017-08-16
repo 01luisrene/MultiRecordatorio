@@ -1,4 +1,4 @@
-package com.a01luisrene.multirecordatorio.fragments;
+package com.a01luisrene.multirecordatorio.fragmentos;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +28,10 @@ import java.util.List;
 public class ListaRecordatoriosFragmento extends Fragment{
 
     //Poblar lista recycclerView
-    private RecyclerView mRecordatoriosRecyclerView;
-    private List<Recordatorios> mListaRecordatorios;
-    private DataBaseManagerRecordatorios mManager;
-    private ListaRecordatoriosAdaptador mListaRecordatoriosAdaptador;
+    public RecyclerView mRecordatoriosRecyclerView;
+    private List<Recordatorios> mListaItemsRecordatorios;
+    private  DataBaseManagerRecordatorios mManagerRecordatorios;
+    private  ListaRecordatoriosAdaptador mListaRecordatoriosAdaptador;
 
     //Variable que mostrara un mensaje cuando la lista este vacía
     private TextView mListaVacia;
@@ -87,15 +86,13 @@ public class ListaRecordatoriosFragmento extends Fragment{
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_lista_recordatorio, container, false);
-
-        //Almaceno MainActivity en un variable para reutilizarlo
+        //Almaceno RecordatoriosActivity en un variable para reutilizarlo
         MainActivity activity = (MainActivity) getActivity();
 
         //Muestro el titulo de lista en el toolbar
         String stringTitulo = getString(R.string.l_recordatorios);
         String tituloListaRecordatorios  =  stringTitulo.substring(0, 1).toUpperCase() + stringTitulo.substring(1);
         activity.getSupportActionBar().setTitle(tituloListaRecordatorios);
-
 
         mListaVacia = (TextView) v.findViewById(R.id.lista_vacia);
         mRecordatoriosRecyclerView = (RecyclerView) v.findViewById(R.id.rv_lista_recordatorio);
@@ -106,24 +103,22 @@ public class ListaRecordatoriosFragmento extends Fragment{
 
         mRecordatoriosRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mManager = new DataBaseManagerRecordatorios(getActivity());
+        mManagerRecordatorios = new DataBaseManagerRecordatorios(getActivity());
 
-        mListaRecordatorios = mManager.getRecordatoriosList();
+        mListaItemsRecordatorios = mManagerRecordatorios.getListaRecordatorios();
 
-        mListaRecordatoriosAdaptador = new ListaRecordatoriosAdaptador(mListaRecordatorios, getContext(), new OnItemSelectedListener() {
+        mListaRecordatoriosAdaptador = new ListaRecordatoriosAdaptador(mListaItemsRecordatorios, getContext(), new OnItemSelectedListener() {
             @Override
             public void onItemSelected(Recordatorios recordatorios) {
                 listener.onItemSelected(recordatorios);
             }
-        }){
-
-        };
+        });
 
         mRecordatoriosRecyclerView.setAdapter(mListaRecordatoriosAdaptador);
 
         mRecordatoriosRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        if (mListaRecordatorios.isEmpty()) {
+        if (mListaItemsRecordatorios.isEmpty()) {
 
             Resources res = getResources();
             String text = String.format(res.getString(R.string.lista_vacia), getString(R.string.l_recordatorios));

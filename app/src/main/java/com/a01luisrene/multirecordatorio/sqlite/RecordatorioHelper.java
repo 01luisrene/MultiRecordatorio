@@ -5,21 +5,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 
-public class RecordatorioDataBaseHelper extends SQLiteOpenHelper {
+public class RecordatorioHelper extends SQLiteOpenHelper {
 
-    private static RecordatorioDataBaseHelper sInstance;
-    private static final String DB_NAME = "multirecordatorio.db";
-    private static final int DB_SCHEME_VERSION = 1;
+    private static RecordatorioHelper sInstance;
+    private static final String NOMBRE_BASE_DATOS = "multirecordatorio.sqlite";
+    private static final int VERSION_ESQUEMA_BASE_DATOS = 1;
 
-    public static synchronized RecordatorioDataBaseHelper getInstance(Context context) {
+    //[Singleton Pattern] Patrón Singleton
+    public static synchronized RecordatorioHelper getInstance(Context context) {
         if (sInstance == null) {
-            sInstance = new RecordatorioDataBaseHelper(context.getApplicationContext());
+            sInstance = new RecordatorioHelper(context.getApplicationContext());
         }
         return sInstance;
     }
 
-    private RecordatorioDataBaseHelper(Context context) {
-        super(context, DB_NAME, null, DB_SCHEME_VERSION);
+    private RecordatorioHelper(Context context) {
+        super(context, NOMBRE_BASE_DATOS, null, VERSION_ESQUEMA_BASE_DATOS);
     }
 
     @Override
@@ -34,7 +35,7 @@ public class RecordatorioDataBaseHelper extends SQLiteOpenHelper {
         }
     }
     // Se llama cuando se está configurando la conexión a la base de datos.
-    // Configura la configuración de la base de datos para elementos como el
+    // Configura la base de datos para elementos como el
     // soporte de claves foráneas, el registro por adelantado, etc.
     @Override
     public void onConfigure(SQLiteDatabase db) {
@@ -45,9 +46,9 @@ public class RecordatorioDataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL(Tablas.TablaRecordatorios.CREATE_TABLE);
-        db.execSQL(Tablas.TablaTipoRecordatorio.CREATE_TABLE);
-        db.execSQL(Tablas.TablaUsuario.CREATE_TABLE);
+        db.execSQL(DataBaseManagerRecordatorios.CREAR_TABLA_RECORDATORIOS);
+        db.execSQL(DataBaseManagerRecordatorios.CREAR_TABLA_CATEGORIAS);
+        db.execSQL(DataBaseManagerRecordatorios.CREAR_TABLA_USUARIOS);
 
     }
 
@@ -55,9 +56,9 @@ public class RecordatorioDataBaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion != newVersion) {
 
-            String tablaRecordatorioV2 = "DROP TABLE IF EXISTS " + Tablas.TablaRecordatorios.CREATE_TABLE;
-            String tablaTipoRecordatoriosV2 = "DROP TABLE IF EXISTS " + Tablas.TablaTipoRecordatorio.CREATE_TABLE;
-            String tablaUsuariosV2 = "DROP TABLE IF EXISTS " + Tablas.TablaUsuario.CREATE_TABLE;
+            String tablaRecordatorioV2 = "DROP TABLE IF EXISTS " + DataBaseManagerRecordatorios.CREAR_TABLA_RECORDATORIOS;
+            String tablaTipoRecordatoriosV2 = "DROP TABLE IF EXISTS " + DataBaseManagerRecordatorios.CREAR_TABLA_CATEGORIAS;
+            String tablaUsuariosV2 = "DROP TABLE IF EXISTS " + DataBaseManagerRecordatorios.CREAR_TABLA_USUARIOS;
 
             db.execSQL(tablaRecordatorioV2);
             db.execSQL(tablaTipoRecordatoriosV2);
@@ -66,5 +67,4 @@ public class RecordatorioDataBaseHelper extends SQLiteOpenHelper {
             onCreate(db);
         }
     }
-
 }

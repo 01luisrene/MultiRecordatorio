@@ -6,16 +6,19 @@ import android.database.sqlite.SQLiteDatabase;
 
 public abstract class DataBaseManager {
 
-    private RecordatorioDataBaseHelper mRecordatoriosDbHelper;
+    private RecordatorioHelper mRecordatoriosDbHelper;
     private SQLiteDatabase db;
 
     public DataBaseManager(Context context) {
 
-        mRecordatoriosDbHelper = RecordatorioDataBaseHelper.getInstance(context);
+        mRecordatoriosDbHelper = RecordatorioHelper.getInstance(context);
         db = mRecordatoriosDbHelper.getWritableDatabase();
 
     }
 
+    public void cerrar(){
+        db.close();
+    }
     /**
      *
      * METODOSS PARA LA TABLA RECORDATORIOS
@@ -23,17 +26,17 @@ public abstract class DataBaseManager {
      **/
     //Insertar un registro
     abstract public void insertarRecoratorio(String id,
-                                     String titulo,
-                                     String nombresOtros,
-                                     String tipoMensaje,
-                                     String contenidoMensaje,
-                                     String telefono,
-                                     String envioMensaje,
-                                     String publicarFacebook,
-                                     String publicarTwitter,
-                                     String fechaCreacion,
-                                     String fechaRecordatorio,
-                                     String estadoRecordatorio);
+                                             String titulo,
+                                             String nombresOtros,
+                                             String tipoMensaje,
+                                             String contenidoMensaje,
+                                             String telefono,
+                                             String envioMensaje,
+                                             String publicarFacebook,
+                                             String publicarTwitter,
+                                             String fechaCreacion,
+                                             String fechaRecordatorio,
+                                             String estadoRecordatorio);
     //Actualizar un registro
     abstract public void actualizarRecoratorio(String id,
                                                String titulo,
@@ -62,42 +65,42 @@ public abstract class DataBaseManager {
 
     /**
      *
-     * METODOS PARA LA TABLA TIPO RECORDATORIOS
+     * METODOS PARA LA TABLA CATEGORÍA RECORDATORIOS
      */
 
-    abstract public void insertarTipoRecordatorio(String id,
-                                                  String iconoRecordatorio,
-                                                  String tipoRecordatorio,
-                                                  int proteccion,
-                                                  String fechaCreacion);
+    abstract public void insertarCategoriaRecordatorio(String id,
+                                                       String rutaImagenRecordatorio,
+                                                       String categoriaRecordatorio,
+                                                       int proteccion,
+                                                       String fechaCreacion);
 
-    abstract public void actualizarTipoRecordatorio(String id,
-                                                    String iconoRecordatorio,
-                                                    String tipoRecordatorio,
-                                                    String proteccion,
-                                                    String fechaCreacion);
+    abstract public void actualizarCategoriaRecordatorio(String id,
+                                                         String rutaImagenRecordatorio,
+                                                         String categoriaRecordatorio,
+                                                         String proteccion,
+                                                         String fechaCreacion);
 
-    abstract public void eliminarTipoRecordatorio(String id);
+    abstract public void eliminarCategoriaRecordatorio(String id);
 
-    abstract public void eliminarTipoRecordatorios();
+    abstract public void eliminarCategoriaRecordatorios();
 
-    abstract public Cursor cargarCursorTipoRecordatorios();
+    abstract public Cursor cargarCursorCategoriaRecordatorios();
 
-    abstract public Cursor buscarTipoRecordatorio(String tipoRecordatorio);
+    abstract public Cursor buscarCategoriasRecordatorios(String categoriaRecordatorio);
 
-    abstract public Boolean compruebaRegistroTipoRecordatorio(String id);
+    abstract public Boolean compruebaRegistroCategoriaRecordatorio(String id);
 
 
     /**
-    *
-    * GETTER & SETTER
-    **/
+     *
+     * GETTER & SETTER
+     **/
 
-    public RecordatorioDataBaseHelper getRecordatoriosDbHelper() {
+    public RecordatorioHelper getRecordatoriosDbHelper() {
         return mRecordatoriosDbHelper;
     }
 
-    public void setRecordatoriosDbHelper(RecordatorioDataBaseHelper recordatoriosDbHelper) {
+    public void setRecordatoriosDbHelper(RecordatorioHelper recordatoriosDbHelper) {
         mRecordatoriosDbHelper = recordatoriosDbHelper;
     }
 
