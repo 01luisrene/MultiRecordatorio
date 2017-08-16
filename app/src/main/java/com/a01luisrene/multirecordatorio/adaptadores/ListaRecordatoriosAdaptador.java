@@ -96,18 +96,20 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                  * CARGO IMAGEN CON PICASSO
                  */
                 //Condiciono para manejar si el valor devuelto es vacío
-                if(!valorImagen.isEmpty()){
-                    //Cargo la imagen con la ayuda de la librería picasso
-                    Picasso.with(context)
-                            .load(new File(valorImagen))
-                            .error(R.drawable.ic_image_150dp)
-                            .into(ivImagenRecordatorio);
-
-                }else{
+                if(valorImagen == null ||valorImagen.isEmpty()){
+                    //[Si no hay imagen muestro una por defecto]
                     Picasso.with(context)
                             .load(R.drawable.ic_image_150dp)
                             .error(R.drawable.ic_image_150dp)
                             .resize(350, 350)
+                            .into(ivImagenRecordatorio);
+
+
+                }else{
+                    //Cargo la imagen con la ayuda de la librería picasso
+                    Picasso.with(context)
+                            .load(new File(valorImagen))
+                            .error(R.drawable.ic_image_150dp)
                             .into(ivImagenRecordatorio);
                 }
 
@@ -116,18 +118,20 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                  * CARGO IMAGEN CON PICASSO
                  */
                 //Condiciono para manejar si el valor devuelto es vacío
-                if(!valorImagen.isEmpty()){
-                    //Cargo la imagen con la ayuda de la librería picasso
-                    Picasso.with(context)
-                            .load(new File(valorImagen))
-                            .error(R.drawable.ic_image_150dp)
-                            .into(civImagenRecordatorio);
-
-                }else{
+                if(valorImagen == null ||valorImagen.isEmpty()){
+                    //[Si no hay imagen muestro una por defecto]
                     Picasso.with(context)
                             .load(R.drawable.ic_image_150dp)
                             .error(R.drawable.ic_image_150dp)
                             .resize(350, 350)
+                            .into(civImagenRecordatorio);
+
+
+                }else{
+                    //Cargo la imagen con la ayuda de la librería picasso
+                    Picasso.with(context)
+                            .load(new File(valorImagen))
+                            .error(R.drawable.ic_image_150dp)
                             .into(civImagenRecordatorio);
                 }
             }

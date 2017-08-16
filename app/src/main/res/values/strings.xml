@@ -15,8 +15,8 @@
     <string name="nuevo_mensaje_recordatorio">Mensaje del recordatorio</string>
     <string name="buscar_contacto">Contacto</string>
     <string name="nuevo_titulo_fecha_recordatorio">Fecha del recordatorio:</string>
-    <string name="nuevo_fecha_recordatorio">DD/MM/AAAA</string>
-    <string name="nuevo_hora_recordatorio">HH:MM</string>
+    <string name="nuevo_fecha_recordatorio">dd/mm/yyyy</string>
+    <string name="nuevo_hora_recordatorio">hh:mm</string>
 
     <!---Formulario detalle recordatorio-->
     <string name="titulo_recordatorio">Titulo Recordatorio:</string>

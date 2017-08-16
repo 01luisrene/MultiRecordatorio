@@ -62,7 +62,7 @@
     <!--Botones-->
     <style name="btn_primario" parent="@android:style/TextAppearance.Medium">
         <item name="android:background">@drawable/bt_primario</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/color_blanco</item>
         <item name="android:textSize">18sp</item>
