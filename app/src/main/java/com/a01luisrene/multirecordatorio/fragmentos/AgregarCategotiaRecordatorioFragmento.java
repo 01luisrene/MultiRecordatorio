@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
@@ -128,17 +129,17 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
 
     private void validarDatos() {
         //Almacena el valor del campo titulo tipo recordatorio
-        String tituloTipoRecordatorio = mEtTituloRecordatorio.getText().toString();
+        String tituloCategoriaRecordatorio = mEtTituloRecordatorio.getText().toString();
         String titulo = mTilTituloTipoRecordatorio.getEditText().getText().toString();
-        boolean bolTituloTipoRecordatorio = esTituloRecordatorioValido(titulo);
+        boolean bolTituloCategoriaRecordatorio = esTituloCategoriaRecordatorioValido(titulo);
 
         //Condicionamos a true
-        if (bolTituloTipoRecordatorio) {
+        if (bolTituloCategoriaRecordatorio) {
             try{
             mManager.insertarCategoriaRecordatorio(
                     null,
                     mRutaImagen,
-                    tituloTipoRecordatorio,
+                    tituloCategoriaRecordatorio,
                     PROTECCION,
                     Utilidades.fechaHora());
             }catch (Exception e){
@@ -155,10 +156,10 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
 
     }
 
-    private boolean esTituloRecordatorioValido(String nombre){
+    private boolean esTituloCategoriaRecordatorioValido(String titulo){
         Pattern patron = Pattern.compile(REGEX_LATINOS);
-        if (!patron.matcher(nombre).matches() || nombre.length() > 50) {
-            mTilTituloTipoRecordatorio.setError(getString(R.string.error_titulo_tipo_recordatorio));
+        if (!patron.matcher(titulo).matches() || titulo.length() > 100) {
+            mTilTituloTipoRecordatorio.setError(getString(R.string.error_titulo_categoria));
             return false;
         } else {
             mTilTituloTipoRecordatorio.setError(null);
@@ -244,7 +245,6 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
     }
 
     private void mostrarMensaje(String mensaje, int estado){
-        //Contenedor padre
 
         Snackbar snackbar = Snackbar.make(getView(), mensaje, Snackbar.LENGTH_LONG);
         //Color de boton de accion
@@ -259,5 +259,7 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
             snackBarView.setBackgroundColor(Color.argb(255, 239, 83, 80));
         }
         snackbar.show();
+
     }
+
 }

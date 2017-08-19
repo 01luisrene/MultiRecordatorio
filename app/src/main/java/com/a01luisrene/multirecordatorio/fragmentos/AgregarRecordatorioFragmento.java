@@ -3,13 +3,23 @@ package com.a01luisrene.multirecordatorio.fragmentos;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.format.DateFormat;
+import android.text.format.Time;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,26 +39,40 @@ import android.widget.Toast;
 
 import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
+import com.a01luisrene.multirecordatorio.ui.CategoriaRecordatorioActivity;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.TimeZone;
+import java.util.regex.Pattern;
 
 public class AgregarRecordatorioFragmento extends Fragment implements View.OnClickListener{
 
     //Constantes
     public static int MILISEGUNDOS_ESPERA = 1500;
     public static final String ESTADO_INICIAL_RECORDATORIO = "1";
+    //Expresiones regulares
+    public static final String REGEX_CARACTERES_LATINOS = "^[a-zA-Z áÁéÉíÍóÓúÚñÑüÜ]+$";
+    public static final String REGEX_FECHAS = "^([0-2][0-9]|3[0-1])(\\/|-)(0[1-9]|1[0-2])\\2(\\d{4})$";
 
     //Referencias de widgets del fragmento
-    private Button mBotonGuardar, mBotonActualizar, mBotonContactos;
+    private Button mBotonGuardar, mBotonActualizar, mBotonAgregarCategoria;
     private EditText mEtTituloRecordatorio, mEtEntidadOtros, mEtTelefono, mEtContenidoMensaje, mEtFecha, mEtHora;
+    private TextInputLayout mTilTituloRecordatorio, mTilEntidadOtros, mTilTelefono, mTilContenidoMensaje, mTilFecha, mTilHora;
     private Switch mSwFacebook, mSwTwitter, mSwEnviarMensaje;
     private String mValorFacebook, mValorTwitter, mValorEnviarMensaje;
-    private ImageButton mIbFecha, mIbHora;
+    private ImageButton mIbContactos, mIbFecha, mIbHora;
+
+    //[Combo categoria recordatorios]
+    private Spinner mSpinnerListaCategotegorias;
+    //Variables para el combo
+    ArrayList<String> comboListaCategorias;
+    ArrayAdapter<CharSequence> comboAdapter;
+
+    //Calendario para obtener fecha & hora
+    public final Calendar c = Calendar.getInstance();
 
     //Referencia a manager de SQLite
     private DataBaseManagerRecordatorios mManagerRecordatorios;
@@ -58,13 +82,6 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
     private ImageView mIvImagenRecordatorio;
     private String  mValorIdCategoria, mValorImagenCategoria, mValorTituloCategoria;
     Activity activity;
-
-    //[Combo categoria recordatorios]
-    private Spinner mSpinnerListaCategotegorias;
-    //Variables para el combo
-    ArrayList<String> comboListaCategorias;
-    ArrayAdapter<CharSequence> comboAdapter;
-
 
 
     public AgregarRecordatorioFragmento() {
@@ -105,6 +122,14 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
         mEtFecha = (EditText) v.findViewById(R.id.et_nuevo_fecha);
         mEtHora = (EditText) v.findViewById(R.id.et_nuevo_hora);
 
+        //TextInputLayout
+        mTilTituloRecordatorio = (TextInputLayout)  v.findViewById(R.id.til_nuevo_titulo_recordatorio);
+        mTilEntidadOtros = (TextInputLayout) v.findViewById(R.id.til_nuevo_entidad_otros);
+        mTilTelefono = (TextInputLayout) v.findViewById(R.id.til_nuevo_telefono);
+        mTilContenidoMensaje = (TextInputLayout) v.findViewById(R.id.til_nuevo_contenido_mensaje);
+        mTilFecha = (TextInputLayout) v.findViewById(R.id.til_nuevo_fecha);
+        mTilHora = (TextInputLayout) v.findViewById(R.id.til_nuevo_hora);
+
         //Switch
         mSwFacebook = (Switch) v.findViewById(R.id.sw_facebook);
         mSwTwitter = (Switch) v.findViewById(R.id.sw_twitter);
@@ -117,15 +142,66 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
         //Botones
         mBotonGuardar = (Button) v.findViewById(R.id.bt_nuevo_guardar);
         mBotonActualizar = (Button) v.findViewById(R.id.bt_nuevo_actualizar);
-        mBotonContactos = (Button) v.findViewById(R.id.bt_contactos);
+        mBotonAgregarCategoria = (Button) v.findViewById(R.id.bt_agregar_categoria);
 
         //Botón con imagenes
         mIbFecha = (ImageButton) v.findViewById(R.id.ib_obtener_fecha);
         mIbHora = (ImageButton) v.findViewById(R.id.ib_obtener_hora);
+        mIbContactos = (ImageButton) v.findViewById(R.id.bt_contactos);
+
+        //Limpiar los EditText
+       mEtTituloRecordatorio.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+                esTituloRecordatorioValido(String.valueOf(s));
+           }
+
+           @Override
+           public void afterTextChanged(Editable s) {
+
+           }
+       });
+        mEtEntidadOtros.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                esEntidadOtrosValido(String.valueOf(s));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        mEtTelefono.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                esTelefonoValido(String.valueOf(s));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         //[INICIO COMBO]
         comboListaCategorias = new ArrayList<String>();
-        comboListaCategorias.add("Seleccione:");
+        comboListaCategorias.add(getString(R.string.selecciona_categoria_spinner));
         for(int i = 0; i < mManagerRecordatorios.getListaCategoriaRecordatorios().size(); i++){
             comboListaCategorias.add(mManagerRecordatorios.getListaCategoriaRecordatorios().get(i).getCategorioRecordatorio());
         }
@@ -207,8 +283,9 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
 
         mBotonGuardar.setOnClickListener(this);
         mBotonActualizar.setOnClickListener(this);
-        mBotonContactos.setOnClickListener(this);
+        mBotonAgregarCategoria.setOnClickListener(this);
 
+        mIbContactos.setOnClickListener(this);
         mIbFecha.setOnClickListener(this);
         mIbHora.setOnClickListener(this);
 
@@ -224,6 +301,8 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
                 break;
             case R.id.bt_nuevo_actualizar:
                 break;
+            case R.id.bt_agregar_categoria:
+                abrirFormulario();
             case R.id.bt_contactos:
                 break;
             case R.id.ib_obtener_fecha:
@@ -235,40 +314,102 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
         }
     }
 
+    private void abrirFormulario() {
+        Intent i = new Intent(getContext(), CategoriaRecordatorioActivity.class);
+        activity.startActivity(i);
+    }
+
     public void validarDatos(){
 
         Toast.makeText(activity, "Id Categoría:" + mValorIdCategoria +" - " +mValorFacebook, Toast.LENGTH_SHORT).show();
-        try {
-            mManagerRecordatorios.insertarRecoratorio(null,
-                    mEtTituloRecordatorio.getText().toString(), //[Titulo]
-                    mEtEntidadOtros.getText().toString(),       //[Entidad - Otros]
-                    mValorIdCategoria,                          //[Id Categoría]
-                    mEtContenidoMensaje.getText().toString(),   //[Contenido del mensaje]
-                    mEtTelefono.getText().toString(),            //[Teléfono]
-                    mValorEnviarMensaje,                        //[Envio mesaje]
-                    mValorFacebook,                             //[Publicar en facebook]
-                    mValorTwitter,                              //[Publicar en twitter]
-                    Utilidades.fechaHora(),                     //[Fecha creación]
-                    "2017-08-15",                               //[Fecha del recordatorio]
-                    ESTADO_INICIAL_RECORDATORIO);
-        }catch (Exception e){
-            //Mensaje de error
-            mostrarMensaje(getString(R.string.error_al_guardar), 0);
-        }finally {
+        String stTitulo = mTilTituloRecordatorio.getEditText().getText().toString();
+        String stEntidadOtros = mTilEntidadOtros.getEditText().getText().toString();
+        String stTelefono = mTilTelefono.getEditText().getText().toString();
+        String stContenidoMensaje = mTilContenidoMensaje.getEditText().getText().toString();
+        String stFecha = mTilFecha.getEditText().getText().toString();
+        String stHora =  mTilHora.getEditText().getText().toString();
 
-            //Mensaje de registro guardado con exito
-            mostrarMensaje(getString(R.string.mensaje_agregado_satisfactoriamente), 1);
+        boolean titulo = esTituloRecordatorioValido(stTitulo);
+        boolean entidadOtros = esEntidadOtrosValido(stEntidadOtros);
+        boolean telefono = esTelefonoValido(stTelefono);
 
-            //Cierro la activity
-            esperarYCerrar(MILISEGUNDOS_ESPERA);
+        boolean fecha = esFechaValido(stFecha);
+
+        if(titulo && entidadOtros && telefono && fecha) {
+            try {
+                mManagerRecordatorios.insertarRecoratorio(null,
+                        mEtTituloRecordatorio.getText().toString(), //[Titulo]
+                        mEtEntidadOtros.getText().toString(),       //[Entidad - Otros]
+                        mValorIdCategoria,                          //[Id Categoría]
+                        mEtContenidoMensaje.getText().toString(),   //[Contenido del mensaje]
+                        mEtTelefono.getText().toString(),            //[Teléfono]
+                        mValorEnviarMensaje,                        //[Envio mesaje]
+                        mValorFacebook,                             //[Publicar en facebook]
+                        mValorTwitter,                              //[Publicar en twitter]
+                        Utilidades.fechaHora(),                     //[Fecha creación]
+                        "2017-08-15",                               //[Fecha del recordatorio]
+                        ESTADO_INICIAL_RECORDATORIO);
+            } catch (Exception e) {
+                //Mensaje de error
+                mostrarMensaje(getString(R.string.error_al_guardar), 0);
+            } finally {
+
+                //Mensaje de registro guardado con exito
+                mostrarMensaje(getString(R.string.mensaje_agregado_satisfactoriamente), 1);
+
+                //Cierro la activity
+                esperarYCerrar(MILISEGUNDOS_ESPERA);
+            }
         }
     }
 
+    //Validar campos EditText
+    private boolean esTituloRecordatorioValido(String titulo){
+        Pattern patron = Pattern.compile(REGEX_CARACTERES_LATINOS);
+        if(!patron.matcher(titulo).matches() || titulo.length() > 200){
+            mTilTituloRecordatorio.setError(getString(R.string.error_titulo_recordatorio));
+            return false;
+        }else{
+            mTilTituloRecordatorio.setError(null);
+        }
+        return true;
+    }
+    private boolean esEntidadOtrosValido(String entidadOtros) {
+        Pattern patron = Pattern.compile(REGEX_CARACTERES_LATINOS);
+        if (!patron.matcher(entidadOtros).matches() || entidadOtros.length() > 200) {
+            mTilEntidadOtros.setError(getString(R.string.error_entidad_otros));
+            return false;
+        }else{
+            mTilEntidadOtros.setError(null);
+        }
+        return true;
+    }
+    private boolean esTelefonoValido(String telefono){
+        if(!Patterns.PHONE.matcher(telefono).matches()){
+            mTilTelefono.setError(getString(R.string.error_telefono));
+            return false;
+        }else{
+            mTilTelefono.setError(null);
+        }
+        return true;
+    }
+
+    private boolean esFechaValido(String fecha){
+        Pattern patron = Pattern.compile(REGEX_FECHAS);
+        if (!patron.matcher(fecha).matches()){
+            mTilFecha.setError(getString(R.string.error_fecha));
+            return false;
+        }else{
+            mTilFecha.setError(null);
+        }
+        return true;
+    }
+
     public void obtenerFecha(){
-        final Calendar c = Calendar.getInstance(TimeZone.getDefault());
-        int dia = c.get(Calendar.DAY_OF_MONTH);
-        int mes = c.get(Calendar.MONTH);
-        int anio = c.get(Calendar.YEAR);
+
+        final int mes = c.get(Calendar.MONTH);
+        final int dia = c.get(Calendar.DAY_OF_MONTH);
+        final int anio = c.get(Calendar.YEAR);
 
         DatePickerDialog recogerFecha = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -281,20 +422,27 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
                 mEtFecha.setText(diaFormateado + "/" + mesFormateado +"/"+ year);
 
             }
-        }, dia, mes, anio);
+        },anio, mes, dia);
 
         recogerFecha.show();
 
     }
     public void obtenerHora(){
 
-        final Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
+        final int hour = c.get(Calendar.HOUR_OF_DAY);
+        final int minute = c.get(Calendar.MINUTE);
+        final int am_pm = c.get(Calendar.AM_PM);
 
-        TimePickerDialog timePickerdialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+
+        TimePickerDialog recogerHora = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                if(am_pm == Calendar.AM){
+                    Toast.makeText(getActivity(), "AM", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getActivity(), "PM", Toast.LENGTH_SHORT).show();
+                }
 
                 String horaFormateada = (hourOfDay < 10)? "0" + String.valueOf(hourOfDay):String.valueOf(hourOfDay);
                 String minutoFormateado = (minute < 10)? "0" + String.valueOf(minute):String.valueOf(minute);
@@ -302,11 +450,12 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
                 mEtHora.setText(horaFormateada + ":" + minutoFormateado);
 
             }
-        },hour, minute, false);
+        }, hour, minute, false);
 
-        timePickerdialog.show();
+        recogerHora.show();
 
     }
+
 
     //Esperar unos segundos antes de cerrar la activity
     public void esperarYCerrar(int milisegundos) {

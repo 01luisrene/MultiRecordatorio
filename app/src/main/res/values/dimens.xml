@@ -3,8 +3,8 @@
     <dimen name="fab_margen">16dp</dimen>
 
     <!--Padding & margin layout-->
-    <dimen name="contenedor_margen">16dp</dimen>
-    <dimen name="contenedor_relleno">16dp</dimen>
+    <dimen name="contenedor_margen">8dp</dimen>
+    <dimen name="contenedor_relleno">8dp</dimen>
 
     <!--Dimenciones para el formulario detalle recordatorio-->
     <dimen name="margen_boton_small">4dp</dimen>

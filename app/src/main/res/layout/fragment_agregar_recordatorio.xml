@@ -8,14 +8,23 @@
 
     <Spinner
         android:id="@+id/sp_categorias_recordatorios"
-        android:layout_width="0dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/bt_agregar_categoria"
+        style="@style/btn_normal"
+        android:layout_height="30dp"
+        android:text="@string/agregar_categoria_boton"
+        app:layout_constraintLeft_toRightOf="@+id/sp_categorias_recordatorios"
+        android:layout_marginStart="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="12dp"/>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/til_nuevo_titulo_recordatorio"
@@ -23,7 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
+        app:counterMaxLength="200"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sp_categorias_recordatorios"
@@ -35,8 +45,8 @@
             android:id="@+id/et_nuevo_titulo_recordatorio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/nuevo_titulo_recordatorio"
-            android:drawableStart="@drawable/ic_title_24dp"/>
+            android:drawableStart="@drawable/ic_title_24dp"
+            android:hint="@string/nuevo_titulo_recordatorio"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -58,6 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            app:counterMaxLength="200"
             android:hint="@string/nuevo_entidad_otros"
             android:drawableStart="@drawable/ic_label_24dp"/>
 
@@ -84,18 +95,19 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <Button
+    <ImageButton
         android:id="@+id/bt_contactos"
         style="@style/btn_normal"
         android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:drawablePadding="4dp"
-        android:drawableStart="@drawable/ic_contacts_24dp"
-        android:text="@string/buscar_contacto"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="24dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:src="@drawable/ic_contacts_24dp"
+        android:contentDescription="@string/boton_buscar_contacto"
+        app:layout_constraintHorizontal_bias="0.008"
         app:layout_constraintLeft_toRightOf="@+id/til_nuevo_telefono"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_nuevo_entidad_otros"
@@ -153,17 +165,15 @@
         app:layout_constraintTop_toBottomOf="@+id/lb_preferencias"
         android:layout_marginStart="16dp"/>
 
-    <EditText
+    <TextView
         android:id="@+id/et_url_facebook"
         android:layout_width="180dp"
-        android:layout_height="37dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="15dp"
-        android:ems="10"
-        android:inputType="textUri"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="22dp"
         app:layout_constraintLeft_toRightOf="@+id/sw_facebook"
         app:layout_constraintTop_toBottomOf="@+id/lb_preferencias"
-        tools:ignore="LabelFor"/>
+        tools:text="url facebook"/>
 
     <Switch
         android:id="@+id/sw_twitter"

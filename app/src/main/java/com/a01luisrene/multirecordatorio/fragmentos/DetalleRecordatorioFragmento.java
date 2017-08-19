@@ -36,9 +36,11 @@ public class DetalleRecordatorioFragmento extends Fragment {
 
     public static DetalleRecordatorioFragmento newInstance(Recordatorios recordatorios) {
         DetalleRecordatorioFragmento fragmentDetalle = new DetalleRecordatorioFragmento();
+
         Bundle args = new Bundle();
         args.putParcelable(ID_RECORDATORIO, recordatorios);
         fragmentDetalle.setArguments(args);
+
         return fragmentDetalle;
     }
 

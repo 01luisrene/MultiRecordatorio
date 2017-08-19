@@ -164,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements
                     Intent i = new Intent(this, DetalleRecordatorioActivity.class);
                     i.putExtra(CARGAR_NUEVO_RECORDATORIO_FRAGMENTO, 1);
                     startActivity(i);
+
                     /*
                     Intent i = new Intent(this, CategoriaRecordatorioActivity.class);
                     startActivity(i);*/
