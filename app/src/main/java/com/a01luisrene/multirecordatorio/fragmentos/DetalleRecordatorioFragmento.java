@@ -82,7 +82,6 @@ public class DetalleRecordatorioFragmento extends Fragment {
         View v = inflater.inflate(R.layout.fragment_detalle_recordatorio, container, false);
 
         if(mItemRecordatorio != null) {
-            ((TextView) v.findViewById(R.id.recordatorio_id)).setText(mItemRecordatorio.getId());
             ((TextView) v.findViewById(R.id.tv_titulo)).setText(mItemRecordatorio.getTitulo());
             ((TextView) v.findViewById(R.id.tv_entidad_otros)).setText(mItemRecordatorio.getEntidadOtros());
             ((TextView) v.findViewById(R.id.tv_telefono)).setText(mItemRecordatorio.getTelefono());

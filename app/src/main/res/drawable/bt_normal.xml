@@ -5,7 +5,7 @@
         <shape android:shape="rectangle">
             <corners android:radius="2dp"/>
             <solid android:color="#FFFFFF"/>
-            <size android:height="45dp"/>
+            <size android:height="40dp"/>
             <gradient android:startColor="#f5d266"
                       android:centerColor="#facd41"
                       android:endColor="@color/accent"/>
@@ -16,10 +16,10 @@
         <shape android:shape="rectangle">
             <corners android:radius="2dp"/>
             <solid android:color="#FFFFFF"/>
-            <size android:height="45dp"/>
+            <size android:height="40dp"/>
             <gradient android:startColor="@color/accent"
-                      android:centerColor="#facd41"
-                      android:endColor="#f5d266"/>
+                      android:centerColor="@color/accent"
+                      android:endColor="@color/accent"/>
         </shape>
     </item>
 

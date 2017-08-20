@@ -21,14 +21,34 @@
     </style>
 
     <!--Estilos para el formulario detalle-->
-    <style name="texto_principal">
-        <item name="android:textSize">22sp</item>
+    <style name="titulo_principal">
+        <item name="android:textSize">26sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-    <style name="texto_detalle">
+    <style name="subtitulo_principal">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:color">@color/color_subtitulo</item>
+    </style>
+    <style name="subtitulo">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">normal</item>
+        <item name="android:color">@color/color_subtitulo</item>
     </style>
+    <style name="mensaje_recordatorio">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:color">@color/color_subtitulo</item>
+    </style>
+    <style name="texto_detalle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="texto_detalle_small">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
 
     <!--Estilos para los items de la lista -->
     <style name="lista_titulo">

@@ -54,11 +54,11 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
     public static int MILISEGUNDOS_ESPERA = 1500;
     public static final String ESTADO_INICIAL_RECORDATORIO = "1";
     //Expresiones regulares
-    public static final String REGEX_CARACTERES_LATINOS = "^[a-zA-Z áÁéÉíÍóÓúÚñÑüÜ]+$";
+    public static final String REGEX_CARACTERES_LATINOS = "^[a-zA-Z0-9 áÁéÉíÍóÓúÚñÑüÜ]+$";
     public static final String REGEX_FECHAS = "^([0-2][0-9]|3[0-1])(\\/|-)(0[1-9]|1[0-2])\\2(\\d{4})$";
 
     //Referencias de widgets del fragmento
-    private Button mBotonGuardar, mBotonActualizar, mBotonAgregarCategoria;
+    private Button mBotonGuardar, mBotonAgregarCategoria;
     private EditText mEtTituloRecordatorio, mEtEntidadOtros, mEtTelefono, mEtContenidoMensaje, mEtFecha, mEtHora;
     private TextInputLayout mTilTituloRecordatorio, mTilEntidadOtros, mTilTelefono, mTilContenidoMensaje, mTilFecha, mTilHora;
     private Switch mSwFacebook, mSwTwitter, mSwEnviarMensaje;
@@ -141,7 +141,6 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
 
         //Botones
         mBotonGuardar = (Button) v.findViewById(R.id.bt_nuevo_guardar);
-        mBotonActualizar = (Button) v.findViewById(R.id.bt_nuevo_actualizar);
         mBotonAgregarCategoria = (Button) v.findViewById(R.id.bt_agregar_categoria);
 
         //Botón con imagenes
@@ -199,6 +198,23 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
             }
         });
 
+        mEtFecha.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                esFechaValido(String.valueOf(s));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         //[INICIO COMBO]
         comboListaCategorias = new ArrayList<String>();
         comboListaCategorias.add(getString(R.string.selecciona_categoria_spinner));
@@ -206,7 +222,7 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
             comboListaCategorias.add(mManagerRecordatorios.getListaCategoriaRecordatorios().get(i).getCategorioRecordatorio());
         }
 
-        comboAdapter = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item, comboListaCategorias);
+        comboAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, comboListaCategorias);
 
         mSpinnerListaCategotegorias.setAdapter(comboAdapter);
 
@@ -235,6 +251,8 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
                     }
 
                 }else{
+                    //Colocar el valor de id categoría en nulo
+                    mValorIdCategoria = null;
 
                     if(Utilidades.smartphone) {
                         mCtRecordatorio.setTitle(getString(R.string.agregar_recordatorio));
@@ -282,7 +300,6 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
         });
 
         mBotonGuardar.setOnClickListener(this);
-        mBotonActualizar.setOnClickListener(this);
         mBotonAgregarCategoria.setOnClickListener(this);
 
         mIbContactos.setOnClickListener(this);
@@ -298,8 +315,6 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
         switch (v.getId()){
             case R.id.bt_nuevo_guardar:
                 validarDatos();
-                break;
-            case R.id.bt_nuevo_actualizar:
                 break;
             case R.id.bt_agregar_categoria:
                 abrirFormulario();
@@ -320,8 +335,6 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
     }
 
     public void validarDatos(){
-
-        Toast.makeText(activity, "Id Categoría:" + mValorIdCategoria +" - " +mValorFacebook, Toast.LENGTH_SHORT).show();
         String stTitulo = mTilTituloRecordatorio.getEditText().getText().toString();
         String stEntidadOtros = mTilEntidadOtros.getEditText().getText().toString();
         String stTelefono = mTilTelefono.getEditText().getText().toString();
@@ -336,29 +349,33 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
         boolean fecha = esFechaValido(stFecha);
 
         if(titulo && entidadOtros && telefono && fecha) {
-            try {
-                mManagerRecordatorios.insertarRecoratorio(null,
-                        mEtTituloRecordatorio.getText().toString(), //[Titulo]
-                        mEtEntidadOtros.getText().toString(),       //[Entidad - Otros]
-                        mValorIdCategoria,                          //[Id Categoría]
-                        mEtContenidoMensaje.getText().toString(),   //[Contenido del mensaje]
-                        mEtTelefono.getText().toString(),            //[Teléfono]
-                        mValorEnviarMensaje,                        //[Envio mesaje]
-                        mValorFacebook,                             //[Publicar en facebook]
-                        mValorTwitter,                              //[Publicar en twitter]
-                        Utilidades.fechaHora(),                     //[Fecha creación]
-                        "2017-08-15",                               //[Fecha del recordatorio]
-                        ESTADO_INICIAL_RECORDATORIO);
-            } catch (Exception e) {
-                //Mensaje de error
-                mostrarMensaje(getString(R.string.error_al_guardar), 0);
-            } finally {
+            if(mValorIdCategoria != null) {
+                try {
+                    mManagerRecordatorios.insertarRecoratorio(null,
+                            mEtTituloRecordatorio.getText().toString(), //[Titulo]
+                            mEtEntidadOtros.getText().toString(),       //[Entidad - Otros]
+                            mValorIdCategoria,                          //[Id Categoría]
+                            mEtContenidoMensaje.getText().toString(),   //[Contenido del mensaje]
+                            mEtTelefono.getText().toString(),            //[Teléfono]
+                            mValorEnviarMensaje,                        //[Envio mesaje]
+                            mValorFacebook,                             //[Publicar en facebook]
+                            mValorTwitter,                              //[Publicar en twitter]
+                            Utilidades.fechaHora(),                     //[Fecha creación]
+                            "19/08/2017",                               //[Fecha del recordatorio]
+                            ESTADO_INICIAL_RECORDATORIO);
+                } catch (Exception e) {
+                    //Mensaje de error
+                    mostrarMensaje(getString(R.string.error_al_guardar), 0);
+                } finally {
 
-                //Mensaje de registro guardado con exito
-                mostrarMensaje(getString(R.string.mensaje_agregado_satisfactoriamente), 1);
+                    //Mensaje de registro guardado con exito
+                    mostrarMensaje(getString(R.string.mensaje_agregado_satisfactoriamente), 1);
 
-                //Cierro la activity
-                esperarYCerrar(MILISEGUNDOS_ESPERA);
+                    //Cierro la activity
+                    esperarYCerrar(MILISEGUNDOS_ESPERA);
+                }
+            }else{
+                Toast.makeText(activity, getString(R.string.error_spinner_categorias), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -366,7 +383,7 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
     //Validar campos EditText
     private boolean esTituloRecordatorioValido(String titulo){
         Pattern patron = Pattern.compile(REGEX_CARACTERES_LATINOS);
-        if(!patron.matcher(titulo).matches() || titulo.length() > 200){
+        if(!patron.matcher(titulo).matches() || titulo.length() > 120){
             mTilTituloRecordatorio.setError(getString(R.string.error_titulo_recordatorio));
             return false;
         }else{
@@ -376,7 +393,7 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
     }
     private boolean esEntidadOtrosValido(String entidadOtros) {
         Pattern patron = Pattern.compile(REGEX_CARACTERES_LATINOS);
-        if (!patron.matcher(entidadOtros).matches() || entidadOtros.length() > 200) {
+        if (!patron.matcher(entidadOtros).matches() || entidadOtros.length() > 100) {
             mTilEntidadOtros.setError(getString(R.string.error_entidad_otros));
             return false;
         }else{

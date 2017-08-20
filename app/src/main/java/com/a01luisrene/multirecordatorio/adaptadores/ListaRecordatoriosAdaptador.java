@@ -21,6 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecordatoriosAdaptador.ViewHolder> {
 
+    public static final String ELLIPSIS = "...";
     private List<Recordatorios> mListaItemsRecordatorios;
     private Context mContext;
 
@@ -65,32 +66,48 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
         public void bind(final Context context, final Recordatorios items, final ListaRecordatoriosFragmento.OnItemSelectedListener itemClickListener) {
 
             id.setText(items.getId());
-            titulo.setText(items.getTitulo());
-            entidadOtros.setText(items.getEntidadOtros());
 
-            //Almaceno el valor devuelto la la ruta de imagen en string
+            //Almaceno los valores devueltos para realizar algunos cambios
+            String valorTitulo = items.getTitulo();
+            String valorEntidadOtros = items.getEntidadOtros();
             String valorImagen = items.getImagenRecordatorio();
+
+            String tituloFormateado, entidadOtrosFormateado;
+
+            if(valorTitulo.length() >= 45){
+                tituloFormateado = valorTitulo.substring(0, 45) + ELLIPSIS;
+            }else{
+                tituloFormateado = valorTitulo;
+            }
+            if(valorEntidadOtros.length() >= 35){
+                entidadOtrosFormateado = valorEntidadOtros.substring(0, 35) + ELLIPSIS;
+            }else{
+                entidadOtrosFormateado = valorEntidadOtros;
+            }
+
+            titulo.setText(tituloFormateado);
+            entidadOtros.setText(entidadOtrosFormateado);
 
             if(Utilidades.smartphone){ //Se aplica para resoluciones pequeñas como [smartphones]
                 /**
                  * TEXTO DEL CONTENIDO MENSAJE FORMATEADO
                  */
                 //Almaceno el valor de la cadena devuelta del contenido mensaje
-                String cadenaMensaje = items.getContenidoMensaje();
+                String valoraMensaje = items.getContenidoMensaje();
 
                 //creo la variable que almacenara el texto formateado
-                String cadenaFormateada = "";
+                String mensajeFormateado;
                 //Condiciono para saber si la cadena tiene mas de 70 caracteres
-                if(cadenaMensaje.length() > 60){
+                if(valoraMensaje.length() >= 80){
                     //Agrego ellipsis al texto si es mayor de 70
-                    cadenaFormateada = cadenaMensaje.substring(0, 60) + "...";
+                    mensajeFormateado = valoraMensaje.substring(0, 60) + ELLIPSIS;
                 }else{
                     //Muestro el texto original
-                    cadenaFormateada = cadenaMensaje;
+                    mensajeFormateado = valoraMensaje;
                 }
 
                 //cargo los valores devueltos en el EditText
-                contenidoMensaje.setText(cadenaFormateada);
+                contenidoMensaje.setText(mensajeFormateado);
 
                 /**
                  * CARGO IMAGEN CON PICASSO

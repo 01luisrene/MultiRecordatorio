@@ -14,11 +14,12 @@
     <string name="nuevo_telefono_recordatorio">Teléfono</string>
     <string name="nuevo_mensaje_recordatorio">Mensaje del recordatorio</string>
     <string name="boton_buscar_contacto">Botón para buscar contactos</string>
-    <string name="nuevo_titulo_fecha_recordatorio">Fecha del recordatorio:</string>
+    <string name="nuevo_titulo_fecha_recordatorio">Fecha &#38; hora del recordatorio:</string>
     <string name="nuevo_fecha_recordatorio">dd/mm/yyyy</string>
     <string name="nuevo_hora_recordatorio">hh:mm</string>
 
     <!--Mensajes de error TextInputLayout-->
+    <string name="error_spinner_categorias">Debes seleccionar una categoría</string>
     <string name="error_titulo_recordatorio">Ingrese un título válido</string>
     <string name="error_entidad_otros">Ingrese un subtítulo válido</string>
     <string name="error_telefono">Ingrese un número de teléfono válido</string>
@@ -34,10 +35,10 @@
     <string name="teleforno_recordatorio">Teléfono:</string>
     <string name="mensaje_recordatorio">Mensaje:</string>
     <string name="preferencias_recordatorio">Preferencias:</string>
-    <string name="facebook_recordatorio">Facebook</string>
-    <string name="twitter_recordatorio">Twittear</string>
+    <string name="facebook_recordatorio">Publicar en Facebook</string>
+    <string name="twitter_recordatorio">Publicar en Twitter</string>
     <string name="enviar_mensaje_recordatorio">Enviar mensaje</string>
-    <string name="fecha_recordatorio">Fecha del recordatorio:</string>
+    <string name="fecha_recordatorio">Fecha &#38; hora del recordatorio:</string>
     <string name="descripcion_cover">Imagen principal del recordatorio</string>
 
     <!--Formulario agregar categoría recordatorio-->

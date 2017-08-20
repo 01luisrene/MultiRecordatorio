@@ -5,120 +5,108 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/contenedor_relleno"
+    android:paddingTop="18dp"
     android:paddingLeft="@dimen/contenedor_relleno"
     android:paddingRight="@dimen/contenedor_relleno"
     android:paddingBottom="@dimen/contenedor_relleno">
 
     <TextView
-        android:id="@+id/recordatorio_id"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="invisible"/>
-
-    <TextView
-        android:id="@+id/lb_titulo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/titulo_recordatorio"
-        android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/texto_principal"/>
-
-    <TextView
         android:id="@+id/tv_titulo"
+        style="@style/titulo_principal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margen_boton_large"
-        style="@style/texto_detalle"/>
-
-    <TextView
-        android:id="@+id/lb_entidad_otros"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/endidad_otros_recordatorio"
-        android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/texto_principal"/>
+        android:layout_marginBottom="@dimen/margen_bottom_titulo"
+        tools:text="Cumpleaños de mi querido padre"/>
 
     <TextView
         android:id="@+id/tv_entidad_otros"
+        style="@style/subtitulo_principal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margen_boton_large"
-        style="@style/texto_detalle"/>
-
-    <TextView
-        android:id="@+id/lb_telefono"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/teleforno_recordatorio"
-        android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/texto_principal"/>
-
-    <TextView
-        android:id="@+id/tv_telefono"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margen_boton_large"
-        style="@style/texto_detalle"/>
-
-    <TextView
-        android:id="@+id/lb_mensaje"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/mensaje_recordatorio"
-        android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/texto_principal"/>
+        android:layout_marginBottom="@dimen/margen_bottom_subtitulo"
+        tools:text="Adalino Mas Trigoso"/>
 
     <TextView
         android:id="@+id/tv_mensaje"
-        style="@style/texto_detalle"
+        style="@style/mensaje_recordatorio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margen_boton_large"/>
-
-    <TextView
-        android:id="@+id/lb_enviar_mensaje"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/preferencias_recordatorio"
-        android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/texto_principal"/>
+        android:drawableTop="@drawable/ic_assignment_24dp"
+        android:layout_marginBottom="@dimen/margen_bottom_large"
+        tools:text="Te deseo lo mejor mi querido padre en este día especial."/>
 
     <CheckBox
         android:id="@+id/cb_facebook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/facebook_recordatorio"
-        android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/texto_detalle"/>
+        android:layout_marginBottom="@dimen/margen_bottom_small"
+        style="@style/texto_detalle_small"/>
 
     <CheckBox
         android:id="@+id/cb_twtter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/twitter_recordatorio"
-        android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/texto_detalle"/>
+        android:layout_marginBottom="@dimen/margen_bottom_small"
+        style="@style/texto_detalle_small"/>
 
-    <CheckBox
-        android:id="@+id/cb_mensaje"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/enviar_mensaje_recordatorio"
-        android:layout_marginBottom="@dimen/margen_boton_small"
-        style="@style/texto_detalle"/>
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/margen_bottom_large">
+        <CheckBox
+            android:id="@+id/cb_mensaje"
+            style="@style/texto_detalle_small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/enviar_mensaje_recordatorio"
+            android:layout_marginBottom="@dimen/margen_bottom_small"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tv_telefono"
+            style="@style/texto_detalle_small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margen_bottom_large"
+            tools:text="943366108"
+            android:gravity="center_vertical"
+            android:drawableStart="@drawable/ic_phone_iphone_24dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/lb_fecha_recordatorio"
-        style="@style/texto_principal"
+        style="@style/subtitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margen_boton_small"
-        android:text="@string/fecha_recordatorio"/>
+        android:text="@string/fecha_recordatorio"
+        android:layout_marginBottom="@dimen/margen_bottom_large"/>
 
-    <TextView
-        android:id="@+id/tv_fecha_recordatorio"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/texto_detalle"/>
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_fecha_recordatorio"
+            style="@style/texto_detalle_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            tools:text="19/08/2017"
+            android:drawableStart="@drawable/ic_date_range_24dp"/>
+
+        <TextView
+            android:id="@+id/rv_hora_recordatorio"
+            style="@style/texto_detalle_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            tools:text="08:31"
+            android:drawableStart="@drawable/ic_access_time_24dp"
+            android:layout_marginStart="24dp"/>
+    </LinearLayout>
+
 </LinearLayout>

@@ -7,8 +7,10 @@
     <dimen name="contenedor_relleno">8dp</dimen>
 
     <!--Dimenciones para el formulario detalle recordatorio-->
-    <dimen name="margen_boton_small">4dp</dimen>
-    <dimen name="margen_boton_large">15dp</dimen>
+    <dimen name="margen_bottom_titulo">4dp</dimen>
+    <dimen name="margen_bottom_subtitulo">25dp</dimen>
+    <dimen name="margen_bottom_large">16dp</dimen>
+    <dimen name="margen_bottom_small">8dp</dimen>
 
     <!--Medida imagen en circulo del toolbar detalle recordatorio (tablet) & lista recordatorios-->
     <dimen name="civ_lista_recordatorios">70dp</dimen>
