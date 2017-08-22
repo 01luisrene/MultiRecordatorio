@@ -72,7 +72,7 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
             String valorEntidadOtros = items.getEntidadOtros();
             String valorImagen = items.getImagenRecordatorio();
 
-            String tituloFormateado, entidadOtrosFormateado;
+            String tituloFormateado, entidadOtrosFormateado, mensajeFormateado;
 
             if(valorTitulo.length() >= 45){
                 tituloFormateado = valorTitulo.substring(0, 45) + ELLIPSIS;
@@ -95,8 +95,6 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                 //Almaceno el valor de la cadena devuelta del contenido mensaje
                 String valoraMensaje = items.getContenidoMensaje();
 
-                //creo la variable que almacenara el texto formateado
-                String mensajeFormateado;
                 //Condiciono para saber si la cadena tiene mas de 70 caracteres
                 if(valoraMensaje.length() >= 80){
                     //Agrego ellipsis al texto si es mayor de 70
@@ -152,7 +150,6 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                             .into(civImagenRecordatorio);
                 }
             }
-
             //Evento clic para el item seleccionado
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

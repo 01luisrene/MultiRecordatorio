@@ -1,6 +1,7 @@
 package com.a01luisrene.multirecordatorio.ui;
 
 import android.content.res.Configuration;
+import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
@@ -10,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.a01luisrene.multirecordatorio.MainActivity;
@@ -20,7 +20,11 @@ import com.a01luisrene.multirecordatorio.fragmentos.DetalleRecordatorioFragmento
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 
+
 public class DetalleRecordatorioActivity extends AppCompatActivity implements View.OnClickListener {
+
+    //Constantes
+    public static int MILISEGUNDOS_ESPERA = 300;
 
     CollapsingToolbarLayout ctRecordatorio;
     FloatingActionButton fabEditar;
@@ -97,8 +101,11 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
             case R.id.accion_eliminar:
                 String idRecordatorio = itemsRecordatorios.getId();
                 String tituloRecordatorio = itemsRecordatorios.getTitulo();
+
                 managerRecordatorios.eliminarRecordatorio(idRecordatorio);
-                Toast.makeText(this, "Recordatorio " + tituloRecordatorio + " con id: " + idRecordatorio + " eliminado", Toast.LENGTH_SHORT).show();
+
+                esperarYCerrar(MILISEGUNDOS_ESPERA);
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -110,5 +117,18 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
             case R.id.fab_editar:
                 Toast.makeText(this, "Editar", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    //Esperar unos segundos antes de cerrar la activity
+    public void esperarYCerrar(int milisegundos) {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                // acciones que se ejecutan tras los milisegundos
+                // [cerrar activity]
+                finish();
+
+            }
+        }, milisegundos);
     }
 }

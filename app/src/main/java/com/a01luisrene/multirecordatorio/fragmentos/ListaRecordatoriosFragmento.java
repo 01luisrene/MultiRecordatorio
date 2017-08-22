@@ -11,6 +11,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,28 +45,6 @@ public class ListaRecordatoriosFragmento extends Fragment{
     public interface OnItemSelectedListener {
         public void onItemSelected(Recordatorios recordatorios);
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        //[Establecer comunicación entre nuestra lista y nuestro detalle]
-        if (context instanceof Activity) {
-            this.activity = (Activity) context;
-            listener = (OnItemSelectedListener) this.activity;
-        } else {
-            throw new ClassCastException(activity.toString()
-                    + " must implement ItemsListFragment.OnItemSelectedListener");
-        }
-
-    }
-
-    //Función llamada cuando el fragment es desasociada de una actividad
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        listener = null;
-    }
-
 
     public ListaRecordatoriosFragmento() {
         // Required empty public constructor
@@ -103,11 +82,12 @@ public class ListaRecordatoriosFragmento extends Fragment{
 
         mRecordatoriosRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mManagerRecordatorios = new DataBaseManagerRecordatorios(getActivity());
+        mManagerRecordatorios = new DataBaseManagerRecordatorios(getActivity().getApplicationContext());
 
         mListaItemsRecordatorios = mManagerRecordatorios.getListaRecordatorios();
 
-        mListaRecordatoriosAdaptador = new ListaRecordatoriosAdaptador(mListaItemsRecordatorios, getContext(), new OnItemSelectedListener() {
+        mListaRecordatoriosAdaptador = new ListaRecordatoriosAdaptador(mListaItemsRecordatorios,
+                getActivity().getApplicationContext(), new OnItemSelectedListener() {
             @Override
             public void onItemSelected(Recordatorios recordatorios) {
                 listener.onItemSelected(recordatorios);
@@ -143,4 +123,55 @@ public class ListaRecordatoriosFragmento extends Fragment{
         return v;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        //[Establecer comunicación entre nuestra lista y nuestro detalle]
+        if (context instanceof Activity) {
+            this.activity = (Activity) context;
+            listener = (OnItemSelectedListener) this.activity;
+        } else {
+            throw new ClassCastException(activity.toString()
+                    + " must implement ItemsListFragment.OnItemSelectedListener");
+        }
+
+    }
+
+    //Función llamada cuando el fragment es desasociada de una actividad
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //[Recargo la lista cuando el fragment vuelve a estar visible]
+        mListaItemsRecordatorios = mManagerRecordatorios.getListaRecordatorios();
+
+        mListaRecordatoriosAdaptador = new ListaRecordatoriosAdaptador(mListaItemsRecordatorios,
+                getActivity().getApplicationContext(), new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(Recordatorios recordatorios) {
+                listener.onItemSelected(recordatorios);
+            }
+        });
+        mRecordatoriosRecyclerView.setAdapter(mListaRecordatoriosAdaptador);
+
+        Log.i("Ciclo_vida", "onResume");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        //Cierro la conexión solo si es un smartphone
+        if(Utilidades.smartphone){
+            mManagerRecordatorios.cerrar();
+        }
+    }
 }
+

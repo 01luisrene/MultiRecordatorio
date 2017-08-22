@@ -18,8 +18,6 @@ import com.a01luisrene.multirecordatorio.fragmentos.AgregarRecordatorioFragmento
 import com.a01luisrene.multirecordatorio.fragmentos.DetalleRecordatorioFragmento;
 import com.a01luisrene.multirecordatorio.fragmentos.ListaRecordatoriosFragmento;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
-import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
-import com.a01luisrene.multirecordatorio.ui.CategoriaRecordatorioActivity;
 import com.a01luisrene.multirecordatorio.ui.DetalleRecordatorioActivity;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 
@@ -30,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements
         MenuItemCompat.OnActionExpandListener,
         ListaRecordatoriosFragmento.OnItemSelectedListener{
 
-    DataBaseManagerRecordatorios mManagerRecordatorios;
     private Toolbar mToolbar;
     private FloatingActionButton mFabAgregarRecordatorio;
 
@@ -165,9 +162,6 @@ public class MainActivity extends AppCompatActivity implements
                     i.putExtra(CARGAR_NUEVO_RECORDATORIO_FRAGMENTO, 1);
                     startActivity(i);
 
-                    /*
-                    Intent i = new Intent(this, CategoriaRecordatorioActivity.class);
-                    startActivity(i);*/
                 }else{
                     getSupportFragmentManager()
                             .beginTransaction()
@@ -179,28 +173,6 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 break;
         }
-
-        /**
-         *  boolean fragmentTrasaccion = false;
-         Fragment fragment = null;
-         String fragTag = null;
-         int toolbartitulo = 0;
-         */
-        /*
-        if(fragmentTrasaccion) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            Fragment fragmentByTag = fragmentManager.findFragmentByTag(fragTag);
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            fragmentManager.beginTransaction();
-            if (fragmentByTag == null){
-                transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
-                transaction.replace(R.id.fl_contenedor_principal, fragment, fragTag);
-                transaction.commit();
-            }
-
-            getSupportActionBar().setTitle(toolbartitulo);
-        }
-        */
 
     }
 
@@ -226,5 +198,4 @@ public class MainActivity extends AppCompatActivity implements
             // Toast.makeText(MainActivity.this, "Busqueda finalizada...", Toast.LENGTH_SHORT).show();
         }
     }
-
 }

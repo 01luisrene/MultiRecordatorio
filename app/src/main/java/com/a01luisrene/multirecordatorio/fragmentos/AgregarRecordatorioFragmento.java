@@ -3,7 +3,6 @@ package com.a01luisrene.multirecordatorio.fragmentos;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,13 +11,9 @@ import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.format.DateFormat;
-import android.text.format.Time;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +32,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.a01luisrene.multirecordatorio.MainActivity;
 import com.a01luisrene.multirecordatorio.R;
+import com.a01luisrene.multirecordatorio.adaptadores.ListaRecordatoriosAdaptador;
+import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.ui.CategoriaRecordatorioActivity;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
@@ -46,6 +44,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class AgregarRecordatorioFragmento extends Fragment implements View.OnClickListener{
@@ -53,9 +52,10 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
     //Constantes
     public static int MILISEGUNDOS_ESPERA = 1500;
     public static final String ESTADO_INICIAL_RECORDATORIO = "1";
+
     //Expresiones regulares
     public static final String REGEX_CARACTERES_LATINOS = "^[a-zA-Z0-9 áÁéÉíÍóÓúÚñÑüÜ]+$";
-    public static final String REGEX_FECHAS = "^([0-2][0-9]|3[0-1])(\\/|-)(0[1-9]|1[0-2])\\2(\\d{4})$";
+    public static final String REGEX_FECHAS = "^([0-2][0-9]|3[0-1])(\\/)(0[1-9]|1[0-2])\\2(\\d{4})$";
 
     //Referencias de widgets del fragmento
     private Button mBotonGuardar, mBotonAgregarCategoria;
@@ -76,6 +76,7 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
 
     //Referencia a manager de SQLite
     private DataBaseManagerRecordatorios mManagerRecordatorios;
+    private List<Recordatorios> mRecordatorios;
 
     //Referencias de widgets que se encuentran en activity detalle
     private CollapsingToolbarLayout mCtRecordatorio;
@@ -363,6 +364,7 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
                             Utilidades.fechaHora(),                     //[Fecha creación]
                             "19/08/2017",                               //[Fecha del recordatorio]
                             ESTADO_INICIAL_RECORDATORIO);
+
                 } catch (Exception e) {
                     //Mensaje de error
                     mostrarMensaje(getString(R.string.error_al_guardar), 0);
@@ -370,6 +372,8 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
 
                     //Mensaje de registro guardado con exito
                     mostrarMensaje(getString(R.string.mensaje_agregado_satisfactoriamente), 1);
+
+
 
                     //Cierro la activity
                     esperarYCerrar(MILISEGUNDOS_ESPERA);
@@ -502,5 +506,4 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
         }
         snackbar.show();
     }
-
 }
