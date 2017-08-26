@@ -5,16 +5,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.a01luisrene.multirecordatorio.ui.CategoriaRecordatorioActivity">
+    tools:context="com.a01luisrene.multirecordatorio.ui.CategoriaActivity">
 
     <include layout="@layout/toolbar"/>
 
     <FrameLayout
-        android:id="@+id/fl_categoria_recordatorio"
+        android:id="@+id/fl_detalle_categoria"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
     </FrameLayout>
+
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_agregar_categoria"

@@ -81,6 +81,12 @@ public class ListaCategoriaRecordatoriosAdaptador extends RecyclerView.Adapter<L
     //Devuelve el tamaño de tu conjunto de datos (invocado por el administrador de diseño)
     @Override
     public int getItemCount() {
-        return mDataset.size();
+
+        if(mDataset != null){
+            return mDataset.size() > 0 ? mDataset.size() : 0;
+        }else{
+            return 0;
+        }
+
     }
 }

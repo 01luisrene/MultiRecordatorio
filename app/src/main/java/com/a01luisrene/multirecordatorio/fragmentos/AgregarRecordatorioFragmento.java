@@ -1,72 +1,78 @@
 package com.a01luisrene.multirecordatorio.fragmentos;
 
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Patterns;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
+        import android.app.Activity;
+        import android.app.DatePickerDialog;
+        import android.app.TimePickerDialog;
+        import android.content.Intent;
+        import android.graphics.Color;
+        import android.os.Bundle;
+        import android.os.Handler;
+        import android.support.design.widget.CollapsingToolbarLayout;
+        import android.support.design.widget.Snackbar;
+        import android.support.design.widget.TextInputLayout;
+        import android.support.v4.app.Fragment;
+        import android.text.Editable;
+        import android.text.TextWatcher;
+        import android.util.Patterns;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.AdapterView;
+        import android.widget.ArrayAdapter;
+        import android.widget.Button;
+        import android.widget.CompoundButton;
+        import android.widget.DatePicker;
+        import android.widget.EditText;
+        import android.widget.ImageButton;
+        import android.widget.ImageView;
+        import android.widget.Spinner;
+        import android.widget.Switch;
+        import android.widget.TextView;
+        import android.widget.TimePicker;
+        import android.widget.Toast;
+        import static android.app.Activity.RESULT_OK;
 
-import com.a01luisrene.multirecordatorio.MainActivity;
-import com.a01luisrene.multirecordatorio.R;
-import com.a01luisrene.multirecordatorio.adaptadores.ListaRecordatoriosAdaptador;
-import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
-import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
-import com.a01luisrene.multirecordatorio.ui.CategoriaRecordatorioActivity;
-import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
-import com.squareup.picasso.Picasso;
+        import com.a01luisrene.multirecordatorio.R;
+        import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
+        import com.a01luisrene.multirecordatorio.ui.DetalleCategoriaActivity;
+        import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
+        import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.regex.Pattern;
+        import java.io.File;
+        import java.util.ArrayList;
+        import java.util.Calendar;
+        import java.util.regex.Pattern;
 
-public class AgregarRecordatorioFragmento extends Fragment implements View.OnClickListener{
+        import de.hdodenhof.circleimageview.CircleImageView;
+
+public class AgregarRecordatorioFragmento extends Fragment
+        implements View.OnClickListener,
+        AdapterView.OnItemSelectedListener,
+        CompoundButton.OnCheckedChangeListener{
 
     //Constantes
+    public static final String ESTADO_RECORDATORIO = "1";
+    public static final String ENVIAR_ON = "1";
+    public static final String ENVIAR_OFF = "0";
+    public static final String ID_CATEGORIA_NULO = "nulo";
     public static int MILISEGUNDOS_ESPERA = 1500;
-    public static final String ESTADO_INICIAL_RECORDATORIO = "1";
+    public static final int CODIGO_RESPUESTA_CATEGORIA = 100;
 
     //Expresiones regulares
     public static final String REGEX_CARACTERES_LATINOS = "^[a-zA-Z0-9 áÁéÉíÍóÓúÚñÑüÜ]+$";
     public static final String REGEX_FECHAS = "^([0-2][0-9]|3[0-1])(\\/)(0[1-9]|1[0-2])\\2(\\d{4})$";
 
     //Referencias de widgets del fragmento
-    private Button mBotonGuardar, mBotonAgregarCategoria;
-    private EditText mEtTituloRecordatorio, mEtEntidadOtros, mEtTelefono, mEtContenidoMensaje, mEtFecha, mEtHora;
-    private TextInputLayout mTilTituloRecordatorio, mTilEntidadOtros, mTilTelefono, mTilContenidoMensaje, mTilFecha, mTilHora;
-    private Switch mSwFacebook, mSwTwitter, mSwEnviarMensaje;
-    private String mValorFacebook, mValorTwitter, mValorEnviarMensaje;
-    private ImageButton mIbContactos, mIbFecha, mIbHora;
+    Button mBotonGuardar, mBotonAgregarCategoria;
+    EditText mEtTituloRecordatorio, mEtEntidadOtros, mEtTelefono, mEtContenidoMensaje, mEtFecha, mEtHora;
+    TextInputLayout mTilTituloRecordatorio, mTilEntidadOtros, mTilTelefono, mTilContenidoMensaje, mTilFecha, mTilHora;
+    Switch mSwFacebook, mSwTwitter, mSwEnviarMensaje;
+    String mValorFacebook, mValorTwitter, mValorEnviarMensaje;
+    ImageButton mIbContactos, mIbFecha, mIbHora;
 
     //[Combo categoria recordatorios]
-    private Spinner mSpinnerListaCategotegorias;
+    Spinner mSpinnerListaCategotegorias;
     //Variables para el combo
     ArrayList<String> comboListaCategorias;
     ArrayAdapter<CharSequence> comboAdapter;
@@ -75,14 +81,17 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
     public final Calendar c = Calendar.getInstance();
 
     //Referencia a manager de SQLite
-    private DataBaseManagerRecordatorios mManagerRecordatorios;
-    private List<Recordatorios> mRecordatorios;
+    DataBaseManagerRecordatorios mManagerRecordatorios;
 
     //Referencias de widgets que se encuentran en activity detalle
-    private CollapsingToolbarLayout mCtRecordatorio;
-    private ImageView mIvImagenRecordatorio;
-    private String  mValorIdCategoria, mValorImagenCategoria, mValorTituloCategoria;
+    CollapsingToolbarLayout mCtRecordatorio;
+    ImageView mIvImagenRecordatorio;
+    String  mValorIdCategoria, mValorImagenCategoria, mValorTituloCategoria;
     Activity activity;
+
+    //Referencias de widgets que se encuentran en layout toolbar_detalle.xml
+    private CircleImageView mCivImagenRecordatorio;
+    private TextView mTvTituloCategoriaRecordatorio;
 
 
     public AgregarRecordatorioFragmento() {
@@ -110,6 +119,10 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
             //Widgets de la activity Detalle Recordatorio
             mIvImagenRecordatorio = (ImageView) activity.findViewById(R.id.iv_cover);
             mCtRecordatorio = (CollapsingToolbarLayout) activity.findViewById(R.id.ct_recordatorio);
+        }else{
+            //Widgets del layout toolbar_detelle.xml
+            mCivImagenRecordatorio = (CircleImageView) v.findViewById(R.id.civ_nuevo_categoria_recordatorio);
+            mTvTituloCategoriaRecordatorio = (TextView) v.findViewById(R.id.tv_nuevo_titulo_categoria_recordatorio);
         }
 
         //Spinner
@@ -136,9 +149,9 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
         mSwTwitter = (Switch) v.findViewById(R.id.sw_twitter);
         mSwEnviarMensaje = (Switch) v.findViewById(R.id.sw_enviar_mensaje);
 
-        mValorEnviarMensaje = "0";
-        mValorFacebook = "0";
-        mValorTwitter = "0";
+        mValorEnviarMensaje = ENVIAR_OFF;
+        mValorFacebook = ENVIAR_OFF;
+        mValorTwitter = ENVIAR_OFF;
 
         //Botones
         mBotonGuardar = (Button) v.findViewById(R.id.bt_nuevo_guardar);
@@ -150,155 +163,55 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
         mIbContactos = (ImageButton) v.findViewById(R.id.bt_contactos);
 
         //Limpiar los EditText
-       mEtTituloRecordatorio.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-           }
-
-           @Override
-           public void onTextChanged(CharSequence s, int start, int before, int count) {
+        mEtTituloRecordatorio.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 esTituloRecordatorioValido(String.valueOf(s));
-           }
-
-           @Override
-           public void afterTextChanged(Editable s) {
-
-           }
-       });
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
         mEtEntidadOtros.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 esEntidadOtrosValido(String.valueOf(s));
             }
-
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) {}
         });
         mEtTelefono.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 esTelefonoValido(String.valueOf(s));
             }
-
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) { }
         });
 
         mEtFecha.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                esFechaValido(String.valueOf(s));
-            }
+                esFechaValido(String.valueOf(s));}
 
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) {}
         });
 
         //[INICIO COMBO]
-        comboListaCategorias = new ArrayList<String>();
-        comboListaCategorias.add(getString(R.string.selecciona_categoria_spinner));
-        for(int i = 0; i < mManagerRecordatorios.getListaCategoriaRecordatorios().size(); i++){
-            comboListaCategorias.add(mManagerRecordatorios.getListaCategoriaRecordatorios().get(i).getCategorioRecordatorio());
-        }
-
-        comboAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, comboListaCategorias);
-
-        mSpinnerListaCategotegorias.setAdapter(comboAdapter);
-
-        mSpinnerListaCategotegorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                int posicionReal = position - 1;
-
-                if(posicionReal >= 0) {
-
-                    mValorIdCategoria = mManagerRecordatorios.getListaCategoriaRecordatorios().get(posicionReal).getId();
-                    mValorImagenCategoria = mManagerRecordatorios.getListaCategoriaRecordatorios().get(posicionReal).getImagen();
-                    mValorTituloCategoria = mManagerRecordatorios.getListaCategoriaRecordatorios().get(posicionReal).getCategorioRecordatorio();
-
-                    if(Utilidades.smartphone) {
-
-                        mCtRecordatorio.setTitle(mValorTituloCategoria);
-                        if (mValorImagenCategoria != null){
-                            Picasso.with(getContext())
-                                    .load(new File(mValorImagenCategoria))
-                                    .into(mIvImagenRecordatorio);
-                        }else{
-                            mIvImagenRecordatorio.setImageDrawable(null);
-                        }
-                    }
-
-                }else{
-                    //Colocar el valor de id categoría en nulo
-                    mValorIdCategoria = null;
-
-                    if(Utilidades.smartphone) {
-                        mCtRecordatorio.setTitle(getString(R.string.agregar_recordatorio));
-                        mIvImagenRecordatorio.setImageDrawable(null);
-                    }
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        spinner();
         //[FIN COMBO]
-        mSwFacebook.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    mValorFacebook = "1";
-                }else{
-                    mValorFacebook = "0";
-                }
-            }
-        });
-        mSwTwitter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    mValorTwitter = "1";
-                }else{
-                    mValorTwitter = "0";
-                }
-            }
-        });
-        mSwEnviarMensaje.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    mValorEnviarMensaje = "1";
-                }else{
-                    mValorEnviarMensaje = "0";
-                }
-            }
-        });
+
+        mSwFacebook.setOnCheckedChangeListener(this);
+        mSwTwitter.setOnCheckedChangeListener(this);
+        mSwEnviarMensaje.setOnCheckedChangeListener(this);
 
         mBotonGuardar.setOnClickListener(this);
         mBotonAgregarCategoria.setOnClickListener(this);
@@ -309,6 +222,115 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
 
         return v;
 
+    }
+
+    public void spinner(){
+        comboListaCategorias = new ArrayList<String>();
+        comboListaCategorias.add(getString(R.string.selecciona_categoria_spinner));
+        int sizeListaCat = mManagerRecordatorios.getListaCategoriasSpinner().size();
+        for(int i = 0; i < sizeListaCat; i++){
+            comboListaCategorias.add(mManagerRecordatorios
+                    .getListaCategoriasSpinner().get(i).getCategorioRecordatorio());
+        }
+
+        comboAdapter = new ArrayAdapter(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, comboListaCategorias );
+        mSpinnerListaCategotegorias.setAdapter(comboAdapter);
+        mSpinnerListaCategotegorias.setOnItemSelectedListener(this);
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        int idSpinner = parent.getId();
+
+        switch (idSpinner){
+            case R.id.sp_categorias_recordatorios:
+                if(position != 0) {
+
+                    mValorIdCategoria = mManagerRecordatorios
+                            .getListaCategoriaRecordatorios()
+                            .get(position-1).getId();
+                    mValorImagenCategoria = mManagerRecordatorios
+                            .getListaCategoriaRecordatorios()
+                            .get(position-1).getImagen();
+                    mValorTituloCategoria = mManagerRecordatorios
+                            .getListaCategoriaRecordatorios()
+                            .get(position-1).getCategorioRecordatorio();
+
+                    if(Utilidades.smartphone) {
+
+                        mCtRecordatorio.setTitle(mValorTituloCategoria);
+                        if (mValorImagenCategoria != null){
+                            Picasso.with(getActivity())
+                                    .load(new File(mValorImagenCategoria))
+                                    .noFade()
+                                    .into(mIvImagenRecordatorio);
+                        }else{
+                            mIvImagenRecordatorio.setImageDrawable(null);
+                        }
+                    }else{
+                        mTvTituloCategoriaRecordatorio.setText(mValorTituloCategoria);
+                        if (mValorImagenCategoria != null){
+                            Picasso.with(getActivity().getApplicationContext())
+                                    .load(new File(mValorImagenCategoria))
+                                    .noFade()
+                                    .into(mCivImagenRecordatorio);
+                        }else{
+                            //mCivImagenRecordatorio.setImageDrawable(R.drawable.ic_image_150dp);
+                            mCivImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
+                        }
+                    }
+
+                }else{
+                    //Colocar el valor de id categoría en nulo
+                    mValorIdCategoria = ID_CATEGORIA_NULO;
+
+                    if(Utilidades.smartphone) {
+                        mCtRecordatorio.setTitle(getString(R.string.agregar_recordatorio));
+                        mIvImagenRecordatorio.setImageDrawable(null);
+                    }else{
+                        mTvTituloCategoriaRecordatorio.setText(getString(R.string.agregar_recordatorio));
+                        mCivImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
+                    }
+
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        int idBotonToggle = buttonView.getId();
+        switch(idBotonToggle) {
+            case R.id.sw_facebook:
+                if(isChecked){
+                    mValorFacebook = ENVIAR_ON;
+                }else{
+                    mValorFacebook = ENVIAR_OFF;
+                }
+                break;
+            case R.id.sw_twitter:
+                if(isChecked){
+                    mValorTwitter = ENVIAR_ON;
+                }else{
+                    mValorTwitter = ENVIAR_OFF;
+                }
+                break;
+            case R.id.sw_enviar_mensaje:
+                if(isChecked){
+                    mValorEnviarMensaje = ENVIAR_ON;
+                }else{
+                    mValorEnviarMensaje = ENVIAR_OFF;
+                }
+                break;
+        }
     }
 
     @Override
@@ -331,8 +353,28 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
     }
 
     private void abrirFormulario() {
-        Intent i = new Intent(getContext(), CategoriaRecordatorioActivity.class);
-        activity.startActivity(i);
+
+        Intent i = new Intent(getActivity(), DetalleCategoriaActivity.class);
+        startActivityForResult(i, CODIGO_RESPUESTA_CATEGORIA);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if((requestCode == CODIGO_RESPUESTA_CATEGORIA) && (resultCode == RESULT_OK)){
+
+            if(data.hasExtra(AgregarCategotiaRecordatorioFragmento.LLAVE_RETORNO_CATEGORIA)){
+                int valorObtenido = data.getExtras()
+                        .getInt(AgregarCategotiaRecordatorioFragmento.LLAVE_RETORNO_CATEGORIA);
+                if(valorObtenido == AgregarCategotiaRecordatorioFragmento.VALOR_CATEGORIA_ENVIADO_RESULT){
+                    //Recargo el spinner siempre y cuando tenga una respuesta OK
+                    spinner();
+                }
+            }
+
+        }
     }
 
     public void validarDatos(){
@@ -350,7 +392,8 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
         boolean fecha = esFechaValido(stFecha);
 
         if(titulo && entidadOtros && telefono && fecha) {
-            if(mValorIdCategoria != null) {
+
+            if(!mValorIdCategoria.equals(ID_CATEGORIA_NULO)) {
                 try {
                     mManagerRecordatorios.insertarRecoratorio(null,
                             mEtTituloRecordatorio.getText().toString(), //[Titulo]
@@ -362,8 +405,11 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
                             mValorFacebook,                             //[Publicar en facebook]
                             mValorTwitter,                              //[Publicar en twitter]
                             Utilidades.fechaHora(),                     //[Fecha creación]
-                            "19/08/2017",                               //[Fecha del recordatorio]
-                            ESTADO_INICIAL_RECORDATORIO);
+                            mEtFecha.getText().toString(),              //[Fecha del recordatorio]
+                            mEtHora.getText().toString(),               //[Hora del recordatorio]
+                            ESTADO_RECORDATORIO);
+
+
 
                 } catch (Exception e) {
                     //Mensaje de error
@@ -373,13 +419,11 @@ public class AgregarRecordatorioFragmento extends Fragment implements View.OnCli
                     //Mensaje de registro guardado con exito
                     mostrarMensaje(getString(R.string.mensaje_agregado_satisfactoriamente), 1);
 
-
-
                     //Cierro la activity
                     esperarYCerrar(MILISEGUNDOS_ESPERA);
                 }
             }else{
-                Toast.makeText(activity, getString(R.string.error_spinner_categorias), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.error_spinner_categorias), Toast.LENGTH_SHORT).show();
             }
         }
     }

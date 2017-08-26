@@ -13,18 +13,23 @@ import android.widget.TextView;
 
 import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
+import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DetalleRecordatorioFragmento extends Fragment {
 
     //Llave para usar con parcelable
     public static final String ID_RECORDATORIO = "objeto.recordatorio";
+    public static final String VALOR_ACTIVO = "1";
 
     private Recordatorios mItemRecordatorio;
     private CollapsingToolbarLayout mCtRecordatorio;
     private ImageView mIvImagenRecordatorio;
+    private CircleImageView mCivImagenCategoria;
     private CheckBox mCbFacebook, mCbTwitter, mCbMensaje;
     private String mValorFacebook, mValorTwitter, mValorMensaje, mValorImagen;
 
@@ -91,13 +96,31 @@ public class DetalleRecordatorioFragmento extends Fragment {
             mCbTwitter = (CheckBox) v.findViewById(R.id.cb_twtter);
             mCbMensaje = (CheckBox) v.findViewById(R.id.cb_mensaje);
 
+            if(!Utilidades.smartphone){ //Compruebo si es tablet
+                mCivImagenCategoria = (CircleImageView) v.findViewById(R.id.civ_detalle_categoria_recordatorio);
+                if(mValorImagen != null){
+                    //Utilizo la librería Picasso
+                    Picasso.with(getContext())
+                            .load(new File(mValorImagen))
+                            .into(mCivImagenCategoria);
+
+                }else{
+                    mCivImagenCategoria.setImageResource(R.drawable.ic_image_150dp);
+                }
+
+                ((TextView) v.findViewById(R.id.tv_detalle_titulo_categoria_recordatorio))
+                        .setText(mItemRecordatorio.getCategoriaRecordatorio());
+
+
+            }
+
             //Variables a verificar
             mValorFacebook = mItemRecordatorio.getPublicarFacebook();
             mValorTwitter = mItemRecordatorio.getPublicarTwitter();
             mValorMensaje = mItemRecordatorio.getEnvioMensaje();
 
             //Condición para el checkbox facebook
-            if (mValorFacebook.equals("1")){
+            if (mValorFacebook.equals(VALOR_ACTIVO)){
                 mCbFacebook.setChecked(true);
                 mCbFacebook.setClickable(false);
             } else {
@@ -106,7 +129,7 @@ public class DetalleRecordatorioFragmento extends Fragment {
             }
 
             //Condición para el checkbox twitter
-            if (mValorTwitter.equals("1")) {
+            if (mValorTwitter.equals(VALOR_ACTIVO)) {
                 mCbTwitter.setChecked(true);
                 mCbTwitter.setClickable(false);
             }else {
@@ -115,7 +138,7 @@ public class DetalleRecordatorioFragmento extends Fragment {
             }
 
             //Condición para el checkbox mensaje
-            if (mValorMensaje.equals("1")) {
+            if (mValorMensaje.equals(VALOR_ACTIVO)) {
                 mCbMensaje.setChecked(true);
                 mCbMensaje.setClickable(false);
             }else {
@@ -123,9 +146,8 @@ public class DetalleRecordatorioFragmento extends Fragment {
                 mCbMensaje.setEnabled(false);
             }
 
-
-            //TODO: crear una función para dividir la fecha de publicaicón
             ((TextView) v.findViewById(R.id.tv_fecha_recordatorio)).setText(mItemRecordatorio.getFechaPublicacionRecordatorio());
+            ((TextView) v.findViewById(R.id.tv_hora_recordatorio)).setText(mItemRecordatorio.getHoraPublicacionRecordatorio());
 
         }
 

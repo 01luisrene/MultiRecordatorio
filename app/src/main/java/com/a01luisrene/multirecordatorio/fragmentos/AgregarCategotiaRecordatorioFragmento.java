@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
@@ -44,14 +43,15 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
     private static final int PROTECCION = 0;
     private static final int REQUEST_CODE_GALLERY = 1;
     private static final int READ_STORAGE_PERMISSION = 2;
-    private CircleImageView mCivImagen;
-    private EditText mEtTituloRecordatorio;
-    private TextInputLayout mTilTituloTipoRecordatorio;
-    private String mFecha;
-    private Button mBtGuardarTipoRecordatorio, mBtSeleccionarImagen;
-    private Uri mUri;
-    private String mRutaImagen;
-    private DataBaseManagerRecordatorios mManager;
+    public static final String LLAVE_RETORNO_CATEGORIA = "llave.retorno";
+    public static final int VALOR_CATEGORIA_ENVIADO_RESULT = 101;
+    CircleImageView mCivImagen;
+    EditText mEtTituloRecordatorio;
+    TextInputLayout mTilTituloTipoRecordatorio;
+    Button mBtGuardarCategoriaRecordatorio, mBtSeleccionarImagen;
+    Uri mUri;
+    String mRutaImagen;
+    DataBaseManagerRecordatorios mManager;
 
     public AgregarCategotiaRecordatorioFragmento() {
         // Required empty public constructor
@@ -68,14 +68,15 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
         View v = inflater.inflate(R.layout.fragment_agregar_categoria_recordatorios, container, false);
 
         //Asignamos nuestro manager que contiene nuestros metodos CRUD
-        mManager = new DataBaseManagerRecordatorios(getActivity());
+       mManager = new DataBaseManagerRecordatorios(getActivity());
 
         //Asignado los id a las variables
-        mCivImagen = (CircleImageView) v.findViewById(R.id.civ_categoria_recordatorio);
+        mCivImagen = (CircleImageView) v.findViewById(R.id.civ_imagen_categoria_recordatorio);
         mBtSeleccionarImagen = (Button) v.findViewById(R.id.bt_seleccionar_imagen);
         mEtTituloRecordatorio = (EditText) v.findViewById(R.id.et_titulo_recordatorio);
-        mBtGuardarTipoRecordatorio = (Button) v.findViewById(R.id.bt_guardar_tipo_recordatorio);
+        mBtGuardarCategoriaRecordatorio = (Button) v.findViewById(R.id.bt_guardar_tipo_recordatorio);
         mTilTituloTipoRecordatorio = (TextInputLayout) v.findViewById(R.id.til_titulo_tipo_recordatorio);
+
 
         mEtTituloRecordatorio.addTextChangedListener(new TextWatcher() {
             @Override
@@ -90,7 +91,7 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
 
         //Evento clic para el boton Guardar, seleccionar imagen
         mBtSeleccionarImagen.setOnClickListener(this);
-        mBtGuardarTipoRecordatorio.setOnClickListener(this);
+        mBtGuardarCategoriaRecordatorio.setOnClickListener(this);
 
         return v;
     }
@@ -155,6 +156,9 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
         }
 
     }
+
+
+
 
     private boolean esTituloCategoriaRecordatorioValido(String titulo){
         Pattern patron = Pattern.compile(REGEX_LATINOS);
@@ -261,5 +265,11 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
         snackbar.show();
 
     }
-
+    //Función que sirve para devolver una respuesta de retorno
+    //al formulario nuevo recordatorio
+    public void enviarNuevasCategoriasRecordatorios(){
+        Intent i = new Intent();
+        i.putExtra(LLAVE_RETORNO_CATEGORIA, VALOR_CATEGORIA_ENVIADO_RESULT);
+        getActivity().setResult(RESULT_OK, i);
+    }
 }

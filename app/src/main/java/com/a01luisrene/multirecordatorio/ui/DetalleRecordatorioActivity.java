@@ -28,9 +28,10 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
 
     CollapsingToolbarLayout ctRecordatorio;
     FloatingActionButton fabEditar;
-    DetalleRecordatorioFragmento detalleRecordatorioFragmento;
     Recordatorios itemsRecordatorios;
     DataBaseManagerRecordatorios managerRecordatorios;
+    DetalleRecordatorioFragmento detalleRecordatorioFragmento;
+    AgregarRecordatorioFragmento mAgregarRecordatorioFragmento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +63,12 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
 
         if (savedInstanceState == null) {
             if(agregarRecordatorioFragmento == 1){
+
+                mAgregarRecordatorioFragmento = new AgregarRecordatorioFragmento();
+
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fl_contenedor_detalle, new AgregarRecordatorioFragmento())
+                        .replace(R.id.fl_contenedor_detalle, mAgregarRecordatorioFragmento)
                         .commit();
 
                 //Oculto el botón editar
@@ -89,6 +93,16 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detalle, menu);
+
+        MenuItem eliminarItem = menu.findItem(R.id.accion_eliminar);
+
+        //Muestro el icono de eliminar solo si carga el formulario detalle
+        if(detalleRecordatorioFragmento != null){
+            eliminarItem.setVisible(true);
+        }else{
+            eliminarItem.setVisible(false);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -96,11 +110,11 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                finish();
+                onBackPressed();
                 return true;
+
             case R.id.accion_eliminar:
                 String idRecordatorio = itemsRecordatorios.getId();
-                String tituloRecordatorio = itemsRecordatorios.getTitulo();
 
                 managerRecordatorios.eliminarRecordatorio(idRecordatorio);
 

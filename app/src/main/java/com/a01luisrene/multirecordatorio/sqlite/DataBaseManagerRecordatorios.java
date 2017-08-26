@@ -34,13 +34,14 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     private static final String PUBLICAR_FACEBOOK_RECORDATORIO = "publicar_facebook";
     private static final String PUBLICAR_TWITTER_RECORDATORIO = "publicar_twitter";
     private static final String FECHA_CREACION_RECORDATORIO = "fecha_creacion";
-    private static final String FECHA_AVISO_RECORDATORIO = "fecha_avisso_recordatorio";
+    private static final String FECHA_AVISO_RECORDATORIO = "fecha_aviso_recordatorio";
+    public static final String HORA_AVIDO_RECORDATORIO = "hora_aviso_recordatorio";
     private static final String ESTADO_RECORDATORIO = "estado_recordatorio";
 
     /*[COLUMNAS PARA LA TABLA CATEGORIAS DE RECORDATORIOS]*/
     private static final String ID_CATEGORIA = "_id";
     private static final String RUTA_IMAGEN_CATEGORIA = "ruta_imagen_categoria";
-    private static final String TITULO_CATEGORIA = "titulo_categoria";
+    public static final String TITULO_CATEGORIA = "titulo_categoria";
     private static final String PROTECCION_CATEGORIA = "proteccion";
     private static final String FECHA_CREACION_CATEGORIA = "fecha_creacion";
 
@@ -59,8 +60,8 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
             CREAR_TABLA_RECORDATORIOS = String.format("CREATE TABLE %1$s (%2$s INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "%3$s TEXT NOT NULL, %4$s TEXT NULL, %5$s TEXT NOT NULL, %6$s TEXT NULL, %7$s TEXT NOT NULL, " +
                     "%8$s INTEGER NOT NULL, %9$s INTEGER NOT NULL, %10$s INTEGER NOT NULL, " +
-                    "%11$s TEXT NOT NULL, %12$s TEXT NOT NULL, %13$s INTEGER NOT NULL, " +
-                    "FOREIGN KEY(%14$s) REFERENCES %15$s(%16$s));",
+                    "%11$s TEXT NOT NULL, %12$s TEXT NOT NULL, %13$s TEXT NOT NULL, %14$s INTEGER NOT NULL, " +
+                    "FOREIGN KEY(%15$s) REFERENCES %16$s(%17$s));",
             TABLA_RECORDATORIOS,            //[1]
             ID_RECORDATORIO,                //[2]
             TITULO_RECORDATORIO,            //{3}
@@ -73,10 +74,11 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
             PUBLICAR_TWITTER_RECORDATORIO,  //[10]
             FECHA_CREACION_RECORDATORIO,    //[11]
             FECHA_AVISO_RECORDATORIO,       //[12]
-            ESTADO_RECORDATORIO,            //[13]
-            LLAVE_CATEGORIA_RECORDATORIO,   //[14]
-            TABLA_CATEGORIAS_RECORDATORIOS, //[15]
-            ID_CATEGORIA);                  //[16]
+            HORA_AVIDO_RECORDATORIO,        //[13]
+            ESTADO_RECORDATORIO,            //[14]
+            LLAVE_CATEGORIA_RECORDATORIO,   //[15]
+            TABLA_CATEGORIAS_RECORDATORIOS, //[16]
+            ID_CATEGORIA);                  //[17]
 
     //===[CADENA DE SENTECIA SQL PARA GENERAR LA TABLA CATEGORÍAS]===//
     public static final String
@@ -141,6 +143,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                                           String publicarTwitter,
                                           String fechaCreacion,
                                           String fechaRecordatorio,
+                                          String horaRecordatorio,
                                           String estadoRecordatorio){
 
         ContentValues valores = new ContentValues();
@@ -155,6 +158,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
         valores.put(PUBLICAR_TWITTER_RECORDATORIO, publicarTwitter);
         valores.put(FECHA_CREACION_RECORDATORIO, fechaCreacion);
         valores.put(FECHA_AVISO_RECORDATORIO, fechaRecordatorio);
+        valores.put(HORA_AVIDO_RECORDATORIO, horaRecordatorio);
         valores.put(ESTADO_RECORDATORIO, estadoRecordatorio);
 
         return valores;
@@ -173,6 +177,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                                     String publicarTwitter,
                                     String fechaCreacion,
                                     String fechaRecordatorio,
+                                    String horaRecordatorio,
                                     String estadoRecordatorio) {
 
         getDb().beginTransaction();
@@ -189,6 +194,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                     publicarTwitter,
                     fechaCreacion,
                     fechaRecordatorio,
+                    horaRecordatorio,
                     estadoRecordatorio));
 
             getDb().setTransactionSuccessful();
@@ -213,6 +219,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                                       String publicarTwitter,
                                       String fechaCreacion,
                                       String fechaRecordatorio,
+                                      String horaRecordatorio,
                                       String estadoRecordatorio) {
 
         String[] args = new String[]{id};
@@ -227,6 +234,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                 publicarTwitter,
                 fechaCreacion,
                 fechaRecordatorio,
+                horaRecordatorio,
                 estadoRecordatorio), ID_RECORDATORIO + "=?",args);
     }
 
@@ -250,8 +258,8 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
         //Cadena que contiene la consulta de las tablas recordatorios y categoria_recoordatorios
         String sql =
                 String.format("SELECT r.%1$s, r.%2$s, r.%3$s, cr.%4$s, cr.%5$s, r.%6$s, r.%7$s, r.%8$s, r.%9$s, " +
-                                "r.%10$s, r.%11$s FROM %12$s r, %13$s cr WHERE r.%14$s = cr.%15$s " +
-                                "AND r.%16$s = %17$d ORDER BY r.%18$s DESC",
+                                "r.%10$s, r.%11$s, r.%12$s FROM %13$s r, %14$s cr WHERE r.%15$s = cr.%16$s " +
+                                "AND r.%17$s = %18$d ORDER BY r.%19$s DESC",
                         ID_RECORDATORIO, //[1]
                         TITULO_RECORDATORIO, //[2]
                         ENTIDAD_OTROS_RECORDATORIO, //[3]
@@ -263,13 +271,14 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                         PUBLICAR_FACEBOOK_RECORDATORIO, //[9]
                         PUBLICAR_TWITTER_RECORDATORIO, //[10]
                         FECHA_AVISO_RECORDATORIO, //[11]
-                        TABLA_RECORDATORIOS, //[12]
-                        TABLA_CATEGORIAS_RECORDATORIOS, //[13] Constantes de categoría
-                        LLAVE_CATEGORIA_RECORDATORIO, //[14]
-                        ID_CATEGORIA, //[15] Constantes de categoría
-                        ESTADO_RECORDATORIO, //[16]
-                        1, //[17]
-                        ID_RECORDATORIO); //[18]
+                        HORA_AVIDO_RECORDATORIO, //[12]
+                        TABLA_RECORDATORIOS, //[13]
+                        TABLA_CATEGORIAS_RECORDATORIOS, //[14] Constantes de categoría
+                        LLAVE_CATEGORIA_RECORDATORIO, //[15]
+                        ID_CATEGORIA, //[16] Constantes de categoría
+                        ESTADO_RECORDATORIO, //[17]
+                        1, //[18]
+                        ID_RECORDATORIO); //[19]
 
         //rawQuery(Sentencia SQL, null)
         return super.getDb().rawQuery(sql, null);
@@ -321,7 +330,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
             recordatorio.setPublicarFacebook(cursor.getString(8));
             recordatorio.setPublicarTwitter(cursor.getString(9));
             recordatorio.setFechaPublicacionRecordatorio(cursor.getString(10));
-
+            recordatorio.setHoraPublicacionRecordatorio(cursor.getString(11));
             list.add(recordatorio);
         }
 
@@ -384,6 +393,15 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     }
 
     @Override
+    public Cursor cargarCategoriaSpinner() {
+        String[] columnas = new String[]{ID_CATEGORIA,
+                RUTA_IMAGEN_CATEGORIA,
+                TITULO_CATEGORIA};
+        String order_by = ID_CATEGORIA + " DESC";
+        return super.getDb().query(TABLA_CATEGORIAS_RECORDATORIOS, columnas, null, null, null, null, order_by);
+    }
+
+    @Override
     public Cursor cargarCursorCategoriaRecordatorios() {
 
         String[] columnas = new String[]{ID_CATEGORIA,
@@ -402,6 +420,24 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     @Override
     public Boolean compruebaRegistroCategoriaRecordatorio(String id) {
         return null;
+    }
+
+    public List<CategoriaRecordatorios> getListaCategoriasSpinner(){
+        List<CategoriaRecordatorios> list = new ArrayList<>();
+
+        Cursor cursor = cargarCategoriaSpinner();
+
+        while (cursor.moveToNext()){
+            CategoriaRecordatorios catRecordatorio = new CategoriaRecordatorios();
+
+            catRecordatorio.setId(cursor.getString(0));
+            catRecordatorio.setImagen(cursor.getString(1));
+            catRecordatorio.setCategorioRecordatorio(cursor.getString(2));
+
+            list.add(catRecordatorio);
+        }
+
+        return list;
     }
 
     public List<CategoriaRecordatorios> getListaCategoriaRecordatorios(){

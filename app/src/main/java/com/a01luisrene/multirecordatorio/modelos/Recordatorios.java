@@ -15,6 +15,7 @@ public class Recordatorios implements Parcelable {
     private String publicarFacebook;
     private String publicarTwitter;
     private String fechaPublicacionRecordatorio;
+    private String horaPublicacionRecordatorio;
 
 
     /**
@@ -27,24 +28,6 @@ public class Recordatorios implements Parcelable {
 
     }
 
-    public Recordatorios(String id, String titulo, String entidadOtros, String imagenRecordatorio, String categoriaRecordatorio, String telefono, String contenidoMensaje, String envioMensaje, String publicarFacebook, String publicarTwitter, String fechaPublicacionRecordatorio) {
-        this.id = id;
-        this.titulo = titulo;
-        this.entidadOtros = entidadOtros;
-        this.imagenRecordatorio = imagenRecordatorio;
-        this.categoriaRecordatorio = categoriaRecordatorio;
-        this.telefono = telefono;
-        this.contenidoMensaje = contenidoMensaje;
-        this.envioMensaje = envioMensaje;
-        this.publicarFacebook = publicarFacebook;
-        this.publicarTwitter = publicarTwitter;
-        this.fechaPublicacionRecordatorio = fechaPublicacionRecordatorio;
-    }
-
-    /**
-     *
-     * GETTER & SETTER
-     */
     public String getId() {
         return id;
     }
@@ -133,9 +116,14 @@ public class Recordatorios implements Parcelable {
         this.fechaPublicacionRecordatorio = fechaPublicacionRecordatorio;
     }
 
-    /**
-     *PARCELABLE
-     */
+    public String getHoraPublicacionRecordatorio() {
+        return horaPublicacionRecordatorio;
+    }
+
+    public void setHoraPublicacionRecordatorio(String horaPublicacionRecordatorio) {
+        this.horaPublicacionRecordatorio = horaPublicacionRecordatorio;
+    }
+
 
     @Override
     public int describeContents() {
@@ -155,6 +143,7 @@ public class Recordatorios implements Parcelable {
         dest.writeString(this.publicarFacebook);
         dest.writeString(this.publicarTwitter);
         dest.writeString(this.fechaPublicacionRecordatorio);
+        dest.writeString(this.horaPublicacionRecordatorio);
     }
 
     protected Recordatorios(Parcel in) {
@@ -169,6 +158,7 @@ public class Recordatorios implements Parcelable {
         this.publicarFacebook = in.readString();
         this.publicarTwitter = in.readString();
         this.fechaPublicacionRecordatorio = in.readString();
+        this.horaPublicacionRecordatorio = in.readString();
     }
 
     public static final Parcelable.Creator<Recordatorios> CREATOR = new Parcelable.Creator<Recordatorios>() {

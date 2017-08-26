@@ -28,11 +28,11 @@ public class MainActivity extends AppCompatActivity implements
         MenuItemCompat.OnActionExpandListener,
         ListaRecordatoriosFragmento.OnItemSelectedListener{
 
-    private Toolbar mToolbar;
-    private FloatingActionButton mFabAgregarRecordatorio;
+    Toolbar mToolbar;
+    FloatingActionButton mFabAgregarRecordatorio;
 
-    private ListaRecordatoriosFragmento mListaRecordatoriosFragmento;
-    private DetalleRecordatorioFragmento mDetalleRecordatorioFragmento;
+    ListaRecordatoriosFragmento mListaRecordatoriosFragmento;
+    DetalleRecordatorioFragmento mDetalleRecordatorioFragmento;
     public static final String CARGAR_NUEVO_RECORDATORIO_FRAGMENTO = "cargar_nuevo_recordatorio_fragmento";
 
     private boolean dosPaneles = false;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     private void determinePaneLayout() {
 
-        View detalleItemFragmento = findViewById(R.id.fl_detalle);
+        View detalleItemFragmento = findViewById(R.id.fl_contenedor_lateral);
 
         if (detalleItemFragmento != null) {
             dosPaneles = true;
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements
             // Reemplazar el diseño del marco con el fragmento de detalle correcto
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             mDetalleRecordatorioFragmento = DetalleRecordatorioFragmento.newInstance(recordatorios);
-            ft.replace(R.id.fl_detalle, mDetalleRecordatorioFragmento);
+            ft.replace(R.id.fl_contenedor_lateral, mDetalleRecordatorioFragmento);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
 
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements
                 }else{
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fl_detalle, new AgregarRecordatorioFragmento())
+                            .replace(R.id.fl_contenedor_lateral, new AgregarRecordatorioFragmento())
                             .commit();
 
                     //Desabilito el botón agregar
@@ -198,4 +198,6 @@ public class MainActivity extends AppCompatActivity implements
             // Toast.makeText(MainActivity.this, "Busqueda finalizada...", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

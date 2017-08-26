@@ -2,20 +2,24 @@ package com.a01luisrene.multirecordatorio.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
+import android.support.v7.widget.Toolbar;
 import com.a01luisrene.multirecordatorio.R;
-import com.a01luisrene.multirecordatorio.fragmentos.AgregarCategotiaRecordatorioFragmento;
 import com.a01luisrene.multirecordatorio.fragmentos.ListaCategoriaRecordatoriosFragmento;
 
 
-public class CategoriaRecordatorioActivity extends AppCompatActivity{
+public class CategoriaActivity extends AppCompatActivity{
+
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_categoria_recordatorio);
+        setContentView(R.layout.activity_categoria);
 
-        AgregarCategotiaRecordatorioFragmento fragment = new AgregarCategotiaRecordatorioFragmento();
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        ListaCategoriaRecordatoriosFragmento fragment = new ListaCategoriaRecordatoriosFragmento();
 
         if (savedInstanceState == null){
             getSupportFragmentManager()
@@ -25,5 +29,4 @@ public class CategoriaRecordatorioActivity extends AppCompatActivity{
         }
 
     }
-
 }

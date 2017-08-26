@@ -28,4 +28,7 @@
     <!--Color borde de una imagen en circulo-->
     <color name="color_borde_imagen_circular">@color/primary</color>
 
+    <!--Color del bg toolber detalle-->
+    <color name="bg_toolbar">#fefefe</color>
+
 </resources>

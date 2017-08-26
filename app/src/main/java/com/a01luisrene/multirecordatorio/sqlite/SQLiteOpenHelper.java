@@ -2,24 +2,23 @@ package com.a01luisrene.multirecordatorio.sqlite;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 
-public class RecordatorioHelper extends SQLiteOpenHelper {
+public class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
 
-    private static RecordatorioHelper sInstance;
+    private static SQLiteOpenHelper sInstance;
     private static final String NOMBRE_BASE_DATOS = "multirecordatorio.sqlite";
     private static final int VERSION_ESQUEMA_BASE_DATOS = 1;
 
     //[Singleton Pattern] Patrón Singleton
-    public static synchronized RecordatorioHelper getInstance(Context context) {
+    public static synchronized SQLiteOpenHelper getInstance(Context context) {
         if (sInstance == null) {
-            sInstance = new RecordatorioHelper(context.getApplicationContext());
+            sInstance = new SQLiteOpenHelper(context.getApplicationContext());
         }
         return sInstance;
     }
 
-    private RecordatorioHelper(Context context) {
+    private SQLiteOpenHelper(Context context) {
         super(context, NOMBRE_BASE_DATOS, null, VERSION_ESQUEMA_BASE_DATOS);
     }
 

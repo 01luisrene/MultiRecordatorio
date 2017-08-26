@@ -113,11 +113,7 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                 //Condiciono para manejar si el valor devuelto es vacío
                 if(valorImagen == null ||valorImagen.isEmpty()){
                     //[Si no hay imagen muestro una por defecto]
-                    Picasso.with(context)
-                            .load(R.drawable.ic_image_150dp)
-                            .error(R.drawable.ic_image_150dp)
-                            .resize(350, 350)
-                            .into(ivImagenRecordatorio);
+                    ivImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
 
 
                 }else{
@@ -135,12 +131,7 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                 //Condiciono para manejar si el valor devuelto es vacío
                 if(valorImagen == null ||valorImagen.isEmpty()){
                     //[Si no hay imagen muestro una por defecto]
-                    Picasso.with(context)
-                            .load(R.drawable.ic_image_150dp)
-                            .error(R.drawable.ic_image_150dp)
-                            .resize(350, 350)
-                            .into(civImagenRecordatorio);
-
+                    civImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
 
                 }else{
                     //Cargo la imagen con la ayuda de la librería picasso
@@ -177,13 +168,29 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         Recordatorios items = mListaItemsRecordatorios.get(position);
-
         holder.bind(mContext, items, itemClickListener);
 
     }
 
+    void agregarItemRecordatorio(Recordatorios listaItemsRecordatorios, int index) {
+        mListaItemsRecordatorios.add(listaItemsRecordatorios);
+        notifyItemInserted(index);
+    }
+
+    void eliminarItemRecordatorio(int index) {
+        mListaItemsRecordatorios.remove(index);
+        notifyItemRemoved(index);
+    }
+
     // Devuelve el tamaño de tu conjunto de datos (invocado por el administrador de diseño)
     @Override
-    public int getItemCount() {return mListaItemsRecordatorios.size();}
+    public int getItemCount() {
+
+        if(mListaItemsRecordatorios != null){
+            return mListaItemsRecordatorios.size() > 0 ? mListaItemsRecordatorios.size() : 0;
+        }else{
+            return 0;
+        }
+    }
 
 }

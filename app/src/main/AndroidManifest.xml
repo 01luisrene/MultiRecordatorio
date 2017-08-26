@@ -22,7 +22,9 @@
         </activity>
         <activity android:name=".ui.DetalleRecordatorioActivity">
         </activity>
-        <activity android:name=".ui.CategoriaRecordatorioActivity">
+        <activity android:name=".ui.CategoriaActivity">
+        </activity>
+        <activity android:name=".ui.DetalleCategoriaActivity">
         </activity>
     </application>
 

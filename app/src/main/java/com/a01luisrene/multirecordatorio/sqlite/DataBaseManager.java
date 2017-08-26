@@ -6,12 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 
 public abstract class DataBaseManager {
 
-    private RecordatorioHelper mRecordatoriosDbHelper;
+    private SQLiteOpenHelper mRecordatoriosDbHelper;
     private SQLiteDatabase db;
 
     public DataBaseManager(Context context) {
 
-        mRecordatoriosDbHelper = RecordatorioHelper.getInstance(context);
+        mRecordatoriosDbHelper = SQLiteOpenHelper.getInstance(context);
         db = mRecordatoriosDbHelper.getWritableDatabase();
 
     }
@@ -36,6 +36,7 @@ public abstract class DataBaseManager {
                                              String publicarTwitter,
                                              String fechaCreacion,
                                              String fechaRecordatorio,
+                                             String horaRecordatorio,
                                              String estadoRecordatorio);
     //Actualizar un registro
     abstract public void actualizarRecoratorio(String id,
@@ -49,6 +50,7 @@ public abstract class DataBaseManager {
                                                String publicarTwitter,
                                                String fechaCreacion,
                                                String fechaRecordatorio,
+                                               String horaRecordatorio,
                                                String estadoRecordatorio);
 
     //Eliminar el recordatorio seleccionado
@@ -84,6 +86,8 @@ public abstract class DataBaseManager {
 
     abstract public void eliminarCategoriaRecordatorios();
 
+    abstract public Cursor cargarCategoriaSpinner();
+
     abstract public Cursor cargarCursorCategoriaRecordatorios();
 
     abstract public Cursor buscarCategoriasRecordatorios(String categoriaRecordatorio);
@@ -96,11 +100,11 @@ public abstract class DataBaseManager {
      * GETTER & SETTER
      **/
 
-    public RecordatorioHelper getRecordatoriosDbHelper() {
+    public SQLiteOpenHelper getRecordatoriosDbHelper() {
         return mRecordatoriosDbHelper;
     }
 
-    public void setRecordatoriosDbHelper(RecordatorioHelper recordatoriosDbHelper) {
+    public void setRecordatoriosDbHelper(SQLiteOpenHelper recordatoriosDbHelper) {
         mRecordatoriosDbHelper = recordatoriosDbHelper;
     }
 
