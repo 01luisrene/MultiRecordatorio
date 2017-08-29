@@ -10,20 +10,24 @@
 
     <!--Formulario agregar recordatorio-->
     <string name="nuevo_titulo_recordatorio">Título del recordatorio</string>
-    <string name="nuevo_entidad_otros">Nombre, empresa, lugar, &#8230;</string>
+    <string name="nuevo_entidad_otros">Subtítulo (nombre, empresa, lugar, &#8230;)</string>
     <string name="nuevo_telefono_recordatorio">Teléfono</string>
     <string name="nuevo_mensaje_recordatorio">Mensaje del recordatorio</string>
     <string name="boton_buscar_contacto">Botón para buscar contactos</string>
     <string name="nuevo_titulo_fecha_recordatorio">Fecha &#38; hora del recordatorio:</string>
-    <string name="nuevo_fecha_recordatorio">dd/mm/yyyy</string>
-    <string name="nuevo_hora_recordatorio">hh:mm</string>
+    <string name="nuevo_fecha_recordatorio">DD/MM/AAAA</string>
+    <string name="nuevo_hora_recordatorio">HH:MM</string>
 
-    <!--Mensajes de error TextInputLayout-->
+    <!--Mensajes de error (Nuevo recordatorio)-->
     <string name="error_spinner_categorias">Debes seleccionar una categoría</string>
     <string name="error_titulo_recordatorio">Ingrese un título válido</string>
+    <string name="error_titulo_recordatorio_min_char">Ingrese un mínimo de 8 caracteres</string>
     <string name="error_entidad_otros">Ingrese un subtítulo válido</string>
-    <string name="error_telefono">Ingrese un número de teléfono válido</string>
+    <string name="error_contenido_mensaje_min_char">Ingrese un mínimo de 15 caracteres</string>
+    <string name="error_contenido_mensaje_max_char">Ingrese un máximo de 1000 caracteres</string>
+    <string name="error_telefono">Número inválido</string>
     <string name="error_fecha">Ingrese un fecha válida</string>
+    <string name="error_hora">Ingrese un hora válida</string>
 
     <string name="selecciona_categoria_spinner">Seleccione una categoria:</string>
     <string name="agregar_categoria_boton">Agregar</string>

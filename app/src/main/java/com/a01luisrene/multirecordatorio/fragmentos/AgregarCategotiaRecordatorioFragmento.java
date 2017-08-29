@@ -43,14 +43,17 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
     private static final int PROTECCION = 0;
     private static final int REQUEST_CODE_GALLERY = 1;
     private static final int READ_STORAGE_PERMISSION = 2;
-    public static final String LLAVE_RETORNO_CATEGORIA = "llave.retorno";
-    public static final int VALOR_CATEGORIA_ENVIADO_RESULT = 101;
+    public static final String LLAVE_RETORNO_CATEGORIA = "llave.retorno.categoria";
+
+    boolean respuestaRetornoCategoria = false;
+
     CircleImageView mCivImagen;
     EditText mEtTituloRecordatorio;
     TextInputLayout mTilTituloTipoRecordatorio;
     Button mBtGuardarCategoriaRecordatorio, mBtSeleccionarImagen;
     Uri mUri;
     String mRutaImagen;
+
     DataBaseManagerRecordatorios mManager;
 
     public AgregarCategotiaRecordatorioFragmento() {
@@ -149,6 +152,7 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
             }finally {
                 //Mensaje de registro guardado con exito
                 mostrarMensaje(getString(R.string.mensaje_agregado_satisfactoriamente), 1);
+                respuestaRetornoCategoria = true;
                 mCivImagen.setImageResource(R.drawable.ic_image_150dp);
                 mEtTituloRecordatorio.setText("");
                 mRutaImagen = null;
@@ -269,7 +273,7 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
     //al formulario nuevo recordatorio
     public void enviarNuevasCategoriasRecordatorios(){
         Intent i = new Intent();
-        i.putExtra(LLAVE_RETORNO_CATEGORIA, VALOR_CATEGORIA_ENVIADO_RESULT);
+        i.putExtra(LLAVE_RETORNO_CATEGORIA, respuestaRetornoCategoria);
         getActivity().setResult(RESULT_OK, i);
     }
 }

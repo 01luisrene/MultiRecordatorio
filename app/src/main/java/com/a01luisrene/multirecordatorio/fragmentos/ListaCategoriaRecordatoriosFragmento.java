@@ -19,11 +19,10 @@ import java.util.List;
 
 public class ListaCategoriaRecordatoriosFragmento extends Fragment{
 
-    public static final String FRAGMENT_CATEGORIA_RECORDATORIO = "fragment_lista_categoria_recordatorios";
-    private RecyclerView mTipoRecordatorioListRecyclerView;
-    private ListaCategoriaRecordatoriosAdaptador mListaCategoriaRecordatoriosAdaptador;
-    private List<CategoriaRecordatorios> mListaItemsCategoriaRecordatorios;
-    private DataBaseManagerRecordatorios mManager;
+    RecyclerView mTipoRecordatorioListRecyclerView;
+    ListaCategoriaRecordatoriosAdaptador mListaCategoriaRecordatoriosAdaptador;
+    List<CategoriaRecordatorios> mListaItemsCategoriaRecordatorios;
+    DataBaseManagerRecordatorios mManager;
 
     public ListaCategoriaRecordatoriosFragmento() {
         // Required empty public constructor

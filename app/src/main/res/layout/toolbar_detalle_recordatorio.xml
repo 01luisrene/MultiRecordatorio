@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/transparente"
         android:contentDescription="@string/accion_editar"
-        android:src="@drawable/ic_edit_black_24dp"
+        android:src="@drawable/ic_edit_gray_24dp"
         tools:ignore="UnusedAttribute"
         android:layout_marginEnd="8dp"
         android:layout_centerVertical="true"

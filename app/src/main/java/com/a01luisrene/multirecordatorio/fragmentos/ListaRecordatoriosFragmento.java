@@ -11,6 +11,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +29,13 @@ import java.util.List;
 public class ListaRecordatoriosFragmento extends Fragment{
 
     //Poblar lista recycclerView
-    public RecyclerView mRecordatoriosRecyclerView;
-    private List<Recordatorios> mListaItemsRecordatorios;
-    private  DataBaseManagerRecordatorios mManagerRecordatorios;
-    private  ListaRecordatoriosAdaptador mListaRecordatoriosAdaptador;
+    RecyclerView mRecordatoriosRecyclerView;
+    List<Recordatorios> mListaItemsRecordatorios;
+    DataBaseManagerRecordatorios mManagerRecordatorios;
+    ListaRecordatoriosAdaptador mListaRecordatoriosAdaptador;
 
     //Variable que mostrara un mensaje cuando la lista este vacía
-    private TextView mListaVacia;
+    TextView mListaVacia;
 
     //Variables para la comunicación entre fragment y Activity
     private OnItemSelectedListener listener;
@@ -103,7 +104,7 @@ public class ListaRecordatoriosFragmento extends Fragment{
             String text = String.format(res.getString(R.string.lista_vacia), getString(R.string.l_recordatorios));
 
             //Formato personalizado del texto lista vacía
-            Spannable spannable = Utilidades.setSpanCustomText(getContext(),
+            Spannable spannable = Utilidades.setSpanCustomText(getActivity(),
                     text,
                     6,
                     20,
@@ -122,6 +123,42 @@ public class ListaRecordatoriosFragmento extends Fragment{
         return v;
     }
 
+    public void actualizarListaRecordatorios(){
+        //[Recargo la lista]
+        //mListaRecordatoriosAdaptador.eliminarItemRecordatorio(1);
+        Log.v("log", "Se recargo la lista");
+
+    }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mListaItemsRecordatorios = mManagerRecordatorios.getListaRecordatorios();
+
+        mListaRecordatoriosAdaptador = new ListaRecordatoriosAdaptador(mListaItemsRecordatorios,
+                getActivity().getApplicationContext(), new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(Recordatorios recordatorios) {
+                listener.onItemSelected(recordatorios);
+            }
+        });
+
+        mRecordatoriosRecyclerView.setAdapter(mListaRecordatoriosAdaptador);
+
+        mRecordatoriosRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        //Verifico si la lista sigue vacía
+        if (mListaItemsRecordatorios.isEmpty()) {
+            mListaVacia.setVisibility(View.VISIBLE);
+            mRecordatoriosRecyclerView.setVisibility(View.GONE);
+        } else {
+            mListaVacia.setVisibility(View.GONE);
+            mRecordatoriosRecyclerView.setVisibility(View.VISIBLE);
+
+        }
+    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -143,32 +180,5 @@ public class ListaRecordatoriosFragmento extends Fragment{
         listener = null;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        //[Recargo la lista cuando el fragment vuelve a estar visible]
-        mListaItemsRecordatorios = mManagerRecordatorios.getListaRecordatorios();
-
-        mListaRecordatoriosAdaptador = new ListaRecordatoriosAdaptador(mListaItemsRecordatorios,
-                getActivity().getApplicationContext(), new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(Recordatorios recordatorios) {
-                listener.onItemSelected(recordatorios);
-            }
-        });
-        mRecordatoriosRecyclerView.setAdapter(mListaRecordatoriosAdaptador);
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        //Cierro la conexión solo si es un smartphone
-        if(Utilidades.smartphone){
-            mManagerRecordatorios.cerrar();
-        }
-    }
 }
 

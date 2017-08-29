@@ -29,8 +29,8 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
     CollapsingToolbarLayout ctRecordatorio;
     FloatingActionButton fabEditar;
     Recordatorios itemsRecordatorios;
-    DataBaseManagerRecordatorios managerRecordatorios;
-    DetalleRecordatorioFragmento detalleRecordatorioFragmento;
+    DataBaseManagerRecordatorios mManagerRecordatorios;
+    DetalleRecordatorioFragmento mDetalleRecordatorioFragmento;
     AgregarRecordatorioFragmento mAgregarRecordatorioFragmento;
 
     @Override
@@ -38,7 +38,7 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_recordatorio);
 
-        managerRecordatorios = new DataBaseManagerRecordatorios(this);
+        mManagerRecordatorios = new DataBaseManagerRecordatorios(this);
 
         ctRecordatorio = (CollapsingToolbarLayout) findViewById(R.id.ct_recordatorio);
 
@@ -80,9 +80,9 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
 
                 itemsRecordatorios = getIntent().getParcelableExtra(DetalleRecordatorioFragmento.ID_RECORDATORIO);
 
-                detalleRecordatorioFragmento = DetalleRecordatorioFragmento.newInstance(itemsRecordatorios);
+                mDetalleRecordatorioFragmento = DetalleRecordatorioFragmento.newInstance(itemsRecordatorios);
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fl_contenedor_detalle, detalleRecordatorioFragmento);
+                ft.replace(R.id.fl_contenedor_detalle, mDetalleRecordatorioFragmento);
                 ft.commit();
                 fabEditar.show();
             }
@@ -97,7 +97,7 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
         MenuItem eliminarItem = menu.findItem(R.id.accion_eliminar);
 
         //Muestro el icono de eliminar solo si carga el formulario detalle
-        if(detalleRecordatorioFragmento != null){
+        if(mDetalleRecordatorioFragmento != null){
             eliminarItem.setVisible(true);
         }else{
             eliminarItem.setVisible(false);
@@ -116,7 +116,7 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
             case R.id.accion_eliminar:
                 String idRecordatorio = itemsRecordatorios.getId();
 
-                managerRecordatorios.eliminarRecordatorio(idRecordatorio);
+                mManagerRecordatorios.eliminarRecordatorio(idRecordatorio);
 
                 esperarYCerrar(MILISEGUNDOS_ESPERA);
 

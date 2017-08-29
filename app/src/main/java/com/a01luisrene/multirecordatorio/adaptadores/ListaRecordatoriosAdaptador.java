@@ -172,12 +172,13 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
 
     }
 
-    void agregarItemRecordatorio(Recordatorios listaItemsRecordatorios, int index) {
-        mListaItemsRecordatorios.add(listaItemsRecordatorios);
-        notifyItemInserted(index);
+    public void agregarItemRecordatorio() {
+        //mListaItemsRecordatorios.add(recordatorios);
+        //notifyItemInserted(index);
+        notifyDataSetChanged();
     }
 
-    void eliminarItemRecordatorio(int index) {
+    public void eliminarItemRecordatorio(int index) {
         mListaItemsRecordatorios.remove(index);
         notifyItemRemoved(index);
     }
@@ -191,6 +192,7 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
         }else{
             return 0;
         }
+
     }
 
 }

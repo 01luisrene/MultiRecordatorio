@@ -26,12 +26,12 @@ public class DetalleRecordatorioFragmento extends Fragment {
     public static final String ID_RECORDATORIO = "objeto.recordatorio";
     public static final String VALOR_ACTIVO = "1";
 
-    private Recordatorios mItemRecordatorio;
-    private CollapsingToolbarLayout mCtRecordatorio;
-    private ImageView mIvImagenRecordatorio;
-    private CircleImageView mCivImagenCategoria;
-    private CheckBox mCbFacebook, mCbTwitter, mCbMensaje;
-    private String mValorFacebook, mValorTwitter, mValorMensaje, mValorImagen;
+    Recordatorios mItemRecordatorio;
+    CollapsingToolbarLayout mCtRecordatorio;
+    ImageView mIvImagenRecordatorio;
+    CircleImageView mCivImagenCategoria;
+    CheckBox mCbFacebook, mCbTwitter, mCbMensaje;
+    String mValorFacebook, mValorTwitter, mValorMensaje, mValorImagen;
 
     Activity activity;
 

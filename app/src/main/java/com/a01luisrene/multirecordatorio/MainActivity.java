@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.a01luisrene.multirecordatorio.fragmentos.AgregarRecordatorioFragmento
 import com.a01luisrene.multirecordatorio.fragmentos.DetalleRecordatorioFragmento;
 import com.a01luisrene.multirecordatorio.fragmentos.ListaRecordatoriosFragmento;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
+import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.ui.DetalleRecordatorioActivity;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 
@@ -28,12 +30,15 @@ public class MainActivity extends AppCompatActivity implements
         MenuItemCompat.OnActionExpandListener,
         ListaRecordatoriosFragmento.OnItemSelectedListener{
 
-    Toolbar mToolbar;
-    FloatingActionButton mFabAgregarRecordatorio;
+    public static final String CARGAR_NUEVO_RECORDATORIO_FRAGMENTO = "cargar_nuevo_recordatorio_fragmento";
 
     ListaRecordatoriosFragmento mListaRecordatoriosFragmento;
     DetalleRecordatorioFragmento mDetalleRecordatorioFragmento;
-    public static final String CARGAR_NUEVO_RECORDATORIO_FRAGMENTO = "cargar_nuevo_recordatorio_fragmento";
+
+    FloatingActionButton mFabAgregarRecordatorio;
+    Toolbar mToolbar;
+
+    DataBaseManagerRecordatorios mManagerRecordatorios;
 
     private boolean dosPaneles = false;
     @Override
@@ -176,8 +181,6 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-
-
     private class buscarTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -198,6 +201,5 @@ public class MainActivity extends AppCompatActivity implements
             // Toast.makeText(MainActivity.this, "Busqueda finalizada...", Toast.LENGTH_SHORT).show();
         }
     }
-
 
 }

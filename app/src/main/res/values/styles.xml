@@ -20,6 +20,28 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!--Estilos para el formulario nuevo-->
+    <style name="texto_info">
+        <item name="android:background">@drawable/bt_info_redes</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/color_blanco</item>
+    </style>
+    <style name="nuevo_telefono">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="boton_info_valido">
+        <item name="android:background">@drawable/bt_info_valido</item>
+        <item name="android:paddingStart">5dp</item>
+        <item name="android:paddingEnd">5dp</item>
+    </style>
+    <style name="boton_info_invalido">
+        <item name="android:background">@drawable/bt_info_invalido</item>
+        <item name="android:paddingStart">5dp</item>
+        <item name="android:paddingEnd">5dp</item>
+    </style>
+
     <!--Estilos para el formulario detalle-->
     <style name="titulo_principal">
         <item name="android:textSize">26sp</item>

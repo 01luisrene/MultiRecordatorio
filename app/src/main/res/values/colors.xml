@@ -15,7 +15,10 @@
 
 
     <color name="color_fondo">@color/icons</color>
+    <!--Colores-->
     <color name="color_blanco">@color/icons</color>
+    <color name="color_verde">#4CAF50</color>
+    <color name="color_rojo">#EF5350</color>
 
     <!--Colores item-->
     <color name="colorTitleList">@color/primary_text</color>
