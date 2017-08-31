@@ -190,7 +190,7 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
                 verGaleria();
             }
         }else {
-            mostrarMensaje(getString(R.string.permiso_denegado), 0);
+            mostrarMensaje(getString(R.string.permiso_denegado_read_storage), 0);
         }
     }
 
@@ -229,8 +229,8 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
     private void mostrarExplicacion(final int tipoPeticion) {
 
         new AlertDialog.Builder(getActivity())
-                .setTitle(getString(R.string.sb_titulo))
-                .setMessage(getString(R.string.sb_mensaje))
+                .setTitle(getString(R.string.adb_titulo))
+                .setMessage(getString(R.string.adb_mensaje_categoria))
                 .setPositiveButton(getString(R.string.boton_aceptar), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -246,7 +246,7 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Desplegar mensaje de lamentación
-                        mostrarMensaje(getString(R.string.sb_mensaje_cancelar), 0);
+                        mostrarMensaje(getString(R.string.adb_cancelar), 0);
                     }
                 })
                 .show();

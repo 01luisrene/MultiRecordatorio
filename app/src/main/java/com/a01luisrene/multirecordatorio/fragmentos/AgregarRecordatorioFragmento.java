@@ -1,27 +1,32 @@
 package com.a01luisrene.multirecordatorio.fragmentos;
 
 
+        import android.Manifest;
         import android.app.Activity;
         import android.app.DatePickerDialog;
         import android.app.TimePickerDialog;
-        import android.content.Context;
+        import android.content.DialogInterface;
         import android.content.Intent;
-        import android.content.res.Resources;
+        import android.content.pm.PackageManager;
+        import android.database.Cursor;
         import android.graphics.Color;
         import android.graphics.drawable.Drawable;
-        import android.media.Image;
+        import android.net.Uri;
         import android.os.Build;
         import android.os.Bundle;
         import android.os.Handler;
         import android.provider.ContactsContract;
+        import android.support.annotation.NonNull;
         import android.support.design.widget.CollapsingToolbarLayout;
         import android.support.design.widget.Snackbar;
         import android.support.design.widget.TextInputLayout;
+        import android.support.v4.app.ActivityCompat;
         import android.support.v4.app.Fragment;
         import android.support.v4.content.ContextCompat;
+        import android.provider.ContactsContract.CommonDataKinds.Phone;
+        import android.support.v7.app.AlertDialog;
         import android.text.Editable;
         import android.text.TextWatcher;
-        import android.util.Log;
         import android.util.Patterns;
         import android.view.LayoutInflater;
         import android.view.View;
@@ -66,7 +71,8 @@ public class AgregarRecordatorioFragmento extends Fragment
     public static final String ID_CATEGORIA_NULO = "nulo";
     public static int MILISEGUNDOS_ESPERA = 1500;
     public static final int CODIGO_RESPUESTA_CATEGORIA = 100;
-    public static final int PICK_CONTACT_REQUEST = 1001 ;
+    public static final int PICK_CONTACT_REQUEST = 101;
+    private static final int READ_CONTACTS_PERMISSION = 102;
 
     //Expresiones regulares
     public static final String REGEX_CARACTERES_LATINOS = "^[a-zA-Z0-9 áÁéÉíÍóÓúÚñÑüÜ]*$";
@@ -87,6 +93,10 @@ public class AgregarRecordatorioFragmento extends Fragment
     //Variables para el combo
     ArrayList<String> comboListaCategorias;
     ArrayAdapter<CharSequence> comboAdapter;
+
+    //Obtener número de los contactos del phone
+    Cursor contactCursor, phoneCursor;
+    Uri contactoUri;
 
     //Calendario para obtener fecha & hora
     public final Calendar c = Calendar.getInstance();
@@ -217,7 +227,7 @@ public class AgregarRecordatorioFragmento extends Fragment
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                esTelefonoValido(String.valueOf(s));
+                validarTelefono(String.valueOf(s));
             }
             @Override
             public void afterTextChanged(Editable s) { }
@@ -370,6 +380,10 @@ public class AgregarRecordatorioFragmento extends Fragment
                     mValorEnviarMensaje = ENVIAR_ON;
                     mIbContactos.setVisibility(View.VISIBLE);
                     mTilTelefono.setVisibility(View.VISIBLE);
+                    //Validar télefono solo si el switch es on
+                    String telefono = mEtTelefono.getText().toString();
+                    validarTelefono(telefono);
+
                 }else{
                     mValorEnviarMensaje = ENVIAR_OFF;
                     mIbContactos.setVisibility(View.GONE);
@@ -380,6 +394,14 @@ public class AgregarRecordatorioFragmento extends Fragment
         }
     }
 
+    public void validarTelefono(String telefono){
+        if(!Patterns.PHONE.matcher(telefono).matches()){
+            mTilTelefono.setError(getString(R.string.error_telefono));
+        }else{
+            mTilTelefono.setError(null);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -387,11 +409,10 @@ public class AgregarRecordatorioFragmento extends Fragment
                 validarDatos();
                 break;
             case R.id.bt_agregar_categoria:
-                abrirFormulario();
+                abrirFormularioNuevaCategoria();
+                break;
             case R.id.bt_contactos:
-                Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                startActivityForResult(i, PICK_CONTACT_REQUEST);
-                Toast.makeText(getActivity(), "Contactos", Toast.LENGTH_SHORT).show();
+                accederAgendaContactos();
                 break;
             case R.id.ib_obtener_fecha:
                 obtenerFecha();
@@ -402,35 +423,83 @@ public class AgregarRecordatorioFragmento extends Fragment
         }
     }
 
-    private void abrirFormulario() {
+    private void abrirFormularioNuevaCategoria() {
 
         Intent i = new Intent(getActivity(), DetalleCategoriaActivity.class);
         startActivityForResult(i, CODIGO_RESPUESTA_CATEGORIA);
 
     }
 
+    private void accederAgendaContactos(){
+        //si la API 23 a mas
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            //Habilitar permisos para la version de API 23 a mas
+            if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
+                //solicitar permiso
+                if(shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)){
+                    mostrarExplicacion(PICK_CONTACT_REQUEST);
+                }else{
+
+                    requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION);
+                }
+
+            }else{
+                abrirIntentContactos();
+            }
+
+        }else{
+
+            abrirIntentContactos();
+        }
+    }
+
+    public void abrirIntentContactos(){
+        Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        startActivityForResult(i, PICK_CONTACT_REQUEST);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if((requestCode == CODIGO_RESPUESTA_CATEGORIA) && (resultCode == RESULT_OK)){
-
-            if(data.hasExtra(AgregarCategotiaRecordatorioFragmento.LLAVE_RETORNO_CATEGORIA)){
-                boolean valorObtenido = data.getExtras()
-                        .getBoolean(AgregarCategotiaRecordatorioFragmento.LLAVE_RETORNO_CATEGORIA);
-                if(valorObtenido){
-                    //Recargo el spinner siempre y cuando que el valor retornado sea `true`
-                    poblarSpinner();
+        if(resultCode == RESULT_OK){
+            //Volver a recargar el spinner de categorías
+            if(requestCode == CODIGO_RESPUESTA_CATEGORIA){
+                if(data.hasExtra(AgregarCategotiaRecordatorioFragmento.LLAVE_RETORNO_CATEGORIA)){
+                    boolean valorObtenido = data.getExtras()
+                            .getBoolean(AgregarCategotiaRecordatorioFragmento.LLAVE_RETORNO_CATEGORIA);
+                    if(valorObtenido){
+                        //Recargo el spinner siempre y cuando que el valor retornado sea `true`
+                        poblarSpinner();
+                    }
                 }
             }
+            //Obtener el número de teléfono
+            if(requestCode == PICK_CONTACT_REQUEST ){
 
+                contactoUri = data.getData();
+
+                mostrarSmartphone(contactoUri);
+
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            if(requestCode == READ_CONTACTS_PERMISSION) {
+                accederAgendaContactos();
+            }
+        }else {
+            mostrarMensaje(getString(R.string.permiso_denegado_contacto), 0);
         }
     }
 
     public void validarDatos(){
         String stTitulo = mTilTituloRecordatorio.getEditText().getText().toString();
         String stEntidadOtros = mTilEntidadOtros.getEditText().getText().toString();
-        String stTelefono = mTilTelefono.getEditText().getText().toString();
         String stContenidoMensaje = mTilContenidoMensaje.getEditText().getText().toString();
         String stFecha = mTilFecha.getEditText().getText().toString();
         String stHora =  mTilHora.getEditText().getText().toString();
@@ -438,11 +507,10 @@ public class AgregarRecordatorioFragmento extends Fragment
         boolean titulo = esTituloRecordatorioValido(stTitulo);
         boolean entidadOtros = esEntidadOtrosValido(stEntidadOtros);
         boolean contenidoMensaje = esContenidoMensajeValido(stContenidoMensaje);
-        boolean telefono = esTelefonoValido(stTelefono);
         boolean fecha = esFechaValido(stFecha);
         boolean hora = esHoraValido(stHora);
 
-        if(titulo && entidadOtros && contenidoMensaje && telefono && fecha && hora) {
+        if(titulo && entidadOtros && contenidoMensaje && fecha && hora) {
 
             if(!mValorIdCategoria.equals(ID_CATEGORIA_NULO)) {
                 try {
@@ -476,6 +544,8 @@ public class AgregarRecordatorioFragmento extends Fragment
             }else{
                 Toast.makeText(getActivity(), getString(R.string.error_spinner_categorias), Toast.LENGTH_SHORT).show();
             }
+        }else{
+            Toast.makeText(getActivity(), getString(R.string.error_completar_campos_recordatorios), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -485,7 +555,7 @@ public class AgregarRecordatorioFragmento extends Fragment
         if(!patron.matcher(titulo).matches() || titulo.length() > 120){
             mTilTituloRecordatorio.setError(getString(R.string.error_titulo_recordatorio));
             return false;
-        }else if(titulo.length() < 8){
+        }else if(titulo.length() < 3){
             mTilTituloRecordatorio.setError(getString(R.string.error_titulo_recordatorio_min_char));
             return false;
         }else{
@@ -527,7 +597,7 @@ public class AgregarRecordatorioFragmento extends Fragment
 
     }
     private boolean esContenidoMensajeValido(String contenidoMensaje) {
-        if(contenidoMensaje.length() < 15){
+        if(contenidoMensaje.length() < 8){
             mTilContenidoMensaje.setError(getString(R.string.error_contenido_mensaje_min_char));
             return false;
         }else if(contenidoMensaje.length() > 1000){
@@ -537,15 +607,6 @@ public class AgregarRecordatorioFragmento extends Fragment
             mTilContenidoMensaje.setError(null);
         }
        return true;
-    }
-    private boolean esTelefonoValido(String telefono){
-        if(!Patterns.PHONE.matcher(telefono).matches() && telefono.length()>3){
-            mTilTelefono.setError(getString(R.string.error_telefono));
-            return false;
-        }else{
-            mTilTelefono.setError(null);
-        }
-        return true;
     }
 
     private boolean esFechaValido(String fecha){
@@ -596,18 +657,11 @@ public class AgregarRecordatorioFragmento extends Fragment
 
         final int hour = c.get(Calendar.HOUR_OF_DAY);
         final int minute = c.get(Calendar.MINUTE);
-        final int am_pm = c.get(Calendar.AM_PM);
 
 
         TimePickerDialog recogerHora = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                if(am_pm == Calendar.AM){
-                    Toast.makeText(getActivity(), "AM", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getActivity(), "PM", Toast.LENGTH_SHORT).show();
-                }
 
                 String horaFormateada = (hourOfDay < 10)? "0" + String.valueOf(hourOfDay):String.valueOf(hourOfDay);
                 String minutoFormateado = (minute < 10)? "0" + String.valueOf(minute):String.valueOf(minute);
@@ -615,7 +669,8 @@ public class AgregarRecordatorioFragmento extends Fragment
                 mEtHora.setText(horaFormateada + ":" + minutoFormateado);
 
             }
-        }, hour, minute, false);
+
+        }, hour, minute, true);
 
         recogerHora.show();
 
@@ -634,6 +689,89 @@ public class AgregarRecordatorioFragmento extends Fragment
             }
         }, milisegundos);
     }
+
+    private void mostrarSmartphone(Uri uri) {
+
+        //Cargar el valor obtenido en el campo teléfono
+        mEtTelefono.setText(getSmartphone(uri));
+    }
+
+    private String getSmartphone(Uri uri) {
+        //Variables temporales para el id y el teléfono
+        String id = null;
+        String smartphone = null;
+
+        /************* PRIMERA CONSULTA ************/
+
+        //Obtener el _ID del contacto
+
+        contactCursor = getActivity().getApplicationContext().getContentResolver().query(
+                uri,
+                new String[]{ContactsContract.Contacts._ID},
+                null,
+                null,
+                null);
+
+
+        if (contactCursor.moveToFirst()) {
+            id = contactCursor.getString(0);
+        }
+        contactCursor.close();
+
+        /************* SEGUNDA CONSULTA ************/
+        /*
+        Sentencia WHERE para especificar que solo deseamos
+        números de telefonía móvil
+         */
+        String selectionArgs =
+                Phone.CONTACT_ID + " = ? AND " +
+                Phone.TYPE+" = " +
+                Phone.TYPE_MOBILE;
+
+        /*
+        Obtener el número telefónico
+         */
+        phoneCursor = getActivity().getApplicationContext().getContentResolver().query(
+                Phone.CONTENT_URI,
+                new String[] { Phone.NUMBER },
+                selectionArgs,
+                new String[] { id },
+                null
+        );
+        if (phoneCursor.moveToFirst()) {
+            smartphone = phoneCursor.getString(0);
+        }
+        phoneCursor.close();
+
+        return smartphone;
+    }
+
+    private void mostrarExplicacion(final int tipoPeticion) {
+
+        new AlertDialog.Builder(getActivity())
+                .setTitle(getString(R.string.adb_titulo))
+                .setMessage(getString(R.string.adb_mensaje_contacto))
+                .setPositiveButton(getString(R.string.boton_aceptar), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //pedir permiso
+                        if(tipoPeticion == PICK_CONTACT_REQUEST){
+                            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION);
+                        }else{
+                            throw new IllegalArgumentException();
+                        }
+                    }
+                })
+                .setNegativeButton(getString(R.string.boton_cancelar), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Desplegar mensaje de lamentación
+                        mostrarMensaje(getString(R.string.adb_cancelar), 0);
+                    }
+                })
+                .show();
+    }
+
     private void mostrarMensaje(String mensaje, int estado){
 
         Snackbar snackbar = Snackbar.make(getView(), mensaje, Snackbar.LENGTH_LONG);

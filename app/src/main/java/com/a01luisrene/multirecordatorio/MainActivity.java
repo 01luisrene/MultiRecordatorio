@@ -1,6 +1,7 @@
 package com.a01luisrene.multirecordatorio;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements
                         .commit();
             }
 
+            //TODO: agregar una función para agregar los permisos en tiempo de ejecución que utilizara mi app
+
         }
     private void determinePaneLayout() {
 
@@ -78,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements
 
             //TODO: cargar el fragment detalle al momento de cargar con
             //Crear un fragment cover
+            //Mantener en modo portrait la landscape
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         }else{
             Utilidades.smartphone = true;
