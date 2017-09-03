@@ -21,12 +21,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecordatoriosAdaptador.ViewHolder> {
 
-    public static final String ELLIPSIS = "...";
+    private static final String ELLIPSIS = "...";
     private List<Recordatorios> mListaItemsRecordatorios;
     private Context mContext;
 
     //Variable para la comunicación al fragment que contiene la lista
-    ListaRecordatoriosFragmento.OnItemSelectedListener itemClickListener;
+    private ListaRecordatoriosFragmento.OnItemSelectedListener itemClickListener;
 
 
     //Proporcionar un constructor adecuado (depende del tipo de conjunto de datos)
@@ -74,6 +74,10 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
 
             String tituloFormateado, entidadOtrosFormateado, mensajeFormateado;
 
+
+
+            //Título formateado
+
             if(valorTitulo.length() >= 45){
                 tituloFormateado = valorTitulo.substring(0, 45) + ELLIPSIS;
             }else{
@@ -84,14 +88,19 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
             }else{
                 entidadOtrosFormateado = valorEntidadOtros;
             }
+            //Si no hay subtitulo cambio altura y ancho a 0px
+            if(valorEntidadOtros.isEmpty()){
+                entidadOtros.setHeight(0);
+                entidadOtros.setWidth(0);
+            }
 
             titulo.setText(tituloFormateado);
             entidadOtros.setText(entidadOtrosFormateado);
 
             if(Utilidades.smartphone){ //Se aplica para resoluciones pequeñas como [smartphones]
-                /**
-                 * TEXTO DEL CONTENIDO MENSAJE FORMATEADO
-                 */
+
+                //TEXTO DEL CONTENIDO MENSAJE FORMATEADO
+
                 //Almaceno el valor de la cadena devuelta del contenido mensaje
                 String valoraMensaje = items.getContenidoMensaje();
 
@@ -107,9 +116,9 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                 //cargo los valores devueltos en el EditText
                 contenidoMensaje.setText(mensajeFormateado);
 
-                /**
-                 * CARGO IMAGEN CON PICASSO
-                 */
+
+                 //CARGO IMAGEN CON PICASSO
+
                 //Condiciono para manejar si el valor devuelto es vacío
                 if(valorImagen == null ||valorImagen.isEmpty()){
                     //[Si no hay imagen muestro una por defecto]
@@ -125,9 +134,9 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                 }
 
             }else{ //Se aplica para resoluciones grandes como [tablets]
-                /**
-                 * CARGO IMAGEN CON PICASSO
-                 */
+
+                 //CARGO IMAGEN CON PICASSO
+
                 //Condiciono para manejar si el valor devuelto es vacío
                 if(valorImagen == null ||valorImagen.isEmpty()){
                     //[Si no hay imagen muestro una por defecto]

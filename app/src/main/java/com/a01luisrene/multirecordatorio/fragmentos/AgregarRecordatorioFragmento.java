@@ -19,6 +19,7 @@ package com.a01luisrene.multirecordatorio.fragmentos;
         import android.support.annotation.NonNull;
         import android.support.design.widget.CollapsingToolbarLayout;
         import android.support.design.widget.Snackbar;
+        import android.support.design.widget.TextInputEditText;
         import android.support.design.widget.TextInputLayout;
         import android.support.v4.app.ActivityCompat;
         import android.support.v4.app.Fragment;
@@ -27,6 +28,7 @@ package com.a01luisrene.multirecordatorio.fragmentos;
         import android.support.v7.app.AlertDialog;
         import android.text.Editable;
         import android.text.TextWatcher;
+        import android.util.Log;
         import android.util.Patterns;
         import android.view.LayoutInflater;
         import android.view.View;
@@ -36,7 +38,6 @@ package com.a01luisrene.multirecordatorio.fragmentos;
         import android.widget.Button;
         import android.widget.CompoundButton;
         import android.widget.DatePicker;
-        import android.widget.EditText;
         import android.widget.ImageButton;
         import android.widget.ImageView;
         import android.widget.Spinner;
@@ -69,7 +70,11 @@ public class AgregarRecordatorioFragmento extends Fragment
     public static final String ENVIAR_OFF = "0";
     public static final String VI_CARACTERES_INFO = "140"; //VI = valor inical
     public static final String ID_CATEGORIA_NULO = "nulo";
-    public static int MILISEGUNDOS_ESPERA = 1500;
+    public static final String VALOR_VACIO = "";
+    public static final String CERO = "0";
+    public static final String BARRA = "/";
+    public static final String DOS_PUNTOS = ":";
+    public static int MILISEGUNDOS_ESPERA = 1000;
     public static final int CODIGO_RESPUESTA_CATEGORIA = 100;
     public static final int PICK_CONTACT_REQUEST = 101;
     private static final int READ_CONTACTS_PERMISSION = 102;
@@ -81,18 +86,21 @@ public class AgregarRecordatorioFragmento extends Fragment
 
     //Referencias de widgets del fragmento
     Button mBotonGuardar, mBotonAgregarCategoria;
-    EditText mEtTituloRecordatorio, mEtEntidadOtros, mEtTelefono, mEtContenidoMensaje, mEtFecha, mEtHora;
+    TextInputEditText mTieTituloRecordatorio, mTieEntidadOtros, mTieTelefono, mTieContenidoMensaje, mTieFecha, mTieHora;
     TextInputLayout mTilTituloRecordatorio, mTilEntidadOtros, mTilTelefono, mTilContenidoMensaje, mTilFecha, mTilHora;
     Switch mSwFacebook, mSwTwitter, mSwEnviarMensaje;
     String mValorFacebook, mValorTwitter, mValorEnviarMensaje;
     ImageButton mIbContactos, mIbFecha, mIbHora, mIbFacebookInfo, mIbTwitterInfo, mIbMensajeInfo;
     TextView mTvTwitterInfo;
 
+    //Booleanos
+    boolean guardarNumeroTelefono = true;
+
     //[Combo categoria recordatorios]
     Spinner mSpinnerListaCategotegorias;
     //Variables para el combo
     ArrayList<String> comboListaCategorias;
-    ArrayAdapter<CharSequence> comboAdapter;
+    ArrayAdapter<String> comboAdapter;
 
     //Obtener número de los contactos del phone
     Cursor contactCursor, phoneCursor;
@@ -101,11 +109,22 @@ public class AgregarRecordatorioFragmento extends Fragment
     //Calendario para obtener fecha & hora
     public final Calendar c = Calendar.getInstance();
 
+    //Fecha
+    final int mes = c.get(Calendar.MONTH);
+    final int dia = c.get(Calendar.DAY_OF_MONTH);
+    final int anio = c.get(Calendar.YEAR);
+    int diaIngresado, mesIngresado, anioIngresado;
+
+    //Hora
+    final int hora = c.get(Calendar.HOUR_OF_DAY);
+    final int minuto = c.get(Calendar.MINUTE);
+    int horaIngresada, minutoIngresado;
+
     //Referencia a manager de SQLite
     DataBaseManagerRecordatorios mManagerRecordatorios;
 
     //Referencias de widgets que se encuentran en activity detalle
-    CollapsingToolbarLayout mCtRecordatorio;
+    CollapsingToolbarLayout mCtCategoriaRecordatorio;
     ImageView mIvImagenRecordatorio;
     String  mValorIdCategoria, mValorImagenCategoria, mValorTituloCategoria;
     Activity activity;
@@ -113,6 +132,8 @@ public class AgregarRecordatorioFragmento extends Fragment
     //Referencias de widgets que se encuentran en layout toolbar_detalle.xml
     private CircleImageView mCivImagenRecordatorio;
     private TextView mTvTituloCategoriaRecordatorio;
+
+    protected View mView;
 
 
     public AgregarRecordatorioFragmento() {
@@ -122,15 +143,14 @@ public class AgregarRecordatorioFragmento extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
 
-        }
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_agregar_recordatorio, container, false);
+        this.mView = v; //Para mostrar mensaje
 
         //Asignamos nuestro manager que contiene nuestros metodos CRUD
         mManagerRecordatorios = new DataBaseManagerRecordatorios(getContext());
@@ -139,7 +159,7 @@ public class AgregarRecordatorioFragmento extends Fragment
             activity = this.getActivity();
             //Widgets de la activity Detalle Recordatorio
             mIvImagenRecordatorio = (ImageView) activity.findViewById(R.id.iv_cover);
-            mCtRecordatorio = (CollapsingToolbarLayout) activity.findViewById(R.id.ct_recordatorio);
+            mCtCategoriaRecordatorio = (CollapsingToolbarLayout) activity.findViewById(R.id.ct_categoria_recordatorio);
         }else{
             //Widgets del layout toolbar_detelle.xml
             mCivImagenRecordatorio = (CircleImageView) v.findViewById(R.id.civ_nuevo_categoria_recordatorio);
@@ -149,17 +169,6 @@ public class AgregarRecordatorioFragmento extends Fragment
         //Spinner
         mSpinnerListaCategotegorias = (Spinner) v.findViewById(R.id.sp_categorias_recordatorios);
 
-        //EditTex
-        mEtTituloRecordatorio = (EditText) v.findViewById(R.id.et_nuevo_titulo_recordatorio);
-        mEtEntidadOtros = (EditText) v.findViewById(R.id.et_nuevo_entidad_otros);
-        mEtTelefono = (EditText) v.findViewById(R.id.et_nuevo_telefono);
-        mEtContenidoMensaje = (EditText) v.findViewById(R.id.et_nuevo_contenido_mensaje);
-        mEtFecha = (EditText) v.findViewById(R.id.et_nuevo_fecha);
-        mEtHora = (EditText) v.findViewById(R.id.et_nuevo_hora);
-
-        //TextView
-        mTvTwitterInfo = (TextView) v.findViewById(R.id.tv_twitter_info);
-
         //TextInputLayout
         mTilTituloRecordatorio = (TextInputLayout)  v.findViewById(R.id.til_nuevo_titulo_recordatorio);
         mTilEntidadOtros = (TextInputLayout) v.findViewById(R.id.til_nuevo_entidad_otros);
@@ -167,6 +176,17 @@ public class AgregarRecordatorioFragmento extends Fragment
         mTilContenidoMensaje = (TextInputLayout) v.findViewById(R.id.til_nuevo_contenido_mensaje);
         mTilFecha = (TextInputLayout) v.findViewById(R.id.til_nuevo_fecha);
         mTilHora = (TextInputLayout) v.findViewById(R.id.til_nuevo_hora);
+
+        //TextInputEditText
+        mTieTituloRecordatorio = (TextInputEditText) v.findViewById(R.id.tie_nuevo_titulo_recordatorio);
+        mTieEntidadOtros = (TextInputEditText) v.findViewById(R.id.tie_nuevo_entidad_otros);
+        mTieTelefono = (TextInputEditText) v.findViewById(R.id.tie_nuevo_telefono);
+        mTieContenidoMensaje = (TextInputEditText) v.findViewById(R.id.tie_nuevo_contenido_mensaje);
+        mTieFecha = (TextInputEditText) v.findViewById(R.id.tie_nuevo_fecha);
+        mTieHora = (TextInputEditText) v.findViewById(R.id.tie_nuevo_hora);
+
+        //TextView
+        mTvTwitterInfo = (TextView) v.findViewById(R.id.tv_twitter_info);
 
         //Switch
         mSwFacebook = (Switch) v.findViewById(R.id.sw_facebook);
@@ -189,70 +209,13 @@ public class AgregarRecordatorioFragmento extends Fragment
         mIbTwitterInfo = (ImageButton) v.findViewById(R.id.ib_twitter_info);
         mIbMensajeInfo = (ImageButton) v.findViewById(R.id.ib_mensaje_info);
 
-        //Limpiar los EditText
-        mEtTituloRecordatorio.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                esTituloRecordatorioValido(String.valueOf(s));
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-        mEtEntidadOtros.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                esEntidadOtrosValido(String.valueOf(s));
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-        mEtContenidoMensaje.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                validarBotonesInfo(String.valueOf(s));
-                esContenidoMensajeValido(String.valueOf(s));}
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
-        mEtTelefono.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                validarTelefono(String.valueOf(s));
-            }
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
-
-        mEtFecha.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                esFechaValido(String.valueOf(s));}
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
-        mEtHora.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                esHoraValido(String.valueOf(s));
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
+        //TextInputEditText: addTextChangedListener con un observador de texto
+        mTieTituloRecordatorio.addTextChangedListener(twTituloRecordatorio);
+        mTieEntidadOtros.addTextChangedListener(twEntidadOtros);
+        mTieContenidoMensaje.addTextChangedListener(twContenidoMensaje);
+        mTieTelefono.addTextChangedListener(twTelefono);
+        mTieFecha.addTextChangedListener(twFecha);
+        mTieHora.addTextChangedListener(twHora);
 
         //[INICIO COMBO]
         poblarSpinner();
@@ -277,7 +240,7 @@ public class AgregarRecordatorioFragmento extends Fragment
     }
 
     public void poblarSpinner(){
-        comboListaCategorias = new ArrayList<String>();
+        comboListaCategorias = new ArrayList<>();
         comboListaCategorias.add(getString(R.string.selecciona_categoria_spinner));
         int sizeListaCat = mManagerRecordatorios.getListaCategoriasSpinner().size();
         for(int i = 0; i < sizeListaCat; i++){
@@ -285,8 +248,11 @@ public class AgregarRecordatorioFragmento extends Fragment
                     .getListaCategoriasSpinner().get(i).getCategorioRecordatorio());
         }
 
-        comboAdapter = new ArrayAdapter(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, comboListaCategorias );
+        comboAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, comboListaCategorias);
+
+        comboAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         mSpinnerListaCategotegorias.setAdapter(comboAdapter);
         mSpinnerListaCategotegorias.setOnItemSelectedListener(this);
 
@@ -313,7 +279,7 @@ public class AgregarRecordatorioFragmento extends Fragment
 
                     if(Utilidades.smartphone) {
 
-                        mCtRecordatorio.setTitle(mValorTituloCategoria);
+                        mCtCategoriaRecordatorio.setTitle(mValorTituloCategoria);
                         if (mValorImagenCategoria != null){
                             Picasso.with(getActivity())
                                     .load(new File(mValorImagenCategoria))
@@ -340,7 +306,7 @@ public class AgregarRecordatorioFragmento extends Fragment
                     mValorIdCategoria = ID_CATEGORIA_NULO;
 
                     if(Utilidades.smartphone) {
-                        mCtRecordatorio.setTitle(getString(R.string.agregar_recordatorio));
+                        mCtCategoriaRecordatorio.setTitle(getString(R.string.agregar_recordatorio));
                         mIvImagenRecordatorio.setImageDrawable(null);
                     }else{
                         mTvTituloCategoriaRecordatorio.setText(getString(R.string.agregar_recordatorio));
@@ -380,27 +346,23 @@ public class AgregarRecordatorioFragmento extends Fragment
                     mValorEnviarMensaje = ENVIAR_ON;
                     mIbContactos.setVisibility(View.VISIBLE);
                     mTilTelefono.setVisibility(View.VISIBLE);
-                    //Validar télefono solo si el switch es on
-                    String telefono = mEtTelefono.getText().toString();
-                    validarTelefono(telefono);
+
+                    //Compruebo si el campo de teléfono es válido
+                    String numeroTelefono = mTieTelefono.getText().toString();
+                    guardarNumeroTelefono = esTelefonoValido(numeroTelefono);
 
                 }else{
                     mValorEnviarMensaje = ENVIAR_OFF;
                     mIbContactos.setVisibility(View.GONE);
                     mTilTelefono.setVisibility(View.GONE);
-                    mEtTelefono.setText(null);
+                    mTieTelefono.setText(VALOR_VACIO);
+                    //Si el usuario no desea enviar mensaje [Guardo compo teléfono vacío]
+                    guardarNumeroTelefono = true;
                 }
                 break;
         }
     }
 
-    public void validarTelefono(String telefono){
-        if(!Patterns.PHONE.matcher(telefono).matches()){
-            mTilTelefono.setError(getString(R.string.error_telefono));
-        }else{
-            mTilTelefono.setError(null);
-        }
-    }
 
     @Override
     public void onClick(View v) {
@@ -498,34 +460,38 @@ public class AgregarRecordatorioFragmento extends Fragment
     }
 
     public void validarDatos(){
-        String stTitulo = mTilTituloRecordatorio.getEditText().getText().toString();
-        String stEntidadOtros = mTilEntidadOtros.getEditText().getText().toString();
-        String stContenidoMensaje = mTilContenidoMensaje.getEditText().getText().toString();
-        String stFecha = mTilFecha.getEditText().getText().toString();
-        String stHora =  mTilHora.getEditText().getText().toString();
+
+        String stTitulo = mTieTituloRecordatorio.getText().toString();
+        String stEntidadOtros = mTieEntidadOtros.getText().toString();
+        String stContenidoMensaje = mTieContenidoMensaje.getText().toString();
+        String stFecha = mTieFecha.getText().toString();
+        String stHora =  mTieHora.getText().toString();
 
         boolean titulo = esTituloRecordatorioValido(stTitulo);
         boolean entidadOtros = esEntidadOtrosValido(stEntidadOtros);
         boolean contenidoMensaje = esContenidoMensajeValido(stContenidoMensaje);
         boolean fecha = esFechaValido(stFecha);
+        boolean fechaIngresada = esFechaIngresadaValido(stFecha);
         boolean hora = esHoraValido(stHora);
+        boolean horaIngresada = esHoraIngresadaValido(stHora);
 
-        if(titulo && entidadOtros && contenidoMensaje && fecha && hora) {
+        if(titulo && entidadOtros && contenidoMensaje && guardarNumeroTelefono && fecha && hora
+                && fechaIngresada && horaIngresada) {
 
             if(!mValorIdCategoria.equals(ID_CATEGORIA_NULO)) {
                 try {
                     mManagerRecordatorios.insertarRecoratorio(null,
-                            mEtTituloRecordatorio.getText().toString(), //[Titulo]
-                            mEtEntidadOtros.getText().toString(),       //[Entidad - Otros]
+                            mTieTituloRecordatorio.getText().toString(), //[Titulo]
+                            mTieEntidadOtros.getText().toString(),       //[Entidad - Otros]
                             mValorIdCategoria,                          //[Id Categoría]
-                            mEtContenidoMensaje.getText().toString(),   //[Contenido del mensaje]
-                            mEtTelefono.getText().toString(),           //[Teléfono]
+                            mTieContenidoMensaje.getText().toString(),   //[Contenido del mensaje]
+                            mTieTelefono.getText().toString(),           //[Teléfono]
                             mValorEnviarMensaje,                        //[Envio mesaje]
                             mValorFacebook,                             //[Publicar en facebook]
                             mValorTwitter,                              //[Publicar en twitter]
                             Utilidades.fechaHora(),                     //[Fecha creación]
-                            mEtFecha.getText().toString(),              //[Fecha del recordatorio]
-                            mEtHora.getText().toString(),               //[Hora del recordatorio]
+                            mTieFecha.getText().toString(),              //[Fecha del recordatorio]
+                            mTieHora.getText().toString(),               //[Hora del recordatorio]
                             ESTADO_RECORDATORIO);
 
 
@@ -544,6 +510,10 @@ public class AgregarRecordatorioFragmento extends Fragment
             }else{
                 Toast.makeText(getActivity(), getString(R.string.error_spinner_categorias), Toast.LENGTH_SHORT).show();
             }
+        }else if(!fechaIngresada){
+            mostrarMensaje(getString(R.string.error_fecha_ingresada), 0);
+        }else if(!horaIngresada){
+            mostrarMensaje(getString(R.string.error_hora_ingresada), 0);
         }else{
             Toast.makeText(getActivity(), getString(R.string.error_completar_campos_recordatorios), Toast.LENGTH_SHORT).show();
         }
@@ -555,7 +525,7 @@ public class AgregarRecordatorioFragmento extends Fragment
         if(!patron.matcher(titulo).matches() || titulo.length() > 120){
             mTilTituloRecordatorio.setError(getString(R.string.error_titulo_recordatorio));
             return false;
-        }else if(titulo.length() < 3){
+        }else if(titulo.length() < 4){
             mTilTituloRecordatorio.setError(getString(R.string.error_titulo_recordatorio_min_char));
             return false;
         }else{
@@ -596,6 +566,15 @@ public class AgregarRecordatorioFragmento extends Fragment
         }
 
     }
+    private boolean esTelefonoValido(String telefono){
+        if(!Patterns.PHONE.matcher(telefono).matches()){
+            mTilTelefono.setError(getString(R.string.error_telefono));
+            return false;
+        }else{
+            mTilTelefono.setError(null);
+        }
+        return true;
+    }
     private boolean esContenidoMensajeValido(String contenidoMensaje) {
         if(contenidoMensaje.length() < 8){
             mTilContenidoMensaje.setError(getString(R.string.error_contenido_mensaje_min_char));
@@ -611,6 +590,7 @@ public class AgregarRecordatorioFragmento extends Fragment
 
     private boolean esFechaValido(String fecha){
         Pattern patron = Pattern.compile(REGEX_FECHAS);
+
         if (!patron.matcher(fecha).matches()){
             mTilFecha.setError(getString(R.string.error_fecha));
             return false;
@@ -620,32 +600,101 @@ public class AgregarRecordatorioFragmento extends Fragment
         return true;
     }
 
+    private boolean esFechaIngresadaValido(String fechaIngresada){
+        if(fechaIngresada.length() == 10){
+
+            diaIngresado = Integer.parseInt(fechaIngresada.substring(0, 2));
+            mesIngresado = Integer.parseInt(fechaIngresada.substring(3, 5));
+            anioIngresado = Integer.parseInt(fechaIngresada.substring(6, 10));
+
+            if(anioIngresado < anio ){
+                mostrarMensaje(getString(R.string.error_anio_menor_actual), 0);
+                return false;
+            } else if(anioIngresado == anio){
+                if(diaIngresado < dia){
+                    mostrarMensaje(getString(R.string.error_dia_menor_actual), 0);
+                    return false;
+                }else if(mesIngresado < (mes+1) ){
+                    mostrarMensaje(getString(R.string.error_mes_menor_actual), 0);
+                    return false;
+                }
+            }
+
+        }else{
+            return false;
+        }
+
+        return true;
+
+    }
     private boolean esHoraValido(String hora){
         Pattern patron = Pattern.compile(REGEX_HORAS);
         if (!patron.matcher(hora).matches()){
-            mTilHora.setError(getString(R.string.error_fecha));
+            mTilHora.setError(getString(R.string.error_hora));
             return false;
         }else{
             mTilHora.setError(null);
         }
         return true;
     }
+    private boolean esHoraIngresadaValido(String horaIngresadaUsuario){
+
+        if(horaIngresadaUsuario.length() == 5){
+            horaIngresada = Integer.parseInt(horaIngresadaUsuario.substring(0, 2));
+            minutoIngresado = Integer.parseInt(horaIngresadaUsuario.substring(3, 5));
+
+            int mesActual = mes + 1;
+            int horaLocal24 = (horaIngresada == 0)? 24 : horaIngresada;
+            int horaSistema24 = (hora == 0)? 24: hora;
+
+            if((diaIngresado == dia) && (mesIngresado == mesActual) && (anioIngresado == anio)){
+
+                if(horaLocal24 < horaSistema24){
+                    mostrarMensaje(getString(R.string.error_hora_menor_actual), 0);
+                    return false;
+
+                }else if(horaLocal24 == horaSistema24){
+                    if(minutoIngresado <= minuto){
+                        mostrarMensaje(getString(R.string.error_minuto_menor_actual), 0);
+                        return false;
+                    }
+                }
+            }
+        }else{
+            return false;
+        }
+
+        return true;
+
+    }
 
     public void obtenerFecha(){
-
-        final int mes = c.get(Calendar.MONTH);
-        final int dia = c.get(Calendar.DAY_OF_MONTH);
-        final int anio = c.get(Calendar.YEAR);
 
         DatePickerDialog recogerFecha = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
                 int mesActual = month + 1;
-                String diaFormateado = (dayOfMonth < 10)? "0" + String.valueOf(dayOfMonth):String.valueOf(dayOfMonth);
-                String mesFormateado = (mesActual < 10)? "0" + String.valueOf(mesActual):String.valueOf(mesActual);
+                String diaFormateado = (dayOfMonth < 10)? CERO + String.valueOf(dayOfMonth):String.valueOf(dayOfMonth);
+                String mesFormateado = (mesActual < 10)? CERO + String.valueOf(mesActual):String.valueOf(mesActual);
+                //Variable que guarda el dia
+                diaIngresado = dayOfMonth;
+                mesIngresado = mesActual;
+                anioIngresado = year;
 
-                mEtFecha.setText(diaFormateado + "/" + mesFormateado +"/"+ year);
+                if(year > anio ){
+                    mTieFecha.setText(diaFormateado + BARRA + mesFormateado + BARRA + year);
+                } else if(year == anio){
+                    if(dayOfMonth < dia){
+                        mostrarMensaje(getString(R.string.error_dia_menor_actual), 0);
+                    }else if(mesActual < (mes+1)){
+                        mostrarMensaje(getString(R.string.error_mes_menor_actual), 0);
+                    } else{
+                        mTieFecha.setText(diaFormateado + BARRA + mesFormateado + BARRA + year);
+                    }
+                }else{
+                    //Muestro mensaje de error siempre y cuando fecha sea menor a la actual
+                    mostrarMensaje(getString(R.string.error_anio_menor_actual), 0);
+                }
 
             }
         },anio, mes, dia);
@@ -654,27 +703,127 @@ public class AgregarRecordatorioFragmento extends Fragment
 
     }
     public void obtenerHora(){
-
-        final int hour = c.get(Calendar.HOUR_OF_DAY);
-        final int minute = c.get(Calendar.MINUTE);
-
+        //Cargo los valores de la fecha
+        String fechaIngresada = mTieFecha.getText().toString();
+        esFechaIngresadaValido(fechaIngresada);
 
         TimePickerDialog recogerHora = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-                String horaFormateada = (hourOfDay < 10)? "0" + String.valueOf(hourOfDay):String.valueOf(hourOfDay);
-                String minutoFormateado = (minute < 10)? "0" + String.valueOf(minute):String.valueOf(minute);
+                String horaFormateada = (hourOfDay < 10)? CERO + String.valueOf(hourOfDay):String.valueOf(hourOfDay);
+                String minutoFormateado = (minute < 10)? CERO + String.valueOf(minute):String.valueOf(minute);
 
-                mEtHora.setText(horaFormateada + ":" + minutoFormateado);
+                int mesActual = mes + 1;
+
+                int horaLocal24 = (hourOfDay == 0)? 24 : hourOfDay;
+                int horaSistema24 = (hora == 0)? 24: hora;
+
+                if((diaIngresado == dia) && (mesIngresado == mesActual) && (anioIngresado == anio)){
+
+                    if(horaLocal24 < horaSistema24){
+                        mostrarMensaje(getString(R.string.error_hora_menor_actual), 0);
+
+                    }else if(horaLocal24 == horaSistema24){
+                        if(minute <= minuto){
+                            mostrarMensaje(getString(R.string.error_minuto_menor_actual), 0);
+                        }else{
+                            mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
+                        }
+                    }else {
+                        mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
+                    }
+
+                }else if((diaIngresado > dia) && (mesIngresado > mesActual) && (anioIngresado == anio)){
+                    mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
+                }else if(anioIngresado > anio){
+                    mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
+                }else if((anioIngresado < anio)){
+                    mostrarMensaje("Corrija el año", 0);
+
+                }else if(mesIngresado < mesActual){
+                    mostrarMensaje("Corrija el mes", 0);
+
+                }else if(diaIngresado < dia){
+                    mostrarMensaje("Corrija el día", 0);
+                }
 
             }
 
-        }, hour, minute, true);
+        }, hora, minuto, true);
 
         recogerHora.show();
 
+
     }
+    //====================================== Observadores de texto =======================================//
+
+    private TextWatcher twTituloRecordatorio = new TextWatcher(){
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            esTituloRecordatorioValido(String.valueOf(s));
+        }
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+
+    private TextWatcher twEntidadOtros = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            esEntidadOtrosValido(String.valueOf(s));
+        }
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher twContenidoMensaje = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            validarBotonesInfo(String.valueOf(s));
+            esContenidoMensajeValido(String.valueOf(s));}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+    private  TextWatcher twTelefono = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            guardarNumeroTelefono = esTelefonoValido(String.valueOf(s));
+        }
+        @Override
+        public void afterTextChanged(Editable s) { }
+    };
+
+    private TextWatcher twFecha = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            esFechaValido(String.valueOf(s));
+        }
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher twHora = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            esHoraValido(String.valueOf(s));
+        }
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
 
 
     //Esperar unos segundos antes de cerrar la activity
@@ -682,9 +831,8 @@ public class AgregarRecordatorioFragmento extends Fragment
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                // acciones que se ejecutan tras los milisegundos
                 // [cerrar activity]
-                //activity.finish();
+                getActivity().finish();
 
             }
         }, milisegundos);
@@ -693,7 +841,8 @@ public class AgregarRecordatorioFragmento extends Fragment
     private void mostrarSmartphone(Uri uri) {
 
         //Cargar el valor obtenido en el campo teléfono
-        mEtTelefono.setText(getSmartphone(uri));
+        mTieTelefono.setText(getSmartphone(uri));
+
     }
 
     private String getSmartphone(Uri uri) {
@@ -701,7 +850,7 @@ public class AgregarRecordatorioFragmento extends Fragment
         String id = null;
         String smartphone = null;
 
-        /************* PRIMERA CONSULTA ************/
+        // PRIMERA CONSULTA
 
         //Obtener el _ID del contacto
 
@@ -712,13 +861,18 @@ public class AgregarRecordatorioFragmento extends Fragment
                 null,
                 null);
 
+        if(contactCursor != null && contactCursor.getCount() > 0){
 
-        if (contactCursor.moveToFirst()) {
-            id = contactCursor.getString(0);
+            if(contactCursor.moveToFirst()) {
+                id = contactCursor.getString(0);
+            }
+
+            contactCursor.close();
         }
-        contactCursor.close();
 
-        /************* SEGUNDA CONSULTA ************/
+
+
+        //SEGUNDA CONSULTA
         /*
         Sentencia WHERE para especificar que solo deseamos
         números de telefonía móvil
@@ -738,10 +892,15 @@ public class AgregarRecordatorioFragmento extends Fragment
                 new String[] { id },
                 null
         );
-        if (phoneCursor.moveToFirst()) {
-            smartphone = phoneCursor.getString(0);
+        if(phoneCursor != null && phoneCursor.getCount() > 0){
+
+            if (phoneCursor.moveToFirst()) {
+                smartphone = phoneCursor.getString(0);
+            }
+
+            phoneCursor.close();
         }
-        phoneCursor.close();
+
 
         return smartphone;
     }
@@ -774,7 +933,7 @@ public class AgregarRecordatorioFragmento extends Fragment
 
     private void mostrarMensaje(String mensaje, int estado){
 
-        Snackbar snackbar = Snackbar.make(getView(), mensaje, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(mView, mensaje, Snackbar.LENGTH_LONG);
         //Color de boton de accion
         View snackBarView = snackbar.getView();
         //Cambiando el color del texto
@@ -788,4 +947,5 @@ public class AgregarRecordatorioFragmento extends Fragment
         }
         snackbar.show();
     }
+
 }

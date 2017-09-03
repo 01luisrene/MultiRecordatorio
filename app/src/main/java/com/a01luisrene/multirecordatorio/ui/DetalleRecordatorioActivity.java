@@ -11,10 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.a01luisrene.multirecordatorio.MainActivity;
 import com.a01luisrene.multirecordatorio.R;
+import com.a01luisrene.multirecordatorio.fragmentos.ActualizarRecordatorioFragmento;
 import com.a01luisrene.multirecordatorio.fragmentos.AgregarRecordatorioFragmento;
 import com.a01luisrene.multirecordatorio.fragmentos.DetalleRecordatorioFragmento;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
@@ -26,12 +26,17 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
     //Constantes
     public static int MILISEGUNDOS_ESPERA = 300;
 
-    CollapsingToolbarLayout ctRecordatorio;
-    FloatingActionButton fabEditar;
-    Recordatorios itemsRecordatorios;
+    //Variables para ocultar el icono eliminar del menú
+    public int estadoIconoEliminar;
+    MenuItem eliminarItem;
+
+    CollapsingToolbarLayout mCtCategoriaRecordatorio;
+    FloatingActionButton mFabEditar;
+    Recordatorios mItemsRecordatorios;
     DataBaseManagerRecordatorios mManagerRecordatorios;
     DetalleRecordatorioFragmento mDetalleRecordatorioFragmento;
     AgregarRecordatorioFragmento mAgregarRecordatorioFragmento;
+    ActualizarRecordatorioFragmento mActualizarRecordatorioFragmento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +45,7 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
 
         mManagerRecordatorios = new DataBaseManagerRecordatorios(this);
 
-        ctRecordatorio = (CollapsingToolbarLayout) findViewById(R.id.ct_recordatorio);
-
+        mCtCategoriaRecordatorio = (CollapsingToolbarLayout) findViewById(R.id.ct_categoria_recordatorio);
 
         //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
@@ -49,8 +53,8 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        fabEditar = (FloatingActionButton) findViewById(R.id.fab_editar);
-        fabEditar.setOnClickListener(this);
+        mFabEditar = (FloatingActionButton) findViewById(R.id.fab_editar);
+        mFabEditar.setOnClickListener(this);
 
         //Cierro la actividad si el dispositivo en orientación LANDSCAPE
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -61,8 +65,14 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
         Bundle datos = this.getIntent().getExtras();
         int agregarRecordatorioFragmento = datos.getInt(MainActivity.CARGAR_NUEVO_RECORDATORIO_FRAGMENTO);
 
+
+        mItemsRecordatorios = getIntent().getParcelableExtra(DetalleRecordatorioFragmento.ID_RECORDATORIO);
+
+
         if (savedInstanceState == null) {
             if(agregarRecordatorioFragmento == 1){
+
+                estadoIconoEliminar = 0;
 
                 mAgregarRecordatorioFragmento = new AgregarRecordatorioFragmento();
 
@@ -72,32 +82,50 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
                         .commit();
 
                 //Oculto el botón editar
-                fabEditar.hide();
-                ctRecordatorio.setTitle(getString(R.string.agregar_recordatorio));
+                mFabEditar.setVisibility(View.INVISIBLE);
+                mCtCategoriaRecordatorio.setTitle(getString(R.string.agregar_recordatorio));
 
 
             }else{
 
-                itemsRecordatorios = getIntent().getParcelableExtra(DetalleRecordatorioFragmento.ID_RECORDATORIO);
+                estadoIconoEliminar = 1;
 
-                mDetalleRecordatorioFragmento = DetalleRecordatorioFragmento.newInstance(itemsRecordatorios);
+                mDetalleRecordatorioFragmento = DetalleRecordatorioFragmento.newInstance(mItemsRecordatorios);
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.fl_contenedor_detalle, mDetalleRecordatorioFragmento);
                 ft.commit();
-                fabEditar.show();
+
+                mFabEditar.setVisibility(View.VISIBLE);
             }
         }
 
     }
 
     @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.fab_editar:
+
+                //Oculto el icono de eliminar del menu
+                eliminarItem.setVisible(false);
+
+                mActualizarRecordatorioFragmento = ActualizarRecordatorioFragmento.newInstance(mItemsRecordatorios);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fl_contenedor_detalle, mActualizarRecordatorioFragmento);
+                ft.addToBackStack(null);
+                ft.commit();
+
+                //Oculto el botón editar
+                mFabEditar.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detalle, menu);
 
-        MenuItem eliminarItem = menu.findItem(R.id.accion_eliminar);
-
-        //Muestro el icono de eliminar solo si carga el formulario detalle
-        if(mDetalleRecordatorioFragmento != null){
+        eliminarItem = menu.findItem(R.id.accion_eliminar);
+        if (estadoIconoEliminar == 1){
             eliminarItem.setVisible(true);
         }else{
             eliminarItem.setVisible(false);
@@ -114,7 +142,7 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
                 return true;
 
             case R.id.accion_eliminar:
-                String idRecordatorio = itemsRecordatorios.getId();
+                String idRecordatorio = mItemsRecordatorios.getId();
 
                 mManagerRecordatorios.eliminarRecordatorio(idRecordatorio);
 
@@ -125,13 +153,6 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.fab_editar:
-                Toast.makeText(this, "Editar", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     //Esperar unos segundos antes de cerrar la activity
     public void esperarYCerrar(int milisegundos) {
@@ -144,5 +165,15 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
 
             }
         }, milisegundos);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //Mostrar icono eliminar del menú
+        if (estadoIconoEliminar == 1){
+            eliminarItem.setVisible(true);
+            mFabEditar.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -32,6 +32,7 @@ public class DetalleRecordatorioFragmento extends Fragment {
     CircleImageView mCivImagenCategoria;
     CheckBox mCbFacebook, mCbTwitter, mCbMensaje;
     String mValorFacebook, mValorTwitter, mValorMensaje, mValorImagen;
+    TextView mTvTelefono;
 
     Activity activity;
 
@@ -40,13 +41,13 @@ public class DetalleRecordatorioFragmento extends Fragment {
     }
 
     public static DetalleRecordatorioFragmento newInstance(Recordatorios recordatorios) {
-        DetalleRecordatorioFragmento fragmentDetalle = new DetalleRecordatorioFragmento();
+        DetalleRecordatorioFragmento fragmentoDetalle = new DetalleRecordatorioFragmento();
 
         Bundle args = new Bundle();
         args.putParcelable(ID_RECORDATORIO, recordatorios);
-        fragmentDetalle.setArguments(args);
+        fragmentoDetalle.setArguments(args);
 
-        return fragmentDetalle;
+        return fragmentoDetalle;
     }
 
 
@@ -60,7 +61,7 @@ public class DetalleRecordatorioFragmento extends Fragment {
 
             activity = this.getActivity();
 
-            mCtRecordatorio = (CollapsingToolbarLayout) activity.findViewById(R.id.ct_recordatorio);
+            mCtRecordatorio = (CollapsingToolbarLayout) activity.findViewById(R.id.ct_categoria_recordatorio);
             mIvImagenRecordatorio = (ImageView) activity.findViewById(R.id.iv_cover);
 
             mValorImagen = mItemRecordatorio.getImagenRecordatorio();
@@ -91,6 +92,7 @@ public class DetalleRecordatorioFragmento extends Fragment {
             ((TextView) v.findViewById(R.id.tv_entidad_otros)).setText(mItemRecordatorio.getEntidadOtros());
             ((TextView) v.findViewById(R.id.tv_telefono)).setText(mItemRecordatorio.getTelefono());
             ((TextView) v.findViewById(R.id.tv_mensaje)).setText(mItemRecordatorio.getContenidoMensaje());
+            mTvTelefono = (TextView) v.findViewById(R.id.tv_telefono);
 
             mCbFacebook = (CheckBox) v.findViewById(R.id.cb_facebook);
             mCbTwitter = (CheckBox) v.findViewById(R.id.cb_twtter);
@@ -144,6 +146,7 @@ public class DetalleRecordatorioFragmento extends Fragment {
             }else {
                 mCbMensaje.setChecked(false);
                 mCbMensaje.setEnabled(false);
+                mTvTelefono.setVisibility(View.INVISIBLE);
             }
 
             ((TextView) v.findViewById(R.id.tv_fecha_recordatorio)).setText(mItemRecordatorio.getFechaPublicacionRecordatorio());
