@@ -32,6 +32,10 @@ public class MainActivity extends AppCompatActivity implements
         ListaRecordatoriosFragmento.OnItemSelectedListener{
 
     public static final String CARGAR_NUEVO_RECORDATORIO_FRAGMENTO = "cargar_nuevo_recordatorio_fragmento";
+    public static final int VALOR_ENVIADO_NUEVO_RECORDATORIO = 1;
+    public static final int CODIGO_RESPUESTA_NUEVO_RECORDATORIO = 103;
+    public static final int CODIGO_RESPUESTA_ELIMINAR_RECORDATORIO = 105;
+
 
     ListaRecordatoriosFragmento mListaRecordatoriosFragmento;
     DetalleRecordatorioFragmento mDetalleRecordatorioFragmento;
@@ -87,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements
         }else{
             Utilidades.smartphone = true;
             //Mantener en modo portrait la pantalla
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
 
@@ -110,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements
             // Carga la actividad Detalle
             Intent i = new Intent(this, DetalleRecordatorioActivity.class);
             i.putExtra(DetalleRecordatorioFragmento.ID_RECORDATORIO, recordatorios);
-            startActivity(i);
+            startActivityForResult(i, CODIGO_RESPUESTA_ELIMINAR_RECORDATORIO);
         }
     }
     @Override
@@ -169,8 +173,8 @@ public class MainActivity extends AppCompatActivity implements
                 if(Utilidades.smartphone){
 
                     Intent i = new Intent(this, DetalleRecordatorioActivity.class);
-                    i.putExtra(CARGAR_NUEVO_RECORDATORIO_FRAGMENTO, 1);
-                    startActivity(i);
+                    i.putExtra(CARGAR_NUEVO_RECORDATORIO_FRAGMENTO, VALOR_ENVIADO_NUEVO_RECORDATORIO);
+                    startActivityForResult(i, CODIGO_RESPUESTA_NUEVO_RECORDATORIO);
 
                 }else{
                     getSupportFragmentManager()
@@ -207,4 +211,35 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && data != null){
+            if(requestCode == CODIGO_RESPUESTA_NUEVO_RECORDATORIO ){
+                boolean valorObtenido = data.getExtras()
+                        .getBoolean(AgregarRecordatorioFragmento.LLAVE_RETORNO_RECORDATORIO);
+                if(valorObtenido){
+                    //Recargo el spinner siempre y cuando que el valor retornado sea `true`
+                    if(mListaRecordatoriosFragmento != null){
+                        mListaRecordatoriosFragmento.listaRecordatorios();
+                    }
+
+                }
+            }
+
+            if(requestCode == CODIGO_RESPUESTA_ELIMINAR_RECORDATORIO){
+                boolean valorObtenido = data.getExtras()
+                        .getBoolean(DetalleRecordatorioActivity.LLAVE_RETORNO_ELIMINAR_RECORDATORIO);
+                if(valorObtenido){
+                    //Recargo el spinner siempre y cuando que el valor retornado sea `true`
+                    if(mListaRecordatoriosFragmento != null){
+                        mListaRecordatoriosFragmento.listaRecordatorios();
+                    }
+
+                }
+            }
+
+        }
+
+    }
 }

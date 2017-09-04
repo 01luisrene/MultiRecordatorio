@@ -113,6 +113,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
                 android:contentDescription="@string/boton_buscar_contacto"
                 android:paddingEnd="2dp"
                 android:paddingStart="2dp"
@@ -125,7 +128,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/nuevo_titulo_fecha_recordatorio"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="32dp"
                 app:layout_constraintTop_toBottomOf="@+id/sw_enviar_mensaje"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginStart="8dp"
@@ -223,12 +226,14 @@
                 android:layout_height="wrap_content"
                 android:layout_width="200dp"
                 android:layout_marginLeft="8dp"
-                app:layout_constraintLeft_toLeftOf="parent"/>
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_nuevo_telefono"
-                android:layout_width="0dp"
+                android:layout_width="125dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
                 android:visibility="gone"
                 app:layout_constraintLeft_toRightOf="@+id/sw_enviar_mensaje"
                 app:layout_constraintTop_toBottomOf="@+id/sw_twitter">
@@ -268,6 +273,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/til_nuevo_entidad_otros"
                 app:layout_constraintRight_toLeftOf="@+id/ib_mensaje_info"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp"
                 app:layout_constraintBottom_toTopOf="@+id/til_nuevo_contenido_mensaje"
                 tools:ignore="ContentDescription"
                 app:layout_constraintVertical_bias="0.0"/>
@@ -374,13 +380,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginEnd="9dp"
+                android:layout_marginEnd="1dp"
                 android:layout_marginTop="18dp"
-                app:layout_constraintLeft_toRightOf="@+id/ib_facebook_info"
-                app:layout_constraintRight_toLeftOf="@+id/ib_mensaje_info"
                 app:layout_constraintTop_toTopOf="@+id/ib_twitter_info"
                 tools:text="140"
-                app:layout_constraintHorizontal_bias="1.0"/>
+                app:layout_constraintRight_toRightOf="@+id/ib_twitter_info"/>
+
+            <TextView
+                android:id="@+id/tv_mensaje_info"
+                style="@style/texto_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="1dp"
+                tools:text="1"
+                app:layout_constraintRight_toRightOf="@+id/ib_mensaje_info"
+                app:layout_constraintTop_toTopOf="@+id/ib_mensaje_info"
+                android:layout_marginTop="18dp"
+                />
+
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v4.widget.NestedScrollView>

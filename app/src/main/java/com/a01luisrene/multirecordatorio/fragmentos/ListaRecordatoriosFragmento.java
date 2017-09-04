@@ -43,7 +43,7 @@ public class ListaRecordatoriosFragmento extends Fragment{
 
     //Interface asociada a acitividad padre
     public interface OnItemSelectedListener {
-        public void onItemSelected(Recordatorios recordatorios);
+        void onItemSelected(Recordatorios recordatorios);
     }
 
     public ListaRecordatoriosFragmento() {
@@ -54,10 +54,6 @@ public class ListaRecordatoriosFragmento extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-
-        }
     }
 
     @Override
@@ -71,7 +67,8 @@ public class ListaRecordatoriosFragmento extends Fragment{
         //Muestro el titulo de lista en el toolbar
         String stringTitulo = getString(R.string.l_recordatorios);
         String tituloListaRecordatorios  =  stringTitulo.substring(0, 1).toUpperCase() + stringTitulo.substring(1);
-        activity.getSupportActionBar().setTitle(tituloListaRecordatorios);
+        if(activity.getSupportActionBar() != null)
+            activity.getSupportActionBar().setTitle(tituloListaRecordatorios);
 
         mListaVacia = (TextView) v.findViewById(R.id.lista_vacia);
         mRecordatoriosRecyclerView = (RecyclerView) v.findViewById(R.id.rv_lista_recordatorio);
@@ -83,7 +80,13 @@ public class ListaRecordatoriosFragmento extends Fragment{
         mRecordatoriosRecyclerView.setLayoutManager(linearLayoutManager);
 
         mManagerRecordatorios = new DataBaseManagerRecordatorios(getActivity().getApplicationContext());
+        //Función que tiene la lógica para la carga de la lista
+        listaRecordatorios();
 
+        return v;
+    }
+
+    public void listaRecordatorios(){
         mListaItemsRecordatorios = mManagerRecordatorios.getListaRecordatorios();
 
         mListaRecordatoriosAdaptador = new ListaRecordatoriosAdaptador(mListaItemsRecordatorios,
@@ -98,6 +101,7 @@ public class ListaRecordatoriosFragmento extends Fragment{
 
         mRecordatoriosRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        //Verifico si la lista sigue vacía
         if (mListaItemsRecordatorios.isEmpty()) {
 
             Resources res = getResources();
@@ -119,8 +123,6 @@ public class ListaRecordatoriosFragmento extends Fragment{
             mListaVacia.setVisibility(View.GONE);
             mRecordatoriosRecyclerView.setVisibility(View.VISIBLE);
         }
-
-        return v;
     }
 
     public void actualizarListaRecordatorios(){
@@ -130,35 +132,6 @@ public class ListaRecordatoriosFragmento extends Fragment{
 
     }
 
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mListaItemsRecordatorios = mManagerRecordatorios.getListaRecordatorios();
-
-        mListaRecordatoriosAdaptador = new ListaRecordatoriosAdaptador(mListaItemsRecordatorios,
-                getActivity().getApplicationContext(), new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(Recordatorios recordatorios) {
-                listener.onItemSelected(recordatorios);
-            }
-        });
-
-        mRecordatoriosRecyclerView.setAdapter(mListaRecordatoriosAdaptador);
-
-        mRecordatoriosRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        //Verifico si la lista sigue vacía
-        if (mListaItemsRecordatorios.isEmpty()) {
-            mListaVacia.setVisibility(View.VISIBLE);
-            mRecordatoriosRecyclerView.setVisibility(View.GONE);
-        } else {
-            mListaVacia.setVisibility(View.GONE);
-            mRecordatoriosRecyclerView.setVisibility(View.VISIBLE);
-
-        }
-    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

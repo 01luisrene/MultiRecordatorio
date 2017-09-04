@@ -8,7 +8,10 @@
     <string name="accion_atras">Atrás</string>
     <string name="hint_buscar">Buscar&#8230;</string>
 
-    <!--Formulario agregar recordatorio-->
+    <!--=======Formulario agregar recordatorio=======-->
+    <string name="selecciona_categoria_spinner">Seleccione una categoria:</string>
+    <string name="agregar_categoria_boton">Agregar</string>
+    <string name="label_o">O</string>
     <string name="nuevo_titulo_recordatorio">Título del recordatorio</string>
     <string name="nuevo_entidad_otros">Subtítulo (nombre, empresa, lugar, &#8230;)</string>
     <string name="nuevo_telefono_recordatorio">Teléfono</string>
@@ -24,24 +27,29 @@
     <string name="error_entidad_otros">Ingrese un subtítulo válido</string>
     <string name="error_contenido_mensaje_min_char">Ingrese un mínimo de 8 caracteres</string>
     <string name="error_contenido_mensaje_max_char">Ingrese un máximo de 1000 caracteres</string>
+    <string name="error_contenido_mensaje_ingresado">Ingrese un mensaje para el recordatorio</string>
     <string name="error_telefono">Número tfno. inválido</string>
+    <string name="error_telefono_ingresado">Ingrese un número de teléfono válido</string>
     <string name="error_fecha">Ingrese un fecha válida</string>
-    s<string name="error_fecha_ingresada">La fecha debe ser igual o superior a la actual</string>
+    <string name="error_fecha_ingresada">La fecha debe ser igual o superior a la actual</string>
     <string name="error_dia_menor_actual">El día debe ser igual o superior al actual</string>
     <string name="error_mes_menor_actual">El mes debe ser igual o superior al actual</string>
     <string name="error_anio_menor_actual">El año debe ser igual o superior al actual</string>
+    <string name="error_anio">Corrija el año</string>
+    <string name="error_mes">Corrija el mes</string>
+    <string name="error_dia">Corrija el día</string>
     <string name="error_hora">Ingrese un hora válida</string>
     <string name="error_hora_ingresada">La hora debe ser superior a la actual</string>
     <string name="error_hora_menor_actual">La hora debe ser igual o superior al actual</string>
     <string name="error_minuto_menor_actual">El minuto debe ser superior al actual</string>
     <string name="error_completar_campos_recordatorios">Complete todos los campos obligatorios</string>
-    <string name="selecciona_categoria_spinner">Seleccione una categoria:</string>
-    <string name="agregar_categoria_boton">Agregar</string>
     <string name="permiso_denegado_contacto">¡No tienes permiso para acceder a la agenda de contactos!</string>
     <!--AlertDialog.Builder-->
     <string name="adb_titulo">Autorización</string>
     <string name="adb_cancelar">Haz rechazado la petición.</string>
     <string name="adb_mensaje_contacto">Necesito permiso para acceder a los contactos de tu dispositivo.</string>
+
+    <!--=======Fin formulario agregar recordatorio=======-->
 
     <!---Formulario detalle recordatorio-->
     <string name="titulo_recordatorio">Titulo Recordatorio:</string>
@@ -56,6 +64,8 @@
     <string name="fecha_recordatorio">Fecha &#38; hora del recordatorio:</string>
     <string name="descripcion_cover">Imagen principal del recordatorio</string>
 
+    <string name="adb_titulo_eliminar">¿Desea eliminar el recordatorio?</string>
+    <string name="adb_mensaje_eliminar">El recordatorio sera eliminado de manera permanente.</string>
     <!--Formulario agregar categoría recordatorio-->
     <string name="seleccionar_imagen">Seleccionar imagen</string>
     <string name="titulo_categoria">Titulo categoría (Cita, Cummpleaños,&#8230;)</string>

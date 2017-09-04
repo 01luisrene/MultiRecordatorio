@@ -1,10 +1,13 @@
 package com.a01luisrene.multirecordatorio.ui;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -24,11 +27,14 @@ import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 public class DetalleRecordatorioActivity extends AppCompatActivity implements View.OnClickListener {
 
     //Constantes
-    public static int MILISEGUNDOS_ESPERA = 300;
+    public static final int MILISEGUNDOS_ESPERA = 300;
+    public static final String LLAVE_RETORNO_ELIMINAR_RECORDATORIO = "llave.retorno.eliminar.recordatorio";
 
     //Variables para ocultar el icono eliminar del menú
     public int estadoIconoEliminar;
     MenuItem eliminarItem;
+
+    boolean respuestaRetornoEliminarRecordatorio = false;
 
     CollapsingToolbarLayout mCtCategoriaRecordatorio;
     FloatingActionButton mFabEditar;
@@ -70,7 +76,7 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
 
 
         if (savedInstanceState == null) {
-            if(agregarRecordatorioFragmento == 1){
+            if(agregarRecordatorioFragmento == MainActivity.VALOR_ENVIADO_NUEVO_RECORDATORIO){
 
                 estadoIconoEliminar = 0;
 
@@ -142,17 +148,52 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
                 return true;
 
             case R.id.accion_eliminar:
-                String idRecordatorio = mItemsRecordatorios.getId();
-
-                mManagerRecordatorios.eliminarRecordatorio(idRecordatorio);
-
-                esperarYCerrar(MILISEGUNDOS_ESPERA);
+                eliminarRecordatorio();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+
+    public void eliminarRecordatorio(){
+        new AlertDialog.Builder(this)
+                .setIcon(R.drawable.ic_info_24dp)
+                .setTitle(getString(R.string.adb_titulo_eliminar))
+                .setMessage(getString(R.string.adb_mensaje_eliminar))
+                .setPositiveButton(getString(R.string.boton_aceptar), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        try {
+
+                            //Eliminar registro
+                            String idRecordatorio = mItemsRecordatorios.getId();
+                            mManagerRecordatorios.eliminarRecordatorio(idRecordatorio);
+
+                            respuestaRetornoEliminarRecordatorio = true;//Respuesta
+                            Intent intent = new Intent();
+                            intent.putExtra(LLAVE_RETORNO_ELIMINAR_RECORDATORIO, respuestaRetornoEliminarRecordatorio);
+                            setResult(RESULT_OK, intent);
+
+                            esperarYCerrar(MILISEGUNDOS_ESPERA);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.boton_cancelar), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Desplegar mensaje de lamentación
+
+                    }
+                })
+                .show();
+    }
 
     //Esperar unos segundos antes de cerrar la activity
     public void esperarYCerrar(int milisegundos) {
@@ -161,6 +202,7 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
             public void run() {
                 // acciones que se ejecutan tras los milisegundos
                 // [cerrar activity]
+
                 finish();
 
             }

@@ -28,7 +28,6 @@ package com.a01luisrene.multirecordatorio.fragmentos;
         import android.support.v7.app.AlertDialog;
         import android.text.Editable;
         import android.text.TextWatcher;
-        import android.util.Log;
         import android.util.Patterns;
         import android.view.LayoutInflater;
         import android.view.View;
@@ -68,19 +67,21 @@ public class AgregarRecordatorioFragmento extends Fragment
     public static final String ESTADO_RECORDATORIO = "1";
     public static final String ENVIAR_ON = "1";
     public static final String ENVIAR_OFF = "0";
-    public static final String VI_CARACTERES_INFO = "140"; //VI = valor inical
+    public static final String VI_CARACTERES_TWITTER_INFO = "140"; //VI = valor inical
+    public static final String VI_CANTIDAD_MENSAJE_INFO = "0";
     public static final String ID_CATEGORIA_NULO = "nulo";
     public static final String VALOR_VACIO = "";
     public static final String CERO = "0";
     public static final String BARRA = "/";
     public static final String DOS_PUNTOS = ":";
+    public static final String LLAVE_RETORNO_RECORDATORIO = "llave.retorno.recordatorio";
     public static int MILISEGUNDOS_ESPERA = 1000;
     public static final int CODIGO_RESPUESTA_CATEGORIA = 100;
     public static final int PICK_CONTACT_REQUEST = 101;
     private static final int READ_CONTACTS_PERMISSION = 102;
 
     //Expresiones regulares
-    public static final String REGEX_CARACTERES_LATINOS = "^[a-zA-Z0-9 áÁéÉíÍóÓúÚñÑüÜ]*$";
+    public static final String REGEX_CARACTERES_LATINOS = "^[a-zA-Z0-9-/°. áÁéÉíÍóÓúÚñÑüÜ]*$";
     public static final String REGEX_FECHAS = "^([0-2][0-9]|3[0-1])(\\/)(0[1-9]|1[0-2])\\2(\\d{4})$";
     public static final String REGEX_HORAS = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$";
 
@@ -91,10 +92,12 @@ public class AgregarRecordatorioFragmento extends Fragment
     Switch mSwFacebook, mSwTwitter, mSwEnviarMensaje;
     String mValorFacebook, mValorTwitter, mValorEnviarMensaje;
     ImageButton mIbContactos, mIbFecha, mIbHora, mIbFacebookInfo, mIbTwitterInfo, mIbMensajeInfo;
-    TextView mTvTwitterInfo;
+    TextView mTvTwitterInfo, mTvMensajeInfo;
 
     //Booleanos
     boolean guardarNumeroTelefono = true;
+
+    boolean respuestaRetornoRecordatorio = false;
 
     //[Combo categoria recordatorios]
     Spinner mSpinnerListaCategotegorias;
@@ -120,6 +123,8 @@ public class AgregarRecordatorioFragmento extends Fragment
     final int minuto = c.get(Calendar.MINUTE);
     int horaIngresada, minutoIngresado;
 
+    int cantidadMensajesInfo;
+
     //Referencia a manager de SQLite
     DataBaseManagerRecordatorios mManagerRecordatorios;
 
@@ -130,8 +135,8 @@ public class AgregarRecordatorioFragmento extends Fragment
     Activity activity;
 
     //Referencias de widgets que se encuentran en layout toolbar_detalle.xml
-    private CircleImageView mCivImagenRecordatorio;
-    private TextView mTvTituloCategoriaRecordatorio;
+    CircleImageView mCivImagenRecordatorio;
+    TextView mTvTituloCategoriaRecordatorio;
 
     protected View mView;
 
@@ -187,6 +192,7 @@ public class AgregarRecordatorioFragmento extends Fragment
 
         //TextView
         mTvTwitterInfo = (TextView) v.findViewById(R.id.tv_twitter_info);
+        mTvMensajeInfo = (TextView) v.findViewById(R.id.tv_mensaje_info);
 
         //Switch
         mSwFacebook = (Switch) v.findViewById(R.id.sw_facebook);
@@ -222,7 +228,8 @@ public class AgregarRecordatorioFragmento extends Fragment
         //[FIN COMBO]
 
         //Muestro la cantidad de textos disponibles para twitter
-        mTvTwitterInfo.setText(VI_CARACTERES_INFO);
+        mTvTwitterInfo.setText(VI_CARACTERES_TWITTER_INFO);
+        mTvMensajeInfo.setText(VI_CANTIDAD_MENSAJE_INFO);
 
         mSwFacebook.setOnCheckedChangeListener(this);
         mSwTwitter.setOnCheckedChangeListener(this);
@@ -240,18 +247,22 @@ public class AgregarRecordatorioFragmento extends Fragment
     }
 
     public void poblarSpinner(){
+
         comboListaCategorias = new ArrayList<>();
-        comboListaCategorias.add(getString(R.string.selecciona_categoria_spinner));
+
         int sizeListaCat = mManagerRecordatorios.getListaCategoriasSpinner().size();
+
+        comboListaCategorias.add(getString(R.string.selecciona_categoria_spinner));
+
         for(int i = 0; i < sizeListaCat; i++){
             comboListaCategorias.add(mManagerRecordatorios
                     .getListaCategoriasSpinner().get(i).getCategorioRecordatorio());
         }
 
         comboAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, comboListaCategorias);
+                R.layout.spinner_item, comboListaCategorias);
 
-        comboAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        comboAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 
         mSpinnerListaCategotegorias.setAdapter(comboAdapter);
         mSpinnerListaCategotegorias.setOnItemSelectedListener(this);
@@ -261,12 +272,11 @@ public class AgregarRecordatorioFragmento extends Fragment
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        int idSpinner = parent.getId();
+        int idItemSelected = parent.getId();
 
-        switch (idSpinner){
+        switch (idItemSelected){
             case R.id.sp_categorias_recordatorios:
                 if(position != 0) {
-
                     mValorIdCategoria = mManagerRecordatorios
                             .getListaCategoriaRecordatorios()
                             .get(position-1).getId();
@@ -301,6 +311,8 @@ public class AgregarRecordatorioFragmento extends Fragment
                         }
                     }
 
+
+
                 }else{
                     //Colocar el valor de id categoría en nulo
                     mValorIdCategoria = ID_CATEGORIA_NULO;
@@ -314,6 +326,7 @@ public class AgregarRecordatorioFragmento extends Fragment
                     }
 
                 }
+
                 break;
         }
     }
@@ -349,7 +362,15 @@ public class AgregarRecordatorioFragmento extends Fragment
 
                     //Compruebo si el campo de teléfono es válido
                     String numeroTelefono = mTieTelefono.getText().toString();
-                    guardarNumeroTelefono = esTelefonoValido(numeroTelefono);
+
+                    //False
+                    guardarNumeroTelefono = false;
+
+                    //True
+                    if(!numeroTelefono.isEmpty() && esTelefonoValido(numeroTelefono)){
+                        guardarNumeroTelefono = esTelefonoValido(numeroTelefono);
+                    }
+
 
                 }else{
                     mValorEnviarMensaje = ENVIAR_OFF;
@@ -459,13 +480,13 @@ public class AgregarRecordatorioFragmento extends Fragment
         }
     }
 
-    public void validarDatos(){
+    public void validarDatos() {
 
         String stTitulo = mTieTituloRecordatorio.getText().toString();
         String stEntidadOtros = mTieEntidadOtros.getText().toString();
         String stContenidoMensaje = mTieContenidoMensaje.getText().toString();
         String stFecha = mTieFecha.getText().toString();
-        String stHora =  mTieHora.getText().toString();
+        String stHora = mTieHora.getText().toString();
 
         boolean titulo = esTituloRecordatorioValido(stTitulo);
         boolean entidadOtros = esEntidadOtrosValido(stEntidadOtros);
@@ -475,10 +496,11 @@ public class AgregarRecordatorioFragmento extends Fragment
         boolean hora = esHoraValido(stHora);
         boolean horaIngresada = esHoraIngresadaValido(stHora);
 
-        if(titulo && entidadOtros && contenidoMensaje && guardarNumeroTelefono && fecha && hora
-                && fechaIngresada && horaIngresada) {
+        if (!mValorIdCategoria.equals(ID_CATEGORIA_NULO)) {
 
-            if(!mValorIdCategoria.equals(ID_CATEGORIA_NULO)) {
+            if (titulo && entidadOtros && contenidoMensaje && guardarNumeroTelefono && fecha && hora
+                    && fechaIngresada && horaIngresada) {
+
                 try {
                     mManagerRecordatorios.insertarRecoratorio(null,
                             mTieTituloRecordatorio.getText().toString(), //[Titulo]
@@ -495,27 +517,30 @@ public class AgregarRecordatorioFragmento extends Fragment
                             ESTADO_RECORDATORIO);
 
 
-
                 } catch (Exception e) {
                     //Mensaje de error
                     mostrarMensaje(getString(R.string.error_al_guardar), 0);
                 } finally {
-
                     //Mensaje de registro guardado con exito
                     Toast.makeText(getActivity(), getString(R.string.mensaje_agregado_satisfactoriamente), Toast.LENGTH_SHORT).show();
-
                     //Cierro la activity
                     esperarYCerrar(MILISEGUNDOS_ESPERA);
                 }
-            }else{
-                Toast.makeText(getActivity(), getString(R.string.error_spinner_categorias), Toast.LENGTH_SHORT).show();
+            } else if (!titulo) {
+                mostrarMensaje(getString(R.string.error_titulo_recordatorio), 0);
+            } else if (!contenidoMensaje) {
+                mostrarMensaje(getString(R.string.error_contenido_mensaje_ingresado), 0);
+            } else if (!guardarNumeroTelefono) {
+                mostrarMensaje(getString(R.string.error_telefono_ingresado), 0);
+            } else if (!fechaIngresada) {
+                mostrarMensaje(getString(R.string.error_fecha_ingresada), 0);
+            } else if (!horaIngresada) {
+                mostrarMensaje(getString(R.string.error_hora_ingresada), 0);
+            } else {
+                mostrarMensaje(getString(R.string.error_completar_campos_recordatorios), 0);
             }
-        }else if(!fechaIngresada){
-            mostrarMensaje(getString(R.string.error_fecha_ingresada), 0);
-        }else if(!horaIngresada){
-            mostrarMensaje(getString(R.string.error_hora_ingresada), 0);
-        }else{
-            Toast.makeText(getActivity(), getString(R.string.error_completar_campos_recordatorios), Toast.LENGTH_SHORT).show();
+        } else {
+            mostrarMensaje(getString(R.string.error_spinner_categorias), 0);
         }
     }
 
@@ -553,9 +578,19 @@ public class AgregarRecordatorioFragmento extends Fragment
         //Restar caracteres aceptados por twitter
         int caracteresValorInicialTwitter = 140;
         int caracteresTwitter = caracteresValorInicialTwitter - numeroCaracteres.length();
+        int residuo = numeroCaracteres.length() % 160;
+
+        if(residuo == 0){
+            cantidadMensajesInfo = numeroCaracteres.length() / 160;
+        }else{
+            cantidadMensajesInfo = Math.round(numeroCaracteres.length() / 160) + 1;
+        }
 
         mTvTwitterInfo.setText(String.valueOf(caracteresTwitter));
 
+        mTvMensajeInfo.setText(String.valueOf(cantidadMensajesInfo));
+
+        //Twitter
         if(numeroCaracteres.length() > 140){
             mIbTwitterInfo.setBackground(drawable_invalido);
             mSwTwitter.setEnabled(false);
@@ -564,6 +599,7 @@ public class AgregarRecordatorioFragmento extends Fragment
             mIbTwitterInfo.setBackground(drawable_valido);
             mSwTwitter.setEnabled(true);
         }
+
 
     }
     private boolean esTelefonoValido(String telefono){
@@ -599,29 +635,30 @@ public class AgregarRecordatorioFragmento extends Fragment
         }
         return true;
     }
+    public void diaMesAnioIngresado(String string){
+        if(string.length() == 10){
+            diaIngresado = Integer.parseInt(string.substring(0, 2));
+            mesIngresado = Integer.parseInt(string.substring(3, 5));
+            anioIngresado = Integer.parseInt(string.substring(6, 10));
+        }
+
+    }
 
     private boolean esFechaIngresadaValido(String fechaIngresada){
-        if(fechaIngresada.length() == 10){
 
-            diaIngresado = Integer.parseInt(fechaIngresada.substring(0, 2));
-            mesIngresado = Integer.parseInt(fechaIngresada.substring(3, 5));
-            anioIngresado = Integer.parseInt(fechaIngresada.substring(6, 10));
+        diaMesAnioIngresado(fechaIngresada);
 
-            if(anioIngresado < anio ){
-                mostrarMensaje(getString(R.string.error_anio_menor_actual), 0);
-                return false;
-            } else if(anioIngresado == anio){
-                if(diaIngresado < dia){
-                    mostrarMensaje(getString(R.string.error_dia_menor_actual), 0);
-                    return false;
-                }else if(mesIngresado < (mes+1) ){
-                    mostrarMensaje(getString(R.string.error_mes_menor_actual), 0);
-                    return false;
-                }
-            }
-
-        }else{
+        if(anioIngresado < anio ){
+            mostrarMensaje(getString(R.string.error_anio_menor_actual), 0);
             return false;
+        } else if(anioIngresado == anio){
+            if(diaIngresado < dia){
+                mostrarMensaje(getString(R.string.error_dia_menor_actual), 0);
+                return false;
+            }else if(mesIngresado < (mes+1) ){
+                mostrarMensaje(getString(R.string.error_mes_menor_actual), 0);
+                return false;
+            }
         }
 
         return true;
@@ -703,9 +740,10 @@ public class AgregarRecordatorioFragmento extends Fragment
 
     }
     public void obtenerHora(){
+
         //Cargo los valores de la fecha
         String fechaIngresada = mTieFecha.getText().toString();
-        esFechaIngresadaValido(fechaIngresada);
+        diaMesAnioIngresado(fechaIngresada);
 
         TimePickerDialog recogerHora = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -727,6 +765,7 @@ public class AgregarRecordatorioFragmento extends Fragment
                     }else if(horaLocal24 == horaSistema24){
                         if(minute <= minuto){
                             mostrarMensaje(getString(R.string.error_minuto_menor_actual), 0);
+
                         }else{
                             mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
                         }
@@ -735,18 +774,29 @@ public class AgregarRecordatorioFragmento extends Fragment
                     }
 
                 }else if((diaIngresado > dia) && (mesIngresado > mesActual) && (anioIngresado == anio)){
+
                     mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
+
+                }else if((diaIngresado > dia) && (mesIngresado == mesActual) && (anioIngresado == anio)){
+
+                    mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
+
+                }else if((diaIngresado == dia) && (mesIngresado > mesActual) && (anioIngresado == anio)){
+
+                    mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
+
                 }else if(anioIngresado > anio){
                     mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
                 }else if((anioIngresado < anio)){
-                    mostrarMensaje("Corrija el año", 0);
+                    mostrarMensaje(getString(R.string.error_anio), 0);
 
                 }else if(mesIngresado < mesActual){
-                    mostrarMensaje("Corrija el mes", 0);
+                    mostrarMensaje(getString(R.string.error_mes), 0);
 
                 }else if(diaIngresado < dia){
-                    mostrarMensaje("Corrija el día", 0);
+                    mostrarMensaje(getString(R.string.error_dia), 0);
                 }
+
 
             }
 
@@ -763,7 +813,7 @@ public class AgregarRecordatorioFragmento extends Fragment
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            esTituloRecordatorioValido(String.valueOf(s));
+            mTilTituloRecordatorio.setError(null);
         }
         @Override
         public void afterTextChanged(Editable s) {}
@@ -775,7 +825,7 @@ public class AgregarRecordatorioFragmento extends Fragment
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            esEntidadOtrosValido(String.valueOf(s));
+            mTilEntidadOtros.setError(null);
         }
         @Override
         public void afterTextChanged(Editable s) {}
@@ -788,7 +838,8 @@ public class AgregarRecordatorioFragmento extends Fragment
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             validarBotonesInfo(String.valueOf(s));
-            esContenidoMensajeValido(String.valueOf(s));}
+            mTilContenidoMensaje.setError(null);
+        }
         @Override
         public void afterTextChanged(Editable s) {}
     };
@@ -808,7 +859,7 @@ public class AgregarRecordatorioFragmento extends Fragment
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            esFechaValido(String.valueOf(s));
+            mTilFecha.setError(null);
         }
         @Override
         public void afterTextChanged(Editable s) {}
@@ -819,7 +870,7 @@ public class AgregarRecordatorioFragmento extends Fragment
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            esHoraValido(String.valueOf(s));
+            mTilHora.setError(null);
         }
         @Override
         public void afterTextChanged(Editable s) {}
@@ -832,6 +883,13 @@ public class AgregarRecordatorioFragmento extends Fragment
         handler.postDelayed(new Runnable() {
             public void run() {
                 // [cerrar activity]
+
+                respuestaRetornoRecordatorio = true;
+                Intent i = new Intent();
+                i.putExtra(LLAVE_RETORNO_RECORDATORIO, respuestaRetornoRecordatorio);
+                getActivity().setResult(RESULT_OK, i);
+
+
                 getActivity().finish();
 
             }
