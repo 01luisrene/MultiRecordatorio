@@ -23,7 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DetalleRecordatorioFragmento extends Fragment {
 
     //Llave para usar con parcelable
-    public static final String ID_RECORDATORIO = "objeto.recordatorio";
+    public static final String KEY_RECORDATORIO = "objeto.recordatorio";
     public static final String VALOR_ACTIVO = "1";
 
     Recordatorios mItemRecordatorio;
@@ -31,8 +31,8 @@ public class DetalleRecordatorioFragmento extends Fragment {
     ImageView mIvImagenRecordatorio;
     CircleImageView mCivImagenCategoria;
     CheckBox mCbFacebook, mCbTwitter, mCbMensaje;
-    String mValorFacebook, mValorTwitter, mValorMensaje, mValorImagen;
-    TextView mTvTelefono;
+    String mValorFacebook, mValorTwitter, mValorMensaje, mValorRutaImagen, mValorRutaImagenRecuperado;
+    TextView mTvTelefono, mTvEntidadOtros;
 
     Activity activity;
 
@@ -44,7 +44,7 @@ public class DetalleRecordatorioFragmento extends Fragment {
         DetalleRecordatorioFragmento fragmentoDetalle = new DetalleRecordatorioFragmento();
 
         Bundle args = new Bundle();
-        args.putParcelable(ID_RECORDATORIO, recordatorios);
+        args.putParcelable(KEY_RECORDATORIO, recordatorios);
         fragmentoDetalle.setArguments(args);
 
         return fragmentoDetalle;
@@ -55,29 +55,16 @@ public class DetalleRecordatorioFragmento extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ID_RECORDATORIO)) {
+        if (getArguments().containsKey(KEY_RECORDATORIO)) {
 
-            mItemRecordatorio = getArguments().getParcelable(ID_RECORDATORIO);
+            mItemRecordatorio = getArguments().getParcelable(KEY_RECORDATORIO);
 
             activity = this.getActivity();
 
             mCtRecordatorio = (CollapsingToolbarLayout) activity.findViewById(R.id.ct_categoria_recordatorio);
             mIvImagenRecordatorio = (ImageView) activity.findViewById(R.id.iv_cover);
+            mValorRutaImagen = mItemRecordatorio.getRutaImagenRecordatorio();
 
-            mValorImagen = mItemRecordatorio.getImagenRecordatorio();
-
-            if (mCtRecordatorio != null && mIvImagenRecordatorio != null) {
-                mCtRecordatorio.setTitle(mItemRecordatorio.getCategoriaRecordatorio());
-
-                //Condiciona para cargar el ImageView [solo si devuelve un valor diferente a nulo]
-                if(mValorImagen != null){
-
-                    Picasso.with(getContext())
-                            .load(new File(mValorImagen))
-                            .into(mIvImagenRecordatorio);
-
-                }
-            }
         }
 
     }
@@ -88,22 +75,48 @@ public class DetalleRecordatorioFragmento extends Fragment {
         View v = inflater.inflate(R.layout.fragment_detalle_recordatorio, container, false);
 
         if(mItemRecordatorio != null) {
-            ((TextView) v.findViewById(R.id.tv_titulo)).setText(mItemRecordatorio.getTitulo());
-            ((TextView) v.findViewById(R.id.tv_entidad_otros)).setText(mItemRecordatorio.getEntidadOtros());
-            ((TextView) v.findViewById(R.id.tv_telefono)).setText(mItemRecordatorio.getTelefono());
-            ((TextView) v.findViewById(R.id.tv_mensaje)).setText(mItemRecordatorio.getContenidoMensaje());
-            mTvTelefono = (TextView) v.findViewById(R.id.tv_telefono);
 
+            if (mCtRecordatorio != null && mIvImagenRecordatorio != null) {
+                mCtRecordatorio.setTitle(mItemRecordatorio.getCategoriaRecordatorio());
+
+                //Condiciona para cargar el ImageView [solo si devuelve un valor diferente a nulo]
+                if(mValorRutaImagen != null){
+
+                    Picasso.with(getContext())
+                            .load(new File(mValorRutaImagen))
+                            .into(mIvImagenRecordatorio);
+
+                }
+            }
+
+            //TextView
+            mTvEntidadOtros = (TextView) v.findViewById(R.id.tv_entidad_otros);
+            mTvTelefono = (TextView) v.findViewById(R.id.tv_telefono);
+            //CheckBox
             mCbFacebook = (CheckBox) v.findViewById(R.id.cb_facebook);
             mCbTwitter = (CheckBox) v.findViewById(R.id.cb_twtter);
             mCbMensaje = (CheckBox) v.findViewById(R.id.cb_mensaje);
 
+            ((TextView) v.findViewById(R.id.tv_titulo)).setText(mItemRecordatorio.getTitulo());
+            ((TextView) v.findViewById(R.id.tv_entidad_otros)).setText(mItemRecordatorio.getEntidadOtros());
+            ((TextView) v.findViewById(R.id.tv_telefono)).setText(mItemRecordatorio.getTelefono());
+            ((TextView) v.findViewById(R.id.tv_mensaje)).setText(mItemRecordatorio.getContenidoMensaje());
+
+            //Almaceno el valor de del campo Entidad Otros
+            String entidadOtrosValor = mItemRecordatorio.getEntidadOtros();
+
+            if(entidadOtrosValor.isEmpty()){
+                mTvEntidadOtros.setWidth(0);
+                mTvEntidadOtros.setHeight(0);
+            }
+
+
             if(!Utilidades.smartphone){ //Compruebo si es tablet
                 mCivImagenCategoria = (CircleImageView) v.findViewById(R.id.civ_detalle_categoria_recordatorio);
-                if(mValorImagen != null){
+                if(mValorRutaImagen != null){
                     //Utilizo la librería Picasso
                     Picasso.with(getContext())
-                            .load(new File(mValorImagen))
+                            .load(new File(mValorRutaImagen))
                             .into(mCivImagenCategoria);
 
                 }else{
@@ -154,10 +167,13 @@ public class DetalleRecordatorioFragmento extends Fragment {
 
         }
 
-
         return v;
     }
 
-    public interface OnItemSelectedListener {
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.getString("ruta.img", mValorRutaImagen);
     }
 }

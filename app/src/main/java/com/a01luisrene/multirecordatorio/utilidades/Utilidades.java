@@ -9,6 +9,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.view.View;
+import android.widget.Spinner;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,6 +54,18 @@ public class Utilidades {
 
         return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
 
+    }
+
+    public static int getIndexSpinner(Spinner spinner, String categoria)
+    {
+        int index = 0;
+
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(categoria)) {
+                index = i;
+            }
+        }
+        return index;
     }
 
 }

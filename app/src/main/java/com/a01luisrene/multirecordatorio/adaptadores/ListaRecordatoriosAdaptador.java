@@ -70,7 +70,7 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
             //Almaceno los valores devueltos para realizar algunos cambios
             String valorTitulo = items.getTitulo();
             String valorEntidadOtros = items.getEntidadOtros();
-            String valorImagen = items.getImagenRecordatorio();
+            String valorImagen = items.getRutaImagenRecordatorio();
 
             String tituloFormateado, entidadOtrosFormateado, mensajeFormateado;
 
@@ -78,13 +78,13 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
 
             //Título formateado
 
-            if(valorTitulo.length() >= 45){
-                tituloFormateado = valorTitulo.substring(0, 45) + ELLIPSIS;
+            if(valorTitulo.length() >= 35){
+                tituloFormateado = valorTitulo.substring(0, 35) + ELLIPSIS;
             }else{
                 tituloFormateado = valorTitulo;
             }
-            if(valorEntidadOtros.length() >= 35){
-                entidadOtrosFormateado = valorEntidadOtros.substring(0, 35) + ELLIPSIS;
+            if(valorEntidadOtros.length() >= 25){
+                entidadOtrosFormateado = valorEntidadOtros.substring(0, 25) + ELLIPSIS;
             }else{
                 entidadOtrosFormateado = valorEntidadOtros;
             }
@@ -105,9 +105,9 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                 String valoraMensaje = items.getContenidoMensaje();
 
                 //Condiciono para saber si la cadena tiene mas de 70 caracteres
-                if(valoraMensaje.length() >= 80){
+                if(valoraMensaje.length() >= 55){
                     //Agrego ellipsis al texto si es mayor de 70
-                    mensajeFormateado = valoraMensaje.substring(0, 60) + ELLIPSIS;
+                    mensajeFormateado = valoraMensaje.substring(0, 55) + ELLIPSIS;
                 }else{
                     //Muestro el texto original
                     mensajeFormateado = valoraMensaje;
@@ -195,13 +195,7 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
     // Devuelve el tamaño de tu conjunto de datos (invocado por el administrador de diseño)
     @Override
     public int getItemCount() {
-
-        if(mListaItemsRecordatorios != null){
-            return mListaItemsRecordatorios.size() > 0 ? mListaItemsRecordatorios.size() : 0;
-        }else{
-            return 0;
-        }
-
+        return mListaItemsRecordatorios.size();
     }
 
 }

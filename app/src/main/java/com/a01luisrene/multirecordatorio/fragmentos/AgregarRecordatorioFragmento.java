@@ -72,6 +72,7 @@ public class AgregarRecordatorioFragmento extends Fragment
     public static final String ID_CATEGORIA_NULO = "nulo";
     public static final String VALOR_VACIO = "";
     public static final String CERO = "0";
+    public static final String UNO = "1";
     public static final String BARRA = "/";
     public static final String DOS_PUNTOS = ":";
     public static final String LLAVE_RETORNO_RECORDATORIO = "llave.retorno.recordatorio";
@@ -82,7 +83,7 @@ public class AgregarRecordatorioFragmento extends Fragment
 
     //Expresiones regulares
     public static final String REGEX_CARACTERES_LATINOS = "^[a-zA-Z0-9-/°. áÁéÉíÍóÓúÚñÑüÜ]*$";
-    public static final String REGEX_FECHAS = "^([0-2][0-9]|3[0-1])(\\/)(0[1-9]|1[0-2])\\2(\\d{4})$";
+    public static final String REGEX_FECHAS = "^([012][1-9]|3[01])(\\/)(0[1-9]|1[012])\\2(\\d{4})$";
     public static final String REGEX_HORAS = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$";
 
     //Referencias de widgets del fragmento
@@ -96,7 +97,6 @@ public class AgregarRecordatorioFragmento extends Fragment
 
     //Booleanos
     boolean guardarNumeroTelefono = true;
-
     boolean respuestaRetornoRecordatorio = false;
 
     //[Combo categoria recordatorios]
@@ -117,6 +117,7 @@ public class AgregarRecordatorioFragmento extends Fragment
     final int dia = c.get(Calendar.DAY_OF_MONTH);
     final int anio = c.get(Calendar.YEAR);
     int diaIngresado, mesIngresado, anioIngresado;
+    int obtenerCantidadCaracteresCampoFecha;
 
     //Hora
     final int hora = c.get(Calendar.HOUR_OF_DAY);
@@ -145,9 +146,18 @@ public class AgregarRecordatorioFragmento extends Fragment
         // Required empty public constructor
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+            if(Utilidades.smartphone) {
+                activity = this.getActivity();
+                //Widgets de la activity Detalle Recordatorio
+                mIvImagenRecordatorio = (ImageView) activity.findViewById(R.id.iv_cover);
+                mCtCategoriaRecordatorio = (CollapsingToolbarLayout) activity.findViewById(R.id.ct_categoria_recordatorio);
+            }
+
 
     }
     @Override
@@ -160,12 +170,8 @@ public class AgregarRecordatorioFragmento extends Fragment
         //Asignamos nuestro manager que contiene nuestros metodos CRUD
         mManagerRecordatorios = new DataBaseManagerRecordatorios(getContext());
 
-        if(Utilidades.smartphone) {
-            activity = this.getActivity();
-            //Widgets de la activity Detalle Recordatorio
-            mIvImagenRecordatorio = (ImageView) activity.findViewById(R.id.iv_cover);
-            mCtCategoriaRecordatorio = (CollapsingToolbarLayout) activity.findViewById(R.id.ct_categoria_recordatorio);
-        }else{
+
+        if(!Utilidades.smartphone){
             //Widgets del layout toolbar_detelle.xml
             mCivImagenRecordatorio = (CircleImageView) v.findViewById(R.id.civ_nuevo_categoria_recordatorio);
             mTvTituloCategoriaRecordatorio = (TextView) v.findViewById(R.id.tv_nuevo_titulo_categoria_recordatorio);
@@ -241,6 +247,9 @@ public class AgregarRecordatorioFragmento extends Fragment
         mIbContactos.setOnClickListener(this);
         mIbFecha.setOnClickListener(this);
         mIbHora.setOnClickListener(this);
+
+
+
 
         return v;
 
@@ -458,10 +467,9 @@ public class AgregarRecordatorioFragmento extends Fragment
                 }
             }
             //Obtener el número de teléfono
-            if(requestCode == PICK_CONTACT_REQUEST ){
+            if(requestCode == PICK_CONTACT_REQUEST && data != null ){
 
                 contactoUri = data.getData();
-
                 mostrarSmartphone(contactoUri);
 
             }
@@ -491,14 +499,12 @@ public class AgregarRecordatorioFragmento extends Fragment
         boolean titulo = esTituloRecordatorioValido(stTitulo);
         boolean entidadOtros = esEntidadOtrosValido(stEntidadOtros);
         boolean contenidoMensaje = esContenidoMensajeValido(stContenidoMensaje);
-        boolean fecha = esFechaValido(stFecha);
         boolean fechaIngresada = esFechaIngresadaValido(stFecha);
-        boolean hora = esHoraValido(stHora);
         boolean horaIngresada = esHoraIngresadaValido(stHora);
 
         if (!mValorIdCategoria.equals(ID_CATEGORIA_NULO)) {
 
-            if (titulo && entidadOtros && contenidoMensaje && guardarNumeroTelefono && fecha && hora
+            if (titulo && entidadOtros && contenidoMensaje && guardarNumeroTelefono
                     && fechaIngresada && horaIngresada) {
 
                 try {
@@ -547,7 +553,13 @@ public class AgregarRecordatorioFragmento extends Fragment
     //Validar campos EditText
     private boolean esTituloRecordatorioValido(String titulo){
         Pattern patron = Pattern.compile(REGEX_CARACTERES_LATINOS);
-        if(!patron.matcher(titulo).matches() || titulo.length() > 120){
+        if(!patron.matcher(titulo).matches()){
+            mTilTituloRecordatorio.setError(getString(R.string.error_titulo_recordatorio));
+            return false;
+        }else if(titulo.length() > 100){
+            mTilTituloRecordatorio.setError(getString(R.string.error_titulo_recordatorio_max_char));
+            return false;
+        }else if(titulo.length() == 0){
             mTilTituloRecordatorio.setError(getString(R.string.error_titulo_recordatorio));
             return false;
         }else if(titulo.length() < 4){
@@ -560,8 +572,11 @@ public class AgregarRecordatorioFragmento extends Fragment
     }
     private boolean esEntidadOtrosValido(String entidadOtros) {
         Pattern patron = Pattern.compile(REGEX_CARACTERES_LATINOS);
-        if (!patron.matcher(entidadOtros).matches() || entidadOtros.length() > 100) {
+        if (!patron.matcher(entidadOtros).matches()) {
             mTilEntidadOtros.setError(getString(R.string.error_entidad_otros));
+            return false;
+        }else if(entidadOtros.length() > 80){
+            mTilEntidadOtros.setError(getString(R.string.error_entidad_otros_max_char));
             return false;
         }else{
             mTilEntidadOtros.setError(null);
@@ -612,7 +627,10 @@ public class AgregarRecordatorioFragmento extends Fragment
         return true;
     }
     private boolean esContenidoMensajeValido(String contenidoMensaje) {
-        if(contenidoMensaje.length() < 8){
+        if(contenidoMensaje.length() == 0){
+            mTilContenidoMensaje.setError(getString(R.string.error_contenido_mensaje_ingresado));
+            return false;
+        }else if(contenidoMensaje.length() < 8){
             mTilContenidoMensaje.setError(getString(R.string.error_contenido_mensaje_min_char));
             return false;
         }else if(contenidoMensaje.length() > 1000){
@@ -624,17 +642,6 @@ public class AgregarRecordatorioFragmento extends Fragment
        return true;
     }
 
-    private boolean esFechaValido(String fecha){
-        Pattern patron = Pattern.compile(REGEX_FECHAS);
-
-        if (!patron.matcher(fecha).matches()){
-            mTilFecha.setError(getString(R.string.error_fecha));
-            return false;
-        }else{
-            mTilFecha.setError(null);
-        }
-        return true;
-    }
     public void diaMesAnioIngresado(String string){
         if(string.length() == 10){
             diaIngresado = Integer.parseInt(string.substring(0, 2));
@@ -646,63 +653,88 @@ public class AgregarRecordatorioFragmento extends Fragment
 
     private boolean esFechaIngresadaValido(String fechaIngresada){
 
-        diaMesAnioIngresado(fechaIngresada);
-
-        if(anioIngresado < anio ){
-            mostrarMensaje(getString(R.string.error_anio_menor_actual), 0);
+        Pattern patron = Pattern.compile(REGEX_FECHAS);
+        if(!fechaIngresada.isEmpty())
+            diaMesAnioIngresado(fechaIngresada);
+        //Comprobar si el formato de fecha es válido
+        if (!patron.matcher(fechaIngresada).matches()){
+            mTilFecha.setError(getString(R.string.error_fecha));
             return false;
-        } else if(anioIngresado == anio){
-            if(diaIngresado < dia){
-                mostrarMensaje(getString(R.string.error_dia_menor_actual), 0);
+        }else{
+            mTilFecha.setError(null);
+        }
+
+        int fechaActual = mes + 1;
+        if(anioIngresado < anio ){
+            return false;
+        }else if(anioIngresado == anio){
+            if(diaIngresado > dia && mesIngresado < fechaActual){
                 return false;
-            }else if(mesIngresado < (mes+1) ){
-                mostrarMensaje(getString(R.string.error_mes_menor_actual), 0);
+            }else if(diaIngresado < dia && mesIngresado > fechaActual){
+                return true;
+            } else if(diaIngresado < dia && mesIngresado == fechaActual){
                 return false;
+            }else if(diaIngresado >= dia && mesIngresado < fechaActual){
+                return false;
+            }else if(diaIngresado < dia && mesIngresado < fechaActual){
+                return false;
+            }else if(diaIngresado > dia && mesIngresado == fechaActual){
+                return true;
             }
+            else if(diaIngresado > dia && mesIngresado > fechaActual){
+                return true;
+            }
+        }else{
+            return true;
         }
 
         return true;
 
     }
-    private boolean esHoraValido(String hora){
+
+    public void horaMinutoValoresObtenidos(String hora){
+        if(hora.length() == 5){
+            horaIngresada = Integer.parseInt(hora.substring(0, 2));
+            minutoIngresado = Integer.parseInt(hora.substring(3, 5));
+        }
+    }
+    private boolean esHoraIngresadaValido(String horaIngresadaUsuario){
+
         Pattern patron = Pattern.compile(REGEX_HORAS);
-        if (!patron.matcher(hora).matches()){
+        int mesActual = mes + 1;
+        int horaLocal24 = (horaIngresada == 0)? 24 : horaIngresada;
+        int horaSistema24 = (hora == 0)? 24: hora;
+
+        //Funvción para obtener los valores de hora y minuto
+        horaMinutoValoresObtenidos(horaIngresadaUsuario);
+
+        if (!patron.matcher(horaIngresadaUsuario).matches()){
             mTilHora.setError(getString(R.string.error_hora));
             return false;
         }else{
             mTilHora.setError(null);
         }
-        return true;
-    }
-    private boolean esHoraIngresadaValido(String horaIngresadaUsuario){
 
-        if(horaIngresadaUsuario.length() == 5){
-            horaIngresada = Integer.parseInt(horaIngresadaUsuario.substring(0, 2));
-            minutoIngresado = Integer.parseInt(horaIngresadaUsuario.substring(3, 5));
+        if((diaIngresado == dia) && (mesIngresado == mesActual) && (anioIngresado == anio)){
 
-            int mesActual = mes + 1;
-            int horaLocal24 = (horaIngresada == 0)? 24 : horaIngresada;
-            int horaSistema24 = (hora == 0)? 24: hora;
+            if(horaLocal24 < horaSistema24){
+                return false;
 
-            if((diaIngresado == dia) && (mesIngresado == mesActual) && (anioIngresado == anio)){
-
-                if(horaLocal24 < horaSistema24){
-                    mostrarMensaje(getString(R.string.error_hora_menor_actual), 0);
+            }else if(horaLocal24 == horaSistema24){
+                if(minutoIngresado <= minuto){
                     return false;
-
-                }else if(horaLocal24 == horaSistema24){
-                    if(minutoIngresado <= minuto){
-                        mostrarMensaje(getString(R.string.error_minuto_menor_actual), 0);
-                        return false;
-                    }
                 }
             }
-        }else{
-            return false;
         }
+
 
         return true;
 
+    }
+    public void diaMesAnioValoresObtenidos(int dia, int mes, int anio){
+        diaIngresado = dia;
+        mesIngresado = mes;
+        anioIngresado = anio;
     }
 
     public void obtenerFecha(){
@@ -713,24 +745,26 @@ public class AgregarRecordatorioFragmento extends Fragment
                 int mesActual = month + 1;
                 String diaFormateado = (dayOfMonth < 10)? CERO + String.valueOf(dayOfMonth):String.valueOf(dayOfMonth);
                 String mesFormateado = (mesActual < 10)? CERO + String.valueOf(mesActual):String.valueOf(mesActual);
-                //Variable que guarda el dia
-                diaIngresado = dayOfMonth;
-                mesIngresado = mesActual;
-                anioIngresado = year;
+
+                if(obtenerCantidadCaracteresCampoFecha == 10)
+                    diaMesAnioValoresObtenidos(dayOfMonth, mesActual, year);
 
                 if(year > anio ){
                     mTieFecha.setText(diaFormateado + BARRA + mesFormateado + BARRA + year);
                 } else if(year == anio){
                     if(dayOfMonth < dia){
                         mostrarMensaje(getString(R.string.error_dia_menor_actual), 0);
+                        diaMesAnioValoresObtenidos(0, 0, 0);
                     }else if(mesActual < (mes+1)){
                         mostrarMensaje(getString(R.string.error_mes_menor_actual), 0);
+                        diaMesAnioValoresObtenidos(0, 0, 0);
                     } else{
                         mTieFecha.setText(diaFormateado + BARRA + mesFormateado + BARRA + year);
                     }
                 }else{
                     //Muestro mensaje de error siempre y cuando fecha sea menor a la actual
                     mostrarMensaje(getString(R.string.error_anio_menor_actual), 0);
+                    diaMesAnioValoresObtenidos(0, 0, 0);
                 }
 
             }
@@ -743,7 +777,8 @@ public class AgregarRecordatorioFragmento extends Fragment
 
         //Cargo los valores de la fecha
         String fechaIngresada = mTieFecha.getText().toString();
-        diaMesAnioIngresado(fechaIngresada);
+        if(!fechaIngresada.isEmpty())
+            diaMesAnioIngresado(fechaIngresada);
 
         TimePickerDialog recogerHora = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -757,45 +792,51 @@ public class AgregarRecordatorioFragmento extends Fragment
                 int horaLocal24 = (hourOfDay == 0)? 24 : hourOfDay;
                 int horaSistema24 = (hora == 0)? 24: hora;
 
-                if((diaIngresado == dia) && (mesIngresado == mesActual) && (anioIngresado == anio)){
+                if(diaIngresado > 0 && mesIngresado > 0 && anioIngresado > 0 && obtenerCantidadCaracteresCampoFecha == 10) {
 
-                    if(horaLocal24 < horaSistema24){
-                        mostrarMensaje(getString(R.string.error_hora_menor_actual), 0);
+                    if ((diaIngresado == dia) && (mesIngresado == mesActual) && (anioIngresado == anio)) {
 
-                    }else if(horaLocal24 == horaSistema24){
-                        if(minute <= minuto){
-                            mostrarMensaje(getString(R.string.error_minuto_menor_actual), 0);
+                        if (horaLocal24 < horaSistema24) {
+                            mostrarMensaje(getString(R.string.error_hora_menor_actual), 0);
 
-                        }else{
-                            mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
+                        } else if (horaLocal24 == horaSistema24) {
+                            if (minute <= minuto) {
+                                mostrarMensaje(getString(R.string.error_minuto_menor_actual), 0);
+
+                            } else {
+                                mTieHora.setText(horaFormateada + DOS_PUNTOS + minutoFormateado);
+                            }
+                        } else {
+                            mTieHora.setText(horaFormateada + DOS_PUNTOS + minutoFormateado);
                         }
-                    }else {
-                        mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
+
+                    } else if ((diaIngresado > dia) && (mesIngresado > mesActual) && (anioIngresado == anio)) {
+
+                        mTieHora.setText(horaFormateada + DOS_PUNTOS + minutoFormateado);
+
+                    } else if ((diaIngresado > dia) && (mesIngresado == mesActual) && (anioIngresado == anio)) {
+
+                        mTieHora.setText(horaFormateada + DOS_PUNTOS + minutoFormateado);
+
+                    } else if ((diaIngresado == dia) && (mesIngresado > mesActual) && (anioIngresado == anio)) {
+
+                        mTieHora.setText(horaFormateada + DOS_PUNTOS + minutoFormateado);
+
+                    } else if (anioIngresado > anio) {
+                        mTieHora.setText(horaFormateada + DOS_PUNTOS + minutoFormateado);
+                    } else if (anioIngresado < anio) {
+                        mostrarMensaje(getString(R.string.error_anio), 0);
+
+                    } else if (mesIngresado < mesActual) {
+                        mostrarMensaje(getString(R.string.error_mes), 0);
+
+                    } else if (diaIngresado < dia) {
+                        mostrarMensaje(getString(R.string.error_dia), 0);
                     }
-
-                }else if((diaIngresado > dia) && (mesIngresado > mesActual) && (anioIngresado == anio)){
-
-                    mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
-
-                }else if((diaIngresado > dia) && (mesIngresado == mesActual) && (anioIngresado == anio)){
-
-                    mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
-
-                }else if((diaIngresado == dia) && (mesIngresado > mesActual) && (anioIngresado == anio)){
-
-                    mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
-
-                }else if(anioIngresado > anio){
-                    mTieHora.setText(horaFormateada +  DOS_PUNTOS + minutoFormateado);
-                }else if((anioIngresado < anio)){
-                    mostrarMensaje(getString(R.string.error_anio), 0);
-
-                }else if(mesIngresado < mesActual){
-                    mostrarMensaje(getString(R.string.error_mes), 0);
-
-                }else if(diaIngresado < dia){
-                    mostrarMensaje(getString(R.string.error_dia), 0);
+                }else{
+                    mostrarMensaje(getString(R.string.error_primero_ingrese_fecha), 0);
                 }
+
 
 
             }
@@ -860,6 +901,7 @@ public class AgregarRecordatorioFragmento extends Fragment
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             mTilFecha.setError(null);
+            obtenerCantidadCaracteresCampoFecha = s.length();
         }
         @Override
         public void afterTextChanged(Editable s) {}

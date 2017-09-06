@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -113,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements
 
             // Carga la actividad Detalle
             Intent i = new Intent(this, DetalleRecordatorioActivity.class);
-            i.putExtra(DetalleRecordatorioFragmento.ID_RECORDATORIO, recordatorios);
+            i.putExtra(DetalleRecordatorioFragmento.KEY_RECORDATORIO, recordatorios);
             startActivityForResult(i, CODIGO_RESPUESTA_ELIMINAR_RECORDATORIO);
         }
     }

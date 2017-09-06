@@ -72,7 +72,7 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
         int agregarRecordatorioFragmento = datos.getInt(MainActivity.CARGAR_NUEVO_RECORDATORIO_FRAGMENTO);
 
 
-        mItemsRecordatorios = getIntent().getParcelableExtra(DetalleRecordatorioFragmento.ID_RECORDATORIO);
+        mItemsRecordatorios = getIntent().getParcelableExtra(DetalleRecordatorioFragmento.KEY_RECORDATORIO);
 
 
         if (savedInstanceState == null) {
@@ -112,14 +112,15 @@ public class DetalleRecordatorioActivity extends AppCompatActivity implements Vi
         switch (v.getId()){
             case R.id.fab_editar:
 
-                //Oculto el icono de eliminar del menu
-                eliminarItem.setVisible(false);
-
-                mActualizarRecordatorioFragmento = ActualizarRecordatorioFragmento.newInstance(mItemsRecordatorios);
+                mActualizarRecordatorioFragmento = ActualizarRecordatorioFragmento.actualizarRecordatorio(mItemsRecordatorios);
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.fl_contenedor_detalle, mActualizarRecordatorioFragmento);
                 ft.addToBackStack(null);
                 ft.commit();
+
+
+                //Oculto el icono de eliminar del menu
+                eliminarItem.setVisible(false);
 
                 //Oculto el botón editar
                 mFabEditar.setVisibility(View.INVISIBLE);

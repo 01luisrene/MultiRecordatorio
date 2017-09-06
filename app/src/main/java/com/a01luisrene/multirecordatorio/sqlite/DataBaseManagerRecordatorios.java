@@ -35,7 +35,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     private static final String PUBLICAR_TWITTER_RECORDATORIO = "publicar_twitter";
     private static final String FECHA_CREACION_RECORDATORIO = "fecha_creacion";
     private static final String FECHA_AVISO_RECORDATORIO = "fecha_aviso_recordatorio";
-    public static final String HORA_AVIDO_RECORDATORIO = "hora_aviso_recordatorio";
+    public static final String HORA_AVISO_RECORDATORIO = "hora_aviso_recordatorio";
     private static final String ESTADO_RECORDATORIO = "estado_recordatorio";
 
     /*[COLUMNAS PARA LA TABLA CATEGORIAS DE RECORDATORIOS]*/
@@ -74,7 +74,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
             PUBLICAR_TWITTER_RECORDATORIO,  //[10]
             FECHA_CREACION_RECORDATORIO,    //[11]
             FECHA_AVISO_RECORDATORIO,       //[12]
-            HORA_AVIDO_RECORDATORIO,        //[13]
+            HORA_AVISO_RECORDATORIO,        //[13]
             ESTADO_RECORDATORIO,            //[14]
             LLAVE_CATEGORIA_RECORDATORIO,   //[15]
             TABLA_CATEGORIAS_RECORDATORIOS, //[16]
@@ -158,7 +158,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
         valores.put(PUBLICAR_TWITTER_RECORDATORIO, publicarTwitter);
         valores.put(FECHA_CREACION_RECORDATORIO, fechaCreacion);
         valores.put(FECHA_AVISO_RECORDATORIO, fechaRecordatorio);
-        valores.put(HORA_AVIDO_RECORDATORIO, horaRecordatorio);
+        valores.put(HORA_AVISO_RECORDATORIO, horaRecordatorio);
         valores.put(ESTADO_RECORDATORIO, estadoRecordatorio);
 
         return valores;
@@ -257,28 +257,31 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     public Cursor cargarCursorRecordatorios() {
         //Cadena que contiene la consulta de las tablas recordatorios y categoria_recoordatorios
         String sql =
-                String.format("SELECT r.%1$s, r.%2$s, r.%3$s, cr.%4$s, cr.%5$s, r.%6$s, r.%7$s, r.%8$s, r.%9$s, " +
-                                "r.%10$s, r.%11$s, r.%12$s FROM %13$s r, %14$s cr WHERE r.%15$s = cr.%16$s " +
-                                "AND r.%17$s = %18$d ORDER BY r.%19$s DESC",
+                String.format("SELECT r.%1$s, r.%2$s, r.%3$s, r.%4$s, cr.%5$s, cr.%6$s, r.%7$s, r.%8$s, r.%9$s, r.%10$s, " +
+                                "r.%11$s, r.%12$s, r.%13$s, r.%14$s FROM %15$s r, %16$s cr WHERE r.%17$s = cr.%18$s " +
+                                "AND r.%19$s = %20$d ORDER BY r.%21$s DESC",
                         ID_RECORDATORIO, //[1]
                         TITULO_RECORDATORIO, //[2]
                         ENTIDAD_OTROS_RECORDATORIO, //[3]
-                        RUTA_IMAGEN_CATEGORIA, //[4] Constantes de categoría
-                        TITULO_CATEGORIA, //[5] Constantes de categoría
-                        TELEFONO_RECORDATORIO, //[6]
-                        CONTENIDO_MENSAJE_RECORDATOIO, //[7]
-                        ENVIO_MENSAJE_RECORDATORIO, //[8]
-                        PUBLICAR_FACEBOOK_RECORDATORIO, //[9]
-                        PUBLICAR_TWITTER_RECORDATORIO, //[10]
-                        FECHA_AVISO_RECORDATORIO, //[11]
-                        HORA_AVIDO_RECORDATORIO, //[12]
-                        TABLA_RECORDATORIOS, //[13]
-                        TABLA_CATEGORIAS_RECORDATORIOS, //[14] Constantes de categoría
-                        LLAVE_CATEGORIA_RECORDATORIO, //[15]
-                        ID_CATEGORIA, //[16] Constantes de categoría
-                        ESTADO_RECORDATORIO, //[17]
-                        1, //[18]
-                        ID_RECORDATORIO); //[19]
+                        LLAVE_CATEGORIA_RECORDATORIO, //[4]
+
+                        RUTA_IMAGEN_CATEGORIA, //[5] Constantes de categoría
+                        TITULO_CATEGORIA, //[6] Constantes de categoría
+                        TELEFONO_RECORDATORIO, //[7]
+                        CONTENIDO_MENSAJE_RECORDATOIO, //[8]
+                        ENVIO_MENSAJE_RECORDATORIO, //[9]
+                        PUBLICAR_FACEBOOK_RECORDATORIO, //[10]
+                        PUBLICAR_TWITTER_RECORDATORIO, //[11]
+                        FECHA_CREACION_RECORDATORIO, //[12]
+                        FECHA_AVISO_RECORDATORIO, //[13]
+                        HORA_AVISO_RECORDATORIO, //[14]
+                        TABLA_RECORDATORIOS, //[15]
+                        TABLA_CATEGORIAS_RECORDATORIOS, //[16] Constantes de categoría
+                        LLAVE_CATEGORIA_RECORDATORIO, //[17]
+                        ID_CATEGORIA, //[18] Constantes de categoría
+                        ESTADO_RECORDATORIO, //[19]
+                        1, //[20]
+                        ID_RECORDATORIO); //[21]
 
         //rawQuery(Sentencia SQL, null)
         return super.getDb().rawQuery(sql, null);
@@ -300,13 +303,15 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     //Comprobar si existe un registro por el valor de un dato
     @Override
     public Boolean compruebaRegistroRecordatorio(String id){
-        boolean existe = true;
+        boolean existe;
         Cursor resultSet = super.getDb().rawQuery("SELECT _id FROM " + TABLA_RECORDATORIOS + " WHERE " + ID_RECORDATORIO + "=" + id, null);
 
         if(resultSet.getCount() <= 0)
             existe = false;
         else
             existe = true;
+
+        resultSet.close();
 
         return existe;
 
@@ -322,15 +327,17 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
             recordatorio.setId(cursor.getString(0));
             recordatorio.setTitulo(cursor.getString(1));
             recordatorio.setEntidadOtros(cursor.getString(2));
-            recordatorio.setImagenRecordatorio(cursor.getString(3));
-            recordatorio.setCategoriaRecordatorio(cursor.getString(4));
-            recordatorio.setTelefono(cursor.getString(5));
-            recordatorio.setContenidoMensaje(cursor.getString(6));
-            recordatorio.setEnvioMensaje(cursor.getString(7));
-            recordatorio.setPublicarFacebook(cursor.getString(8));
-            recordatorio.setPublicarTwitter(cursor.getString(9));
-            recordatorio.setFechaPublicacionRecordatorio(cursor.getString(10));
-            recordatorio.setHoraPublicacionRecordatorio(cursor.getString(11));
+            recordatorio.setIdCategoriaRecordatorio(cursor.getInt(3));
+            recordatorio.setRutaImagenRecordatorio(cursor.getString(4));
+            recordatorio.setCategoriaRecordatorio(cursor.getString(5));
+            recordatorio.setTelefono(cursor.getString(6));
+            recordatorio.setContenidoMensaje(cursor.getString(7));
+            recordatorio.setEnvioMensaje(cursor.getString(8));
+            recordatorio.setPublicarFacebook(cursor.getString(9));
+            recordatorio.setPublicarTwitter(cursor.getString(10));
+            recordatorio.setFechaCreacionRecordatorio(cursor.getString(11));
+            recordatorio.setFechaPublicacionRecordatorio(cursor.getString(12));
+            recordatorio.setHoraPublicacionRecordatorio(cursor.getString(13));
             list.add(recordatorio);
         }
 
