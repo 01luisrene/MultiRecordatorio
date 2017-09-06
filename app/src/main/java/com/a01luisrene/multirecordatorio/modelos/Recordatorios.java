@@ -7,13 +7,15 @@ public class Recordatorios implements Parcelable {
     private String id;
     private String titulo;
     private String entidadOtros;
-    private String imagenRecordatorio;
+    private int idCategoriaRecordatorio;
+    private String rutaImagenRecordatorio;
     private String categoriaRecordatorio;
     private String telefono;
     private String contenidoMensaje;
     private String envioMensaje;
     private String publicarFacebook;
     private String publicarTwitter;
+    private String fechaCreacionRecordatorio;
     private String fechaPublicacionRecordatorio;
     private String horaPublicacionRecordatorio;
 
@@ -22,7 +24,7 @@ public class Recordatorios implements Parcelable {
      * CONSTRUCTOR
      */
 
-    public Recordatorios(){
+    public Recordatorios() {
 
         //Vacío [Requerido]
 
@@ -52,12 +54,20 @@ public class Recordatorios implements Parcelable {
         this.entidadOtros = entidadOtros;
     }
 
-    public String getImagenRecordatorio() {
-        return imagenRecordatorio;
+    public int getIdCategoriaRecordatorio() {
+        return idCategoriaRecordatorio;
     }
 
-    public void setImagenRecordatorio(String imagenRecordatorio) {
-        this.imagenRecordatorio = imagenRecordatorio;
+    public void setIdCategoriaRecordatorio(int idCategoriaRecordatorio) {
+        this.idCategoriaRecordatorio = idCategoriaRecordatorio;
+    }
+
+    public String getRutaImagenRecordatorio() {
+        return rutaImagenRecordatorio;
+    }
+
+    public void setRutaImagenRecordatorio(String rutaImagenRecordatorio) {
+        this.rutaImagenRecordatorio = rutaImagenRecordatorio;
     }
 
     public String getCategoriaRecordatorio() {
@@ -108,6 +118,14 @@ public class Recordatorios implements Parcelable {
         this.publicarTwitter = publicarTwitter;
     }
 
+    public String getFechaCreacionRecordatorio() {
+        return fechaCreacionRecordatorio;
+    }
+
+    public void setFechaCreacionRecordatorio(String fechaCreacionRecordatorio) {
+        this.fechaCreacionRecordatorio = fechaCreacionRecordatorio;
+    }
+
     public String getFechaPublicacionRecordatorio() {
         return fechaPublicacionRecordatorio;
     }
@@ -135,13 +153,15 @@ public class Recordatorios implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.titulo);
         dest.writeString(this.entidadOtros);
-        dest.writeString(this.imagenRecordatorio);
+        dest.writeInt(this.idCategoriaRecordatorio);
+        dest.writeString(this.rutaImagenRecordatorio);
         dest.writeString(this.categoriaRecordatorio);
         dest.writeString(this.telefono);
         dest.writeString(this.contenidoMensaje);
         dest.writeString(this.envioMensaje);
         dest.writeString(this.publicarFacebook);
         dest.writeString(this.publicarTwitter);
+        dest.writeString(this.fechaCreacionRecordatorio);
         dest.writeString(this.fechaPublicacionRecordatorio);
         dest.writeString(this.horaPublicacionRecordatorio);
     }
@@ -150,18 +170,20 @@ public class Recordatorios implements Parcelable {
         this.id = in.readString();
         this.titulo = in.readString();
         this.entidadOtros = in.readString();
-        this.imagenRecordatorio = in.readString();
+        this.idCategoriaRecordatorio = in.readInt();
+        this.rutaImagenRecordatorio = in.readString();
         this.categoriaRecordatorio = in.readString();
         this.telefono = in.readString();
         this.contenidoMensaje = in.readString();
         this.envioMensaje = in.readString();
         this.publicarFacebook = in.readString();
         this.publicarTwitter = in.readString();
+        this.fechaCreacionRecordatorio = in.readString();
         this.fechaPublicacionRecordatorio = in.readString();
         this.horaPublicacionRecordatorio = in.readString();
     }
 
-    public static final Parcelable.Creator<Recordatorios> CREATOR = new Parcelable.Creator<Recordatorios>() {
+    public static final Creator<Recordatorios> CREATOR = new Creator<Recordatorios>() {
         @Override
         public Recordatorios createFromParcel(Parcel source) {
             return new Recordatorios(source);
