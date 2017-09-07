@@ -24,18 +24,6 @@ public class Utilidades {
     public static boolean smartphone = true;
 
 
-    /**
-     * this method sets custom style text
-     *
-     * @param context
-     * @param text
-     * @param start
-     * @param end
-     * @param color
-     * @param proportion
-     * @param styleType
-     * @return
-     */
     public static Spannable setSpanCustomText(Context context, String text, int start, int end, int color, float proportion, int styleType) {
         Spannable spanText = new SpannableString(text);
         //change the color text

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +29,8 @@ public class MainActivity extends AppCompatActivity implements
         View.OnClickListener,
         SearchView.OnQueryTextListener,
         MenuItemCompat.OnActionExpandListener,
-        ListaRecordatoriosFragmento.OnItemSelectedListener{
+        ListaRecordatoriosFragmento.OnItemSelectedListener,
+        DetalleRecordatorioFragmento.RemoverItem{
 
     public static final String CARGAR_NUEVO_RECORDATORIO_FRAGMENTO = "cargar_nuevo_recordatorio_fragmento";
     public static final int VALOR_ENVIADO_NUEVO_RECORDATORIO = 1;
@@ -39,10 +41,12 @@ public class MainActivity extends AppCompatActivity implements
     ListaRecordatoriosFragmento mListaRecordatoriosFragmento;
     DetalleRecordatorioFragmento mDetalleRecordatorioFragmento;
 
+    int itemPosicion;
+
     FloatingActionButton mFabAgregarRecordatorio;
     Toolbar mToolbar;
 
-    DataBaseManagerRecordatorios mManagerRecordatorios;
+    private DataBaseManagerRecordatorios mManager;
 
     private boolean dosPaneles = false;
     @Override
@@ -50,8 +54,15 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mManager = new DataBaseManagerRecordatorios(this);
+    /*
+        mManager.insertarRecoratorio(null, "Cumple de Luis", "Luis Rene Mas Mas","1", "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500", "1145454","1", "1", "1", "2017", "2017","12:20","1");
+        mManager.insertarRecoratorio(null, "Cumple de Jose", "Juan Mesia Chicana","1", "Feliz cumpleaños", "1145454","1", "1", "1", "2017", "2017", "18:25","1");
+        mManager.insertarRecoratorio(null, "Cumple de Wander", "Wander Rojas briceño","1", "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500", "1145454","1", "1", "1", "2017", "2017", "15:10","1");
+    */
 
-            mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(mToolbar);
 
             //Botón flotante
@@ -95,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onItemSelected(Recordatorios recordatorios) {
+    public void onItemSelected(Recordatorios recordatorios, int posicion) {
         if (dosPaneles) { // Actividad única con lista y detalle
 
             // Reemplazar el diseño del marco con el fragmento de detalle correcto
@@ -108,14 +119,20 @@ public class MainActivity extends AppCompatActivity implements
             //Habilito el botón agregar
             mFabAgregarRecordatorio.setEnabled(true);
 
+            itemPosicion = posicion;
+
         } else { // Actividades separadas
 
             // Carga la actividad Detalle
             Intent i = new Intent(this, DetalleRecordatorioActivity.class);
             i.putExtra(DetalleRecordatorioFragmento.KEY_RECORDATORIO, recordatorios);
             startActivityForResult(i, CODIGO_RESPUESTA_ELIMINAR_RECORDATORIO);
+
+            itemPosicion = posicion;
+
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -189,6 +206,13 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public void removerItem() {
+        if(mListaRecordatoriosFragmento != null){
+            mListaRecordatoriosFragmento.removerItemRecordatorio(itemPosicion);
+        }
+    }
+
     private class buscarTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -220,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements
                 if(valorObtenido){
                     //Recargo el spinner siempre y cuando que el valor retornado sea `true`
                     if(mListaRecordatoriosFragmento != null){
-                        mListaRecordatoriosFragmento.listaRecordatorios();
+                        //mListaRecordatoriosFragmento.inserterItemRecordatorio();
                     }
 
                 }
@@ -232,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements
                 if(valorObtenido){
                     //Recargo el spinner siempre y cuando que el valor retornado sea `true`
                     if(mListaRecordatoriosFragmento != null){
-                        mListaRecordatoriosFragmento.listaRecordatorios();
+                        mListaRecordatoriosFragmento.removerItemRecordatorio(itemPosicion);
                     }
 
                 }

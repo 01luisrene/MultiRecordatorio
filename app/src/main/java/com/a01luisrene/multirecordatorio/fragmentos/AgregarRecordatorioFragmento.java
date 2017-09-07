@@ -168,13 +168,13 @@ public class AgregarRecordatorioFragmento extends Fragment
         this.mView = v; //Para mostrar mensaje
 
         //Asignamos nuestro manager que contiene nuestros metodos CRUD
-        mManagerRecordatorios = new DataBaseManagerRecordatorios(getContext());
+        mManagerRecordatorios = new DataBaseManagerRecordatorios(getActivity().getApplicationContext());
 
 
         if(!Utilidades.smartphone){
             //Widgets del layout toolbar_detelle.xml
-            mCivImagenRecordatorio = (CircleImageView) v.findViewById(R.id.civ_nuevo_categoria_recordatorio);
-            mTvTituloCategoriaRecordatorio = (TextView) v.findViewById(R.id.tv_nuevo_titulo_categoria_recordatorio);
+            mCivImagenRecordatorio = (CircleImageView) v.findViewById(R.id.civ_toolbar_top);
+            mTvTituloCategoriaRecordatorio = (TextView) v.findViewById(R.id.tv_toolbar_top);
         }
 
         //Spinner
@@ -376,7 +376,7 @@ public class AgregarRecordatorioFragmento extends Fragment
                     guardarNumeroTelefono = false;
 
                     //True
-                    if(!numeroTelefono.isEmpty() && esTelefonoValido(numeroTelefono)){
+                    if(!numeroTelefono.isEmpty()){
                         guardarNumeroTelefono = esTelefonoValido(numeroTelefono);
                     }
 
@@ -889,7 +889,8 @@ public class AgregarRecordatorioFragmento extends Fragment
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            guardarNumeroTelefono = esTelefonoValido(String.valueOf(s));
+            if(s.length()>0)
+                guardarNumeroTelefono = esTelefonoValido(String.valueOf(s));
         }
         @Override
         public void afterTextChanged(Editable s) { }

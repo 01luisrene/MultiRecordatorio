@@ -22,7 +22,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecordatoriosAdaptador.ViewHolder> {
 
     private static final String ELLIPSIS = "...";
-    private List<Recordatorios> mListaItemsRecordatorios;
+    private List<Recordatorios> mListaRecordatorios;
     private Context mContext;
 
     //Variable para la comunicación al fragment que contiene la lista
@@ -30,21 +30,41 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
 
 
     //Proporcionar un constructor adecuado (depende del tipo de conjunto de datos)
-    public ListaRecordatoriosAdaptador(List<Recordatorios> listaItemsRecordatorios,
+    public ListaRecordatoriosAdaptador(List<Recordatorios> listaRecordatorios,
                                        Context context,
                                        ListaRecordatoriosFragmento.OnItemSelectedListener itemClickListener) {
 
-        this.mListaItemsRecordatorios = listaItemsRecordatorios;
+        this.mListaRecordatorios = listaRecordatorios;
         this.mContext = context;
         this.itemClickListener = itemClickListener;
     }
 
+    //Crear nuevas vistas (invocadas por el gestor de diseño)
+    @Override
+    public ListaRecordatoriosAdaptador.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        //crear nueva vista
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.recordatorio_list_item, parent, false);
+        // Establecer el tamaño de la vista, los márgenes, los rellenos y los parámetros de diseño
+
+        return new ViewHolder(v);
+    }
+
+    //Reemplazar el contenido de una vista (invocada por el gestor de diseño)
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+
+        Recordatorios items = mListaRecordatorios.get(position);
+        holder.bind(mContext, items, itemClickListener);
+
+    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-            // Cada elemento de datos es sólo una cadena en este caso
-            TextView id, titulo, entidadOtros, contenidoMensaje;
-            ImageView ivImagenRecordatorio;
-            CircleImageView civImagenRecordatorio;
+        // Cada elemento de datos es sólo una cadena en este caso
+        TextView id, titulo, entidadOtros, contenidoMensaje;
+        ImageView ivImagenRecordatorio;
+        CircleImageView civImagenRecordatorio;
 
         ViewHolder(View v) {
             super(v);
@@ -63,7 +83,9 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
 
         }
 
-        public void bind(final Context context, final Recordatorios items, final ListaRecordatoriosFragmento.OnItemSelectedListener itemClickListener) {
+        public void bind(final Context context,
+                         final Recordatorios items,
+                         final ListaRecordatoriosFragmento.OnItemSelectedListener itemClickListener) {
 
             id.setText(items.getId());
 
@@ -117,7 +139,7 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                 contenidoMensaje.setText(mensajeFormateado);
 
 
-                 //CARGO IMAGEN CON PICASSO
+                //CARGO IMAGEN CON PICASSO
 
                 //Condiciono para manejar si el valor devuelto es vacío
                 if(valorImagen == null ||valorImagen.isEmpty()){
@@ -135,7 +157,7 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
 
             }else{ //Se aplica para resoluciones grandes como [tablets]
 
-                 //CARGO IMAGEN CON PICASSO
+                //CARGO IMAGEN CON PICASSO
 
                 //Condiciono para manejar si el valor devuelto es vacío
                 if(valorImagen == null ||valorImagen.isEmpty()){
@@ -154,48 +176,32 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.onItemSelected(items);
+                    int posicion  = ViewHolder.super.getAdapterPosition();
+                    itemClickListener.onItemSelected(items, posicion);
                 }
             });
         }
     }
 
-
-    //Crear nuevas vistas (invocadas por el gestor de diseño)
-    @Override
-    public ListaRecordatoriosAdaptador.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //crear nueva vista
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recordatorio_list_item, parent, false);
-        // Establecer el tamaño de la vista, los márgenes, los rellenos y los parámetros de diseño
-
-        return new ViewHolder(v);
+    public void removerItem(int posicion) {
+        mListaRecordatorios.remove(posicion);
+        notifyItemRemoved(posicion);
     }
 
-    //Reemplazar el contenido de una vista (invocada por el gestor de diseño)
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-
-        Recordatorios items = mListaItemsRecordatorios.get(position);
-        holder.bind(mContext, items, itemClickListener);
-
+    public void agregarItem(Recordatorios recordatorios) {
+        mListaRecordatorios.add(0, recordatorios);
+        notifyItemInserted(0);
+    }
+    public void actualizarItem(Recordatorios recordatorios, int posicion){
+        mListaRecordatorios.set(posicion, recordatorios);
+       notifyItemChanged(posicion);
     }
 
-    public void agregarItemRecordatorio() {
-        //mListaItemsRecordatorios.add(recordatorios);
-        //notifyItemInserted(index);
-        notifyDataSetChanged();
-    }
-
-    public void eliminarItemRecordatorio(int index) {
-        mListaItemsRecordatorios.remove(index);
-        notifyItemRemoved(index);
-    }
 
     // Devuelve el tamaño de tu conjunto de datos (invocado por el administrador de diseño)
     @Override
     public int getItemCount() {
-        return mListaItemsRecordatorios.size();
+        return mListaRecordatorios.size();
     }
 
 }

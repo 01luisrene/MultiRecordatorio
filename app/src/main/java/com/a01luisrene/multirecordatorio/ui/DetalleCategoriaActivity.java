@@ -31,7 +31,7 @@ public class DetalleCategoriaActivity extends AppCompatActivity {
         }
     }
 
-    //Se cumple cuando la activity se finaliza
+    /*Se cumple cuando la activity se finaliza
     @Override
     public void finish() {
         //Se ejecuta solo si AgregarCategotiaRecordatorioFragmento existe
@@ -42,4 +42,5 @@ public class DetalleCategoriaActivity extends AppCompatActivity {
         }
         super.finish();
     }
+    */
 }

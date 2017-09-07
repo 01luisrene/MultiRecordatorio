@@ -1,18 +1,24 @@
 package com.a01luisrene.multirecordatorio.fragmentos;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
+import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 import com.squareup.picasso.Picasso;
 
@@ -20,7 +26,7 @@ import java.io.File;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class DetalleRecordatorioFragmento extends Fragment {
+public class DetalleRecordatorioFragmento extends Fragment implements View.OnClickListener {
 
     //Llave para usar con parcelable
     public static final String KEY_RECORDATORIO = "objeto.recordatorio";
@@ -31,10 +37,26 @@ public class DetalleRecordatorioFragmento extends Fragment {
     ImageView mIvImagenRecordatorio;
     CircleImageView mCivImagenCategoria;
     CheckBox mCbFacebook, mCbTwitter, mCbMensaje;
-    String mValorFacebook, mValorTwitter, mValorMensaje, mValorRutaImagen, mValorRutaImagenRecuperado;
+    String mValorFacebook, mValorTwitter, mValorMensaje, mValorRutaImagen;
     TextView mTvTelefono, mTvEntidadOtros;
+    ImageButton mIbEliminarRecordatorio, mIbAcutualizarRecordatorio;
+    //Fragmantos
+    Cover cover;
+    ListaRecordatoriosFragmento listaFrag;
 
     Activity activity;
+
+    DataBaseManagerRecordatorios mManager;
+
+    // Interfaz Actualizar
+    public interface RemoverItem{
+        // Método de la interfaz
+        public void removerItem();
+    }
+
+    // Objeto de la interfaz remover, con este objeto llamaremos el
+    // método de la interfaz
+    RemoverItem removerItem;
 
     public DetalleRecordatorioFragmento() {
         // Required empty public constructor
@@ -73,10 +95,13 @@ public class DetalleRecordatorioFragmento extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_detalle_recordatorio, container, false);
+        mManager = new DataBaseManagerRecordatorios(getActivity().getApplicationContext());
+
 
         if(mItemRecordatorio != null) {
 
-            if (mCtRecordatorio != null && mIvImagenRecordatorio != null) {
+            if (Utilidades.smartphone) {
+
                 mCtRecordatorio.setTitle(mItemRecordatorio.getCategoriaRecordatorio());
 
                 //Condiciona para cargar el ImageView [solo si devuelve un valor diferente a nulo]
@@ -87,6 +112,30 @@ public class DetalleRecordatorioFragmento extends Fragment {
                             .into(mIvImagenRecordatorio);
 
                 }
+
+            }else{ //Compruebo si es tablet
+                mCivImagenCategoria = (CircleImageView) v.findViewById(R.id.civ_toolbar_top);
+                mIbEliminarRecordatorio = (ImageButton) v.findViewById(R.id.ib_eliminar_recordatorio);
+                mIbAcutualizarRecordatorio = (ImageButton) v.findViewById(R.id.ib_editar_recordatorio);
+
+                if(mValorRutaImagen != null){
+                    //Utilizo la librería Picasso
+                    Picasso.with(getContext())
+                            .load(new File(mValorRutaImagen))
+                            .into(mCivImagenCategoria);
+
+                }else{
+                    mCivImagenCategoria.setImageResource(R.drawable.ic_image_150dp);
+                }
+
+                ((TextView) v.findViewById(R.id.tv_toolbar_top))
+                        .setText(mItemRecordatorio.getCategoriaRecordatorio());
+
+                mIbEliminarRecordatorio.setOnClickListener(this);
+                mIbAcutualizarRecordatorio.setOnClickListener(this);
+                mIbEliminarRecordatorio.setVisibility(View.VISIBLE);
+                mIbAcutualizarRecordatorio.setVisibility(View.VISIBLE);
+
             }
 
             //TextView
@@ -108,25 +157,6 @@ public class DetalleRecordatorioFragmento extends Fragment {
             if(entidadOtrosValor.isEmpty()){
                 mTvEntidadOtros.setWidth(0);
                 mTvEntidadOtros.setHeight(0);
-            }
-
-
-            if(!Utilidades.smartphone){ //Compruebo si es tablet
-                mCivImagenCategoria = (CircleImageView) v.findViewById(R.id.civ_detalle_categoria_recordatorio);
-                if(mValorRutaImagen != null){
-                    //Utilizo la librería Picasso
-                    Picasso.with(getContext())
-                            .load(new File(mValorRutaImagen))
-                            .into(mCivImagenCategoria);
-
-                }else{
-                    mCivImagenCategoria.setImageResource(R.drawable.ic_image_150dp);
-                }
-
-                ((TextView) v.findViewById(R.id.tv_detalle_titulo_categoria_recordatorio))
-                        .setText(mItemRecordatorio.getCategoriaRecordatorio());
-
-
             }
 
             //Variables a verificar
@@ -171,9 +201,76 @@ public class DetalleRecordatorioFragmento extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ib_eliminar_recordatorio:
+                eliminarRecordatorio();
+                break;
+            case R.id.ib_editar_recordatorio:
+                Log.i("log", "editar recordatorio");
+                break;
+        }
+    }
 
-        outState.getString("ruta.img", mValorRutaImagen);
+    public void eliminarRecordatorio(){
+        new AlertDialog.Builder(getActivity())
+                .setIcon(R.drawable.ic_info_24dp)
+                .setTitle(getString(R.string.adb_titulo_eliminar))
+                .setMessage(getString(R.string.adb_mensaje_eliminar))
+                .setPositiveButton(getString(R.string.boton_aceptar), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        try {
+
+                            //Eliminar registro
+                            String idRecordatorio = mItemRecordatorio.getId();
+                            mManager.eliminarRecordatorio(idRecordatorio); //Elimino el registro
+
+                            //Fragments
+                            cover = new Cover();
+                            listaFrag = new ListaRecordatoriosFragmento();
+
+                            //Cambio al cover
+                            getActivity().getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.fl_contenedor_lateral, cover).commit();
+
+                            //Interfaz que sirve para remover el item
+                            removerItem.removerItem();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.boton_cancelar), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Cancelar
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // Aquí nos aseguramos de que en la actividad se haya implementado la interfaz,
+        // si el programador no la implementado se lanza el mensaje de error.
+        try {
+            removerItem = (RemoverItem) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " Debe implementar la interfaz Actualizar en su Activity");
+        }
+    }
+
+    //Función llamada cuando el fragment es desasociada de una actividad
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        removerItem = null;
     }
 }

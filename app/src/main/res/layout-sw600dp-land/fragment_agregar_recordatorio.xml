@@ -16,7 +16,7 @@
         tools:layout_editor_absoluteX="0dp"
         tools:ignore="MissingConstraints"/>
 
-    <include layout="@layout/toolbar_agregar_recordatorio"/>
+    <include layout="@layout/toolbar_top"/>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"

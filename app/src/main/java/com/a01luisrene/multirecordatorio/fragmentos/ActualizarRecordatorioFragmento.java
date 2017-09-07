@@ -264,7 +264,6 @@ public class ActualizarRecordatorioFragmento extends Fragment
 
             mSpinnerListaCategotegorias.setSelection(Utilidades.getIndexSpinner(mSpinnerListaCategotegorias, categoria));
 
-
             mSpinnerListaCategotegorias.setOnItemSelectedListener(this);
 
             mTieTituloRecordatorio.setText(mItemRecordatorio.getTitulo());
@@ -422,7 +421,7 @@ public class ActualizarRecordatorioFragmento extends Fragment
                     guardarNumeroTelefono = false;
 
                     //True
-                    if(!numeroTelefono.isEmpty() && esTelefonoValido(numeroTelefono)){
+                    if(!numeroTelefono.isEmpty()){
                         guardarNumeroTelefono = esTelefonoValido(numeroTelefono);
                     }
 
@@ -936,7 +935,10 @@ public class ActualizarRecordatorioFragmento extends Fragment
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            guardarNumeroTelefono = esTelefonoValido(String.valueOf(s));
+            if(s.length() > 0){
+                guardarNumeroTelefono = esTelefonoValido(String.valueOf(s));
+            }
+
         }
         @Override
         public void afterTextChanged(Editable s) { }

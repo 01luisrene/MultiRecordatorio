@@ -106,5 +106,4 @@
     <!--Mensajes de errores-->
     <string name="error_al_guardar">Error: no se pudo guardar los datos!</string>
 
-
 </resources>

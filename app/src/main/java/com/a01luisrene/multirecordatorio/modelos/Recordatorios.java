@@ -7,7 +7,6 @@ public class Recordatorios implements Parcelable {
     private String id;
     private String titulo;
     private String entidadOtros;
-    private int idCategoriaRecordatorio;
     private String rutaImagenRecordatorio;
     private String categoriaRecordatorio;
     private String telefono;
@@ -23,11 +22,40 @@ public class Recordatorios implements Parcelable {
     /**
      * CONSTRUCTOR
      */
+    public Recordatorios(){
 
-    public Recordatorios() {
+    }
 
-        //Vacío [Requerido]
+    public Recordatorios(String id, String titulo, String entidadOtros, String rutaImagenRecordatorio, String categoriaRecordatorio, String telefono, String contenidoMensaje, String envioMensaje, String publicarFacebook, String publicarTwitter, String fechaCreacionRecordatorio, String fechaPublicacionRecordatorio, String horaPublicacionRecordatorio) {
+        this.id = id;
+        this.titulo = titulo;
+        this.entidadOtros = entidadOtros;
+        this.rutaImagenRecordatorio = rutaImagenRecordatorio;
+        this.categoriaRecordatorio = categoriaRecordatorio;
+        this.telefono = telefono;
+        this.contenidoMensaje = contenidoMensaje;
+        this.envioMensaje = envioMensaje;
+        this.publicarFacebook = publicarFacebook;
+        this.publicarTwitter = publicarTwitter;
+        this.fechaCreacionRecordatorio = fechaCreacionRecordatorio;
+        this.fechaPublicacionRecordatorio = fechaPublicacionRecordatorio;
+        this.horaPublicacionRecordatorio = horaPublicacionRecordatorio;
+    }
 
+    public Recordatorios(Recordatorios recordatorios){
+        this.id = recordatorios.id;
+        this.titulo = recordatorios.titulo;
+        this.entidadOtros = recordatorios.entidadOtros;
+        this.rutaImagenRecordatorio = recordatorios.rutaImagenRecordatorio;
+        this.categoriaRecordatorio = recordatorios.categoriaRecordatorio;
+        this.telefono = recordatorios.telefono;
+        this.contenidoMensaje = recordatorios.contenidoMensaje;
+        this.envioMensaje = recordatorios.envioMensaje;
+        this.publicarFacebook = recordatorios.publicarFacebook;
+        this.publicarTwitter = recordatorios.publicarTwitter;
+        this.fechaCreacionRecordatorio = recordatorios.fechaCreacionRecordatorio;
+        this.fechaPublicacionRecordatorio = recordatorios.fechaPublicacionRecordatorio;
+        this.horaPublicacionRecordatorio = recordatorios.horaPublicacionRecordatorio;
     }
 
     public String getId() {
@@ -52,14 +80,6 @@ public class Recordatorios implements Parcelable {
 
     public void setEntidadOtros(String entidadOtros) {
         this.entidadOtros = entidadOtros;
-    }
-
-    public int getIdCategoriaRecordatorio() {
-        return idCategoriaRecordatorio;
-    }
-
-    public void setIdCategoriaRecordatorio(int idCategoriaRecordatorio) {
-        this.idCategoriaRecordatorio = idCategoriaRecordatorio;
     }
 
     public String getRutaImagenRecordatorio() {
@@ -153,7 +173,6 @@ public class Recordatorios implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.titulo);
         dest.writeString(this.entidadOtros);
-        dest.writeInt(this.idCategoriaRecordatorio);
         dest.writeString(this.rutaImagenRecordatorio);
         dest.writeString(this.categoriaRecordatorio);
         dest.writeString(this.telefono);
@@ -170,7 +189,6 @@ public class Recordatorios implements Parcelable {
         this.id = in.readString();
         this.titulo = in.readString();
         this.entidadOtros = in.readString();
-        this.idCategoriaRecordatorio = in.readInt();
         this.rutaImagenRecordatorio = in.readString();
         this.categoriaRecordatorio = in.readString();
         this.telefono = in.readString();
@@ -183,7 +201,7 @@ public class Recordatorios implements Parcelable {
         this.horaPublicacionRecordatorio = in.readString();
     }
 
-    public static final Creator<Recordatorios> CREATOR = new Creator<Recordatorios>() {
+    public static final Parcelable.Creator<Recordatorios> CREATOR = new Parcelable.Creator<Recordatorios>() {
         @Override
         public Recordatorios createFromParcel(Parcel source) {
             return new Recordatorios(source);

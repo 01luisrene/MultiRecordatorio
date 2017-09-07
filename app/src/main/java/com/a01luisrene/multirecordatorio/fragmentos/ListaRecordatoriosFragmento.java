@@ -29,21 +29,21 @@ import java.util.List;
 public class ListaRecordatoriosFragmento extends Fragment{
 
     //Poblar lista recycclerView
-    RecyclerView mRecordatoriosRecyclerView;
-    List<Recordatorios> mListaItemsRecordatorios;
-    DataBaseManagerRecordatorios mManagerRecordatorios;
-    ListaRecordatoriosAdaptador mListaRecordatoriosAdaptador;
+    private RecyclerView mRecordatoriosRecyclerView;
+    private List<Recordatorios> mItemsRecordatorios;
+    private DataBaseManagerRecordatorios mManager;
+    private ListaRecordatoriosAdaptador mAdapter;
 
     //Variable que mostrara un mensaje cuando la lista este vacía
-    TextView mListaVacia;
+    private TextView mListaVacia;
 
     //Variables para la comunicación entre fragment y Activity
     private OnItemSelectedListener listener;
-    Activity activity;
+    private Activity activity;
 
     //Interface asociada a acitividad padre
-    public interface OnItemSelectedListener {
-        void onItemSelected(Recordatorios recordatorios);
+    public static interface OnItemSelectedListener {
+        public void onItemSelected(Recordatorios recordatorios, int posicion);
     }
 
     public ListaRecordatoriosFragmento() {
@@ -61,6 +61,7 @@ public class ListaRecordatoriosFragmento extends Fragment{
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_lista_recordatorio, container, false);
+
         //Almaceno RecordatoriosActivity en un variable para reutilizarlo
         MainActivity activity = (MainActivity) getActivity();
 
@@ -79,7 +80,7 @@ public class ListaRecordatoriosFragmento extends Fragment{
 
         mRecordatoriosRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mManagerRecordatorios = new DataBaseManagerRecordatorios(getActivity().getApplicationContext());
+        mManager = new DataBaseManagerRecordatorios(getActivity().getApplicationContext());
         //Función que tiene la lógica para la carga de la lista
         listaRecordatorios();
 
@@ -87,22 +88,24 @@ public class ListaRecordatoriosFragmento extends Fragment{
     }
 
     public void listaRecordatorios(){
-        mListaItemsRecordatorios = mManagerRecordatorios.getListaRecordatorios();
+        mItemsRecordatorios = mManager.getListaRecordatorios();
 
-        mListaRecordatoriosAdaptador = new ListaRecordatoriosAdaptador(mListaItemsRecordatorios,
+        mAdapter = new ListaRecordatoriosAdaptador(mItemsRecordatorios,
                 getActivity().getApplicationContext(), new OnItemSelectedListener() {
             @Override
-            public void onItemSelected(Recordatorios recordatorios) {
-                listener.onItemSelected(recordatorios);
+            public void onItemSelected(Recordatorios recordatorios, int posicion) {
+
+                listener.onItemSelected(recordatorios, posicion);
+
             }
         });
 
-        mRecordatoriosRecyclerView.setAdapter(mListaRecordatoriosAdaptador);
+        mRecordatoriosRecyclerView.setAdapter(mAdapter);
 
         mRecordatoriosRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         //Verifico si la lista sigue vacía
-        if (mListaItemsRecordatorios.isEmpty()) {
+        if (mItemsRecordatorios.isEmpty()) {
 
             Resources res = getResources();
             String text = String.format(res.getString(R.string.lista_vacia), getString(R.string.l_recordatorios));
@@ -125,11 +128,21 @@ public class ListaRecordatoriosFragmento extends Fragment{
         }
     }
 
-    public void actualizarListaRecordatorios(){
-        //[Recargo la lista]
-        //mListaRecordatoriosAdaptador.eliminarItemRecordatorio(1);
-        Log.v("log", "Se recargo la lista");
+    public void inserterItemRecordatorio(Recordatorios recordatorios){
+        //[Insertar un item en la lista]
+        mAdapter.agregarItem(new Recordatorios(recordatorios));
+        mRecordatoriosRecyclerView.scrollToPosition(0);
 
+    }
+    public void actualizarItemRecordatorio(int posicion){
+        //mItemsRecordatorios.set();
+        mAdapter.notifyItemChanged(posicion);
+
+    }
+
+    public void removerItemRecordatorio(int posicion){
+        //Remover un item de la lista
+        mAdapter.removerItem(posicion);
     }
 
     @Override
