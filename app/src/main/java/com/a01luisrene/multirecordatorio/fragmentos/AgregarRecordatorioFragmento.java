@@ -92,7 +92,7 @@ public class AgregarRecordatorioFragmento extends Fragment
     TextInputLayout mTilTituloRecordatorio, mTilEntidadOtros, mTilTelefono, mTilContenidoMensaje, mTilFecha, mTilHora;
     Switch mSwFacebook, mSwTwitter, mSwEnviarMensaje;
     String mValorFacebook, mValorTwitter, mValorEnviarMensaje;
-    ImageButton mIbContactos, mIbFecha, mIbHora, mIbFacebookInfo, mIbTwitterInfo, mIbMensajeInfo;
+    ImageButton mIbContactos, mIbFecha, mIbHora, mIbFacebookInfo, mIbTwitterInfo, mIbMensajeInfo, mIbEliminarRecordatorio, mIbAcutualizarRecordatorio;
     TextView mTvTwitterInfo, mTvMensajeInfo;
 
     //Booleanos
@@ -135,7 +135,7 @@ public class AgregarRecordatorioFragmento extends Fragment
     String  mValorIdCategoria, mValorImagenCategoria, mValorTituloCategoria;
     Activity activity;
 
-    //Referencias de widgets que se encuentran en layout toolbar_detalle.xml
+    //Referencias de widgets que se encuentran en layout toolbar_top.xml
     CircleImageView mCivImagenRecordatorio;
     TextView mTvTituloCategoriaRecordatorio;
 
@@ -151,12 +151,21 @@ public class AgregarRecordatorioFragmento extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-            if(Utilidades.smartphone) {
-                activity = this.getActivity();
-                //Widgets de la activity Detalle Recordatorio
-                mIvImagenRecordatorio = (ImageView) activity.findViewById(R.id.iv_cover);
-                mCtCategoriaRecordatorio = (CollapsingToolbarLayout) activity.findViewById(R.id.ct_categoria_recordatorio);
-            }
+        activity = this.getActivity();
+
+        if(Utilidades.smartphone) {
+            //Widgets de la activity Detalle Recordatorio
+            mIvImagenRecordatorio = (ImageView) activity.findViewById(R.id.iv_cover);
+            mCtCategoriaRecordatorio = (CollapsingToolbarLayout) activity.findViewById(R.id.ct_categoria_recordatorio);
+        }else{
+            //Widgets del layout toolbar_top.xml
+            mCivImagenRecordatorio = (CircleImageView) activity.findViewById(R.id.civ_toolbar);
+            mTvTituloCategoriaRecordatorio = (TextView) activity.findViewById(R.id.tv_titulo_toolbar);
+            mIbEliminarRecordatorio = (ImageButton) activity.findViewById(R.id.ib_eliminar_toolbar);
+            mIbAcutualizarRecordatorio = (ImageButton) activity.findViewById(R.id.ib_editar_toolbar);
+            mIbEliminarRecordatorio.setVisibility(View.INVISIBLE);
+            mIbAcutualizarRecordatorio.setVisibility(View.INVISIBLE);
+        }
 
 
     }
@@ -169,13 +178,6 @@ public class AgregarRecordatorioFragmento extends Fragment
 
         //Asignamos nuestro manager que contiene nuestros metodos CRUD
         mManagerRecordatorios = new DataBaseManagerRecordatorios(getActivity().getApplicationContext());
-
-
-        if(!Utilidades.smartphone){
-            //Widgets del layout toolbar_detelle.xml
-            mCivImagenRecordatorio = (CircleImageView) v.findViewById(R.id.civ_toolbar_top);
-            mTvTituloCategoriaRecordatorio = (TextView) v.findViewById(R.id.tv_toolbar_top);
-        }
 
         //Spinner
         mSpinnerListaCategotegorias = (Spinner) v.findViewById(R.id.sp_categorias_recordatorios);
@@ -315,7 +317,6 @@ public class AgregarRecordatorioFragmento extends Fragment
                                     .noFade()
                                     .into(mCivImagenRecordatorio);
                         }else{
-                            //mCivImagenRecordatorio.setImageDrawable(R.drawable.ic_image_150dp);
                             mCivImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
                         }
                     }
@@ -972,7 +973,6 @@ public class AgregarRecordatorioFragmento extends Fragment
         }
 
 
-
         //SEGUNDA CONSULTA
         /*
         Sentencia WHERE para especificar que solo deseamos
@@ -1009,27 +1009,27 @@ public class AgregarRecordatorioFragmento extends Fragment
     private void mostrarExplicacion(final int tipoPeticion) {
 
         new AlertDialog.Builder(getActivity())
-                .setTitle(getString(R.string.adb_titulo))
-                .setMessage(getString(R.string.adb_mensaje_contacto))
-                .setPositiveButton(getString(R.string.boton_aceptar), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //pedir permiso
-                        if(tipoPeticion == PICK_CONTACT_REQUEST){
-                            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION);
-                        }else{
-                            throw new IllegalArgumentException();
-                        }
-                    }
-                })
-                .setNegativeButton(getString(R.string.boton_cancelar), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //Desplegar mensaje de lamentación
-                        mostrarMensaje(getString(R.string.adb_cancelar), 0);
-                    }
-                })
-                .show();
+            .setTitle(getString(R.string.adb_titulo))
+            .setMessage(getString(R.string.adb_mensaje_contacto))
+            .setPositiveButton(getString(R.string.boton_aceptar), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                //pedir permiso
+                if(tipoPeticion == PICK_CONTACT_REQUEST){
+                    requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION);
+                }else{
+                    throw new IllegalArgumentException();
+                }
+                }
+            })
+            .setNegativeButton(getString(R.string.boton_cancelar), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                //Desplegar mensaje de lamentación
+                mostrarMensaje(getString(R.string.adb_cancelar), 0);
+                }
+            })
+            .show();
     }
 
     private void mostrarMensaje(String mensaje, int estado){

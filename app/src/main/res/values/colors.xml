@@ -21,17 +21,22 @@
     <color name="color_rojo">#EF5350</color>
 
     <!--Colores item-->
-    <color name="colorTitleList">@color/primary_text</color>
-    <color name="colorEntidadList">@color/secondary_text</color>
-    <color name="colorMessageList">#464545</color>
+    <color name="color_title_item">@color/primary_text</color>
+    <color name="color_entidad_item">@color/secondary_text</color>
+    <color name="color_mensaje_item">#464545</color>
+    <color name="color_facebook_item">#2F4FA4</color>
+    <color name="color_twitter_item">#1DA1F2</color>
+    <color name="color_sms_item">#FFCA28</color>
+    <color name="color_deshabilitado_item">#B0BEC5</color>
 
     <!--Transparente-->
     <color name="transparente">#01faf9f8</color>
 
-    <!--Color borde de una imagen en circulo-->
-    <color name="color_borde_imagen_circular">@color/primary</color>
+    <!--Color borde de una imagen en circulo cbic: color borde imagen circular-->
+    <color name="cbic_all">@color/primary</color>
+    <color name="cbic_toolbar_top">#FFFFFF</color>
 
-    <!--Color del bg toolber detalle-->
-    <color name="bg_toolbar">#fefefe</color>
+    <!--Color del bg toolbar top-->
+    <color name="bg_toolbar">@color/primary</color>
 
 </resources>

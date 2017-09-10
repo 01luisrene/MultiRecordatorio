@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,11 +15,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.a01luisrene.multirecordatorio.fragmentos.ActualizarRecordatorioFragmento;
 import com.a01luisrene.multirecordatorio.fragmentos.AgregarRecordatorioFragmento;
+import com.a01luisrene.multirecordatorio.fragmentos.Cover;
 import com.a01luisrene.multirecordatorio.fragmentos.DetalleRecordatorioFragmento;
 import com.a01luisrene.multirecordatorio.fragmentos.ListaRecordatoriosFragmento;
+import com.a01luisrene.multirecordatorio.interfaces.InterfaceCrud;
+import com.a01luisrene.multirecordatorio.interfaces.InterfaceItemClic;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.ui.DetalleRecordatorioActivity;
@@ -29,72 +36,88 @@ public class MainActivity extends AppCompatActivity implements
         View.OnClickListener,
         SearchView.OnQueryTextListener,
         MenuItemCompat.OnActionExpandListener,
-        ListaRecordatoriosFragmento.OnItemSelectedListener,
-        DetalleRecordatorioFragmento.RemoverItem{
+        InterfaceCrud,
+        InterfaceItemClic {
 
     public static final String CARGAR_NUEVO_RECORDATORIO_FRAGMENTO = "cargar_nuevo_recordatorio_fragmento";
     public static final int VALOR_ENVIADO_NUEVO_RECORDATORIO = 1;
     public static final int CODIGO_RESPUESTA_NUEVO_RECORDATORIO = 103;
     public static final int CODIGO_RESPUESTA_ELIMINAR_RECORDATORIO = 105;
-
+    public static final String TAG_FRAGMENTO_ACTUALIZAR = "fragmento_actualizar";
+    public static final String TAG_FRAGMENTO_DETALLE = "fragmento_detalle";
 
     ListaRecordatoriosFragmento mListaRecordatoriosFragmento;
     DetalleRecordatorioFragmento mDetalleRecordatorioFragmento;
-
-    int itemPosicion;
+    AgregarRecordatorioFragmento mAgregarRecordatorioFragmento;
+    Cover cover;
 
     FloatingActionButton mFabAgregarRecordatorio;
     Toolbar mToolbar;
 
+    private Animation fab_abrir,fab_cerrar;
+
     private DataBaseManagerRecordatorios mManager;
 
+    ActualizarRecordatorioFragmento mActualizarRecordatorioFragmento;
+
     private boolean dosPaneles = false;
+    private boolean esFabAbrir = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mListaRecordatoriosFragmento = new ListaRecordatoriosFragmento();
+        cover = new Cover();
 
         mManager = new DataBaseManagerRecordatorios(this);
     /*
+        mManager.insertarCategoriaRecordatorio(null, "imagen.jpg", "Cumpleaño", 1, "28-066-2017");
+
         mManager.insertarRecoratorio(null, "Cumple de Luis", "Luis Rene Mas Mas","1", "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500", "1145454","1", "1", "1", "2017", "2017","12:20","1");
         mManager.insertarRecoratorio(null, "Cumple de Jose", "Juan Mesia Chicana","1", "Feliz cumpleaños", "1145454","1", "1", "1", "2017", "2017", "18:25","1");
         mManager.insertarRecoratorio(null, "Cumple de Wander", "Wander Rojas briceño","1", "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500", "1145454","1", "1", "1", "2017", "2017", "15:10","1");
-    */
 
+ */
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(mToolbar);
 
-            //Botón flotante
-            mFabAgregarRecordatorio = (FloatingActionButton) findViewById(R.id.fab_agregar_recordatorio);
-            mFabAgregarRecordatorio.setOnClickListener(this);
+        //Botón flotante
+        mFabAgregarRecordatorio = (FloatingActionButton) findViewById(R.id.fab_agregar_recordatorio);
+        fab_abrir = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_cerrar = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+        mFabAgregarRecordatorio.setOnClickListener(this);
 
-            //Función para determinar el tipo de layout
-            determinePaneLayout();
 
+        if (savedInstanceState == null){
 
-            if (savedInstanceState == null){
-                // Agregar fragmento de lista
-                mListaRecordatoriosFragmento = new ListaRecordatoriosFragmento();
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fl_contenedor, mListaRecordatoriosFragmento)
-                        .commit();
-            }
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fl_contenedor, mListaRecordatoriosFragmento)
+                    .commit();
 
-            //TODO: agregar una función para agregar los permisos en tiempo de ejecución que utilizara mi app
 
         }
-    private void determinePaneLayout() {
+
+        //Función para determinar patrón Maestro - Detalle
+        determinePaneLayout(savedInstanceState);
+
+        //TODO: agregar una función para agregar los permisos en tiempo de ejecución que utilizara mi app
+
+        }
+
+    private void determinePaneLayout(Bundle savedInstanceState) {
 
         View detalleItemFragmento = findViewById(R.id.fl_contenedor_lateral);
 
         if (detalleItemFragmento != null) {
             dosPaneles = true;
             Utilidades.smartphone = false;
+            //Agregar un fragmento cover
+            if(savedInstanceState == null)
+                getSupportFragmentManager().beginTransaction().add(R.id.fl_contenedor_lateral, cover).commit();
 
-            //TODO: cargar el fragment detalle al momento de cargar con
-            //Crear un fragment cover
             //Mantener en modo portrait la landscape
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
@@ -105,33 +128,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onItemSelected(Recordatorios recordatorios, int posicion) {
-        if (dosPaneles) { // Actividad única con lista y detalle
 
-            // Reemplazar el diseño del marco con el fragmento de detalle correcto
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            mDetalleRecordatorioFragmento = DetalleRecordatorioFragmento.newInstance(recordatorios);
-            ft.replace(R.id.fl_contenedor_lateral, mDetalleRecordatorioFragmento);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.commit();
-
-            //Habilito el botón agregar
-            mFabAgregarRecordatorio.setEnabled(true);
-
-            itemPosicion = posicion;
-
-        } else { // Actividades separadas
-
-            // Carga la actividad Detalle
-            Intent i = new Intent(this, DetalleRecordatorioActivity.class);
-            i.putExtra(DetalleRecordatorioFragmento.KEY_RECORDATORIO, recordatorios);
-            startActivityForResult(i, CODIGO_RESPUESTA_ELIMINAR_RECORDATORIO);
-
-            itemPosicion = posicion;
-
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -193,24 +190,32 @@ public class MainActivity extends AppCompatActivity implements
                     startActivityForResult(i, CODIGO_RESPUESTA_NUEVO_RECORDATORIO);
 
                 }else{
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fl_contenedor_lateral, new AgregarRecordatorioFragmento())
-                            .commit();
 
-                    //Desabilito el botón agregar
-                    mFabAgregarRecordatorio.setEnabled(false);
+                    mAgregarRecordatorioFragmento = new AgregarRecordatorioFragmento();
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.fl_contenedor_lateral, mAgregarRecordatorioFragmento);
+                    ft.addToBackStack(null);
+                    ft.commit();
+
+                    //Oculto el botón FAB agregar
+                    if(!esFabAbrir){
+                        animateFAB(fab_cerrar, false);
+                    }
+                    esFabAbrir = true;
                 }
                 break;
         }
 
     }
 
-    @Override
-    public void removerItem() {
-        if(mListaRecordatoriosFragmento != null){
-            mListaRecordatoriosFragmento.removerItemRecordatorio(itemPosicion);
+    public void animateFAB(Animation animation, boolean clic){
+        mFabAgregarRecordatorio.startAnimation(animation);
+        if(clic){
+            mFabAgregarRecordatorio.setClickable(true);
+        }else{
+            mFabAgregarRecordatorio.setClickable(false);
         }
+
     }
 
     private class buscarTask extends AsyncTask<Void, Void, Void> {
@@ -235,6 +240,42 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onBackPressed() {
+        //Muestro el botón FAB agregar
+        if(esFabAbrir){
+            animateFAB(fab_abrir, true);
+        }
+        esFabAbrir = false;
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        ActualizarRecordatorioFragmento actualizarFrag =
+                (ActualizarRecordatorioFragmento)
+                        getSupportFragmentManager().findFragmentByTag(TAG_FRAGMENTO_ACTUALIZAR);
+        DetalleRecordatorioFragmento detalleFrag =
+                (DetalleRecordatorioFragmento)
+                        getSupportFragmentManager().findFragmentByTag(TAG_FRAGMENTO_DETALLE);
+        /*
+        if(actualizarFrag != null){
+            ft.attach(actualizarFrag);
+            ft.commit();
+            Log.i("log", "frag actualizar borrado");
+        }
+        if(detalleFrag != null){
+            ft.attach(detalleFrag);
+            ft.commit();
+            Log.i("log", "frag detalle borrado");
+
+
+        }
+*/
+        if(fm.getBackStackEntryCount() > 0){
+            fm.popBackStack();
+        }
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && data != null){
@@ -256,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements
                 if(valorObtenido){
                     //Recargo el spinner siempre y cuando que el valor retornado sea `true`
                     if(mListaRecordatoriosFragmento != null){
-                        mListaRecordatoriosFragmento.removerItemRecordatorio(itemPosicion);
+                        mListaRecordatoriosFragmento.removerItemRecordatorio();
                     }
 
                 }
@@ -265,4 +306,50 @@ public class MainActivity extends AppCompatActivity implements
         }
 
     }
+
+    //===============================INTERFACES=========================================//
+
+    @Override
+    public void itemSeleccionado(Recordatorios recordatorios) {
+        if (dosPaneles) { // Actividad única con lista y detalle
+
+            // Reemplazar el diseño del marco con el fragmento de detalle correcto
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            mDetalleRecordatorioFragmento = DetalleRecordatorioFragmento.detalleRecordatorio(recordatorios);
+            ft.replace(R.id.fl_contenedor_lateral, mDetalleRecordatorioFragmento, TAG_FRAGMENTO_DETALLE);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+
+            //Muestro el botón FAB agregar
+            if(esFabAbrir){
+                animateFAB(fab_abrir, true);
+            }
+            esFabAbrir = false;
+
+        } else { // Actividades separadas
+
+            // Carga la actividad Detalle
+            Intent i = new Intent(this, DetalleRecordatorioActivity.class);
+            i.putExtra(DetalleRecordatorioFragmento.KEY_RECORDATORIO, recordatorios);
+            startActivityForResult(i, CODIGO_RESPUESTA_ELIMINAR_RECORDATORIO);
+
+        }
+    }
+
+    @Override
+    public void removerItem() {
+        if(mListaRecordatoriosFragmento != null){
+            mListaRecordatoriosFragmento.removerItemRecordatorio();
+        }
+    }
+
+    @Override
+    public void actualizarItem(Recordatorios recordatorios) {
+        mActualizarRecordatorioFragmento = ActualizarRecordatorioFragmento.actualizarRecordatorio(recordatorios);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fl_contenedor_lateral, mActualizarRecordatorioFragmento, TAG_FRAGMENTO_ACTUALIZAR);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
 }

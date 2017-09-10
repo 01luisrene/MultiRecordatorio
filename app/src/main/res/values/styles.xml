@@ -78,21 +78,24 @@
 
     <!--Estilos para los items de la lista -->
     <style name="lista_titulo">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-    <style name="lista_subtitulo">
-        <item name="android:textSize">15sp</item>
-        <item name="android:textStyle">normal</item>
-    </style>
     <style name="lista_mensaje">
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <!--lista vacía-->
     <style name="lista_vacia">
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <!--=======Toolbar top=======-->
+    <style name="titulo_categoria_tt">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/color_blanco</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 

@@ -11,7 +11,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,8 @@ import android.widget.TextView;
 import com.a01luisrene.multirecordatorio.MainActivity;
 import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.adaptadores.ListaRecordatoriosAdaptador;
+import com.a01luisrene.multirecordatorio.interfaces.InterfaceItemClicAdapter;
+import com.a01luisrene.multirecordatorio.interfaces.InterfaceItemClic;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
@@ -31,25 +32,21 @@ public class ListaRecordatoriosFragmento extends Fragment{
     //Poblar lista recycclerView
     private RecyclerView mRecordatoriosRecyclerView;
     private List<Recordatorios> mItemsRecordatorios;
-    private DataBaseManagerRecordatorios mManager;
     private ListaRecordatoriosAdaptador mAdapter;
+    private DataBaseManagerRecordatorios mManager;
+    private int posicionItem;
 
     //Variable que mostrara un mensaje cuando la lista este vacía
     private TextView mListaVacia;
 
-    //Variables para la comunicación entre fragment y Activity
-    private OnItemSelectedListener listener;
     private Activity activity;
 
-    //Interface asociada a acitividad padre
-    public static interface OnItemSelectedListener {
-        public void onItemSelected(Recordatorios recordatorios, int posicion);
-    }
+    //Interface para comunicación con la lista recordatorio y la activity
+    private InterfaceItemClic mItemClic;
 
     public ListaRecordatoriosFragmento() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,15 +87,17 @@ public class ListaRecordatoriosFragmento extends Fragment{
     public void listaRecordatorios(){
         mItemsRecordatorios = mManager.getListaRecordatorios();
 
-        mAdapter = new ListaRecordatoriosAdaptador(mItemsRecordatorios,
-                getActivity().getApplicationContext(), new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(Recordatorios recordatorios, int posicion) {
+        mAdapter = new ListaRecordatoriosAdaptador(getActivity(),
+                mItemsRecordatorios,
+                new InterfaceItemClicAdapter() {
+                    @Override
+                    public void itemClicAdapter(Recordatorios recordatorios, int position) {
 
-                listener.onItemSelected(recordatorios, posicion);
+                        posicionItem = position;
+                        mItemClic.itemSeleccionado(recordatorios);
 
-            }
-        });
+                    }
+                });
 
         mRecordatoriosRecyclerView.setAdapter(mAdapter);
 
@@ -140,9 +139,9 @@ public class ListaRecordatoriosFragmento extends Fragment{
 
     }
 
-    public void removerItemRecordatorio(int posicion){
+    public void removerItemRecordatorio(){
         //Remover un item de la lista
-        mAdapter.removerItem(posicion);
+        mAdapter.removerItem(posicionItem);
     }
 
     @Override
@@ -151,7 +150,7 @@ public class ListaRecordatoriosFragmento extends Fragment{
         //[Establecer comunicación entre nuestra lista y nuestro detalle]
         if (context instanceof Activity) {
             this.activity = (Activity) context;
-            listener = (OnItemSelectedListener) this.activity;
+            mItemClic = (InterfaceItemClic) this.activity;
         } else {
             throw new ClassCastException(activity.toString()
                     + " must implement ItemsListFragment.OnItemSelectedListener");
@@ -162,8 +161,8 @@ public class ListaRecordatoriosFragmento extends Fragment{
     //Función llamada cuando el fragment es desasociada de una actividad
     @Override
     public void onDetach() {
+        mItemClic = null;
         super.onDetach();
-        listener = null;
     }
 
 }

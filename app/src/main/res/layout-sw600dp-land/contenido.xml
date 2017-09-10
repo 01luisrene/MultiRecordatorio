@@ -4,7 +4,6 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,14 +33,23 @@
                 android:src="@drawable/ic_add_24dp"/>
         </android.support.design.widget.CoordinatorLayout>
 
-        <FrameLayout
-            android:id="@+id/fl_contenedor_lateral"
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:elevation="8dp"
             tools:targetApi="lollipop"
-            android:background="@color/color_blanco"/>
+            android:background="@color/color_blanco">
+
+            <!--Toolbar top-->
+            <include layout="@layout/toolbar_top"/>
+            <!--Contenedor lateral-->
+            <FrameLayout
+                android:id="@+id/fl_contenedor_lateral"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize"/>
+        </android.support.design.widget.CoordinatorLayout>
 
     </LinearLayout>
 </merge>

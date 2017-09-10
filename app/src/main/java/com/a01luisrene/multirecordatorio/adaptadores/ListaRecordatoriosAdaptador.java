@@ -1,6 +1,8 @@
 package com.a01luisrene.multirecordatorio.adaptadores;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.a01luisrene.multirecordatorio.fragmentos.ListaRecordatoriosFragmento;
+import com.a01luisrene.multirecordatorio.interfaces.InterfaceItemClicAdapter;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
@@ -19,33 +21,30 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecordatoriosAdaptador.ViewHolder> {
+public class ListaRecordatoriosAdaptador 
+        extends RecyclerView.Adapter<ListaRecordatoriosAdaptador.ViewHolder> {
 
     private static final String ELLIPSIS = "...";
     private List<Recordatorios> mListaRecordatorios;
     private Context mContext;
 
-    //Variable para la comunicación al fragment que contiene la lista
-    private ListaRecordatoriosFragmento.OnItemSelectedListener itemClickListener;
-
+    //Inteface de comunicación del adaptador a lista fragment
+    private InterfaceItemClicAdapter mItemClicAdapter;
 
     //Proporcionar un constructor adecuado (depende del tipo de conjunto de datos)
-    public ListaRecordatoriosAdaptador(List<Recordatorios> listaRecordatorios,
-                                       Context context,
-                                       ListaRecordatoriosFragmento.OnItemSelectedListener itemClickListener) {
+    public ListaRecordatoriosAdaptador(Context context,
+                                       List<Recordatorios> listaRecordatorios,
+                                       InterfaceItemClicAdapter itemClicAdapter) {
 
-        this.mListaRecordatorios = listaRecordatorios;
         this.mContext = context;
-        this.itemClickListener = itemClickListener;
+        this.mListaRecordatorios = listaRecordatorios;
+        this.mItemClicAdapter = itemClicAdapter;
     }
 
-    //Crear nuevas vistas (invocadas por el gestor de diseño)
     @Override
     public ListaRecordatoriosAdaptador.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //crear nueva vista
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recordatorio_list_item, parent, false);
-        // Establecer el tamaño de la vista, los márgenes, los rellenos y los parámetros de diseño
 
         return new ViewHolder(v);
     }
@@ -55,81 +54,74 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         Recordatorios items = mListaRecordatorios.get(position);
-        holder.bind(mContext, items, itemClickListener);
+        holder.bind(mContext, items);
 
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder{
+        private static final String CERO = "0";
         // Cada elemento de datos es sólo una cadena en este caso
-        TextView id, titulo, entidadOtros, contenidoMensaje;
+        TextView titulo, contenidoMensaje, fecha, hora;
         ImageView ivImagenRecordatorio;
         CircleImageView civImagenRecordatorio;
+        ImageView ivFacebook, ivTwitter, ivSms;
+        Drawable drawable_deshabilitado, drawable_facebook, drawable_twitter, drawable_sms;
+        String valorTitulo, valorImagen, tituloFormateado,
+                mensajeFormateado, valorFacebook, valorTwitter, valorSms;
 
         ViewHolder(View v) {
             super(v);
             v.setClickable(true);
-            id = (TextView) v.findViewById(R.id.tv_id);
-            titulo = (TextView) v.findViewById(R.id.tv_title_reminder);
-            entidadOtros = (TextView) v.findViewById(R.id.tv_name_reminder);
+            titulo = (TextView) v.findViewById(R.id.tv_titulo_item);
+            fecha = (TextView) v.findViewById(R.id.tv_fecha_item);
+            hora = (TextView) v.findViewById(R.id.tv_hora_item);
+            ivFacebook = (ImageView) v.findViewById(R.id.iv_facebook_item);
+            ivTwitter = (ImageView) v.findViewById(R.id.iv_twitter_item);
+            ivSms = (ImageView) v.findViewById(R.id.iv_sms_item);
+            drawable_deshabilitado = ContextCompat.getDrawable(mContext, R.drawable.bt_deshabilitado_item);
+            drawable_facebook = ContextCompat.getDrawable(mContext, R.drawable.bt_facebook_item);
+            drawable_twitter = ContextCompat.getDrawable(mContext, R.drawable.bt_twitter_item);
+            drawable_sms = ContextCompat.getDrawable(mContext, R.drawable.bt_sms_item);
 
             if(Utilidades.smartphone) {
-                contenidoMensaje = (TextView) v.findViewById(R.id.tv_message_reminder);
-                ivImagenRecordatorio = (ImageView) v.findViewById(R.id.civ_categoria_recordatorio);
+                contenidoMensaje = (TextView) v.findViewById(R.id.tv_mensaje_item);
+                ivImagenRecordatorio = (ImageView) v.findViewById(R.id.iv_categoria_item);
             }else{
-                civImagenRecordatorio = (CircleImageView) v.findViewById(R.id.civ_categoria_recordatorio);
+                civImagenRecordatorio = (CircleImageView) v.findViewById(R.id.civ_categoria_item);
             }
-
 
         }
 
-        public void bind(final Context context,
-                         final Recordatorios items,
-                         final ListaRecordatoriosFragmento.OnItemSelectedListener itemClickListener) {
+        void bind(final Context context,
+                         final Recordatorios items) {
 
-            id.setText(items.getId());
-
-            //Almaceno los valores devueltos para realizar algunos cambios
-            String valorTitulo = items.getTitulo();
-            String valorEntidadOtros = items.getEntidadOtros();
-            String valorImagen = items.getRutaImagenRecordatorio();
-
-            String tituloFormateado, entidadOtrosFormateado, mensajeFormateado;
-
-
+             //Almaceno los valores devueltos para realizar algunos cambios
+            valorTitulo = items.getTitulo();
+            valorImagen = items.getRutaImagenRecordatorio();
+            fecha.setText(items.getFechaPublicacionRecordatorio());
+            hora.setText(items.getHoraPublicacionRecordatorio());
+            valorFacebook = items.getPublicarFacebook();
+            valorTwitter = items.getPublicarTwitter();
+            valorSms = items.getEnvioMensaje();
 
             //Título formateado
-
-            if(valorTitulo.length() >= 35){
-                tituloFormateado = valorTitulo.substring(0, 35) + ELLIPSIS;
+            if(valorTitulo.length() >= 45){
+                tituloFormateado = valorTitulo.substring(0,45) + ELLIPSIS;
             }else{
                 tituloFormateado = valorTitulo;
             }
-            if(valorEntidadOtros.length() >= 25){
-                entidadOtrosFormateado = valorEntidadOtros.substring(0, 25) + ELLIPSIS;
-            }else{
-                entidadOtrosFormateado = valorEntidadOtros;
-            }
-            //Si no hay subtitulo cambio altura y ancho a 0px
-            if(valorEntidadOtros.isEmpty()){
-                entidadOtros.setHeight(0);
-                entidadOtros.setWidth(0);
-            }
 
             titulo.setText(tituloFormateado);
-            entidadOtros.setText(entidadOtrosFormateado);
 
             if(Utilidades.smartphone){ //Se aplica para resoluciones pequeñas como [smartphones]
-
                 //TEXTO DEL CONTENIDO MENSAJE FORMATEADO
-
-                //Almaceno el valor de la cadena devuelta del contenido mensaje
                 String valoraMensaje = items.getContenidoMensaje();
 
                 //Condiciono para saber si la cadena tiene mas de 70 caracteres
-                if(valoraMensaje.length() >= 55){
-                    //Agrego ellipsis al texto si es mayor de 70
-                    mensajeFormateado = valoraMensaje.substring(0, 55) + ELLIPSIS;
+                if(valoraMensaje.length() >= 65){
+                    //Agrego ellipsis al texto si es mayor de 50
+                    mensajeFormateado = valoraMensaje.substring(0, 65) + ELLIPSIS;
                 }else{
                     //Muestro el texto original
                     mensajeFormateado = valoraMensaje;
@@ -138,14 +130,10 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                 //cargo los valores devueltos en el EditText
                 contenidoMensaje.setText(mensajeFormateado);
 
-
-                //CARGO IMAGEN CON PICASSO
-
                 //Condiciono para manejar si el valor devuelto es vacío
                 if(valorImagen == null ||valorImagen.isEmpty()){
                     //[Si no hay imagen muestro una por defecto]
                     ivImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
-
 
                 }else{
                     //Cargo la imagen con la ayuda de la librería picasso
@@ -156,8 +144,6 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                 }
 
             }else{ //Se aplica para resoluciones grandes como [tablets]
-
-                //CARGO IMAGEN CON PICASSO
 
                 //Condiciono para manejar si el valor devuelto es vacío
                 if(valorImagen == null ||valorImagen.isEmpty()){
@@ -172,12 +158,29 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
                             .into(civImagenRecordatorio);
                 }
             }
+
+            //PREFERENCIAS DE ENVIO MENSAJE, PUBLICACIÓN O TWITTEO
+            if(valorFacebook.equals(CERO)){
+                ivFacebook.setBackground(drawable_deshabilitado);
+            }else{
+                ivFacebook.setBackground(drawable_facebook);
+            }
+            if(valorTwitter.equals(CERO)){
+                ivTwitter.setBackground(drawable_deshabilitado);
+            }else{
+                ivTwitter.setBackground(drawable_twitter);
+            }
+            if (valorSms.equals(CERO)){
+                ivSms.setBackground(drawable_deshabilitado);
+            }else{
+                ivSms.setBackground(drawable_sms);
+            }
             //Evento clic para el item seleccionado
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int posicion  = ViewHolder.super.getAdapterPosition();
-                    itemClickListener.onItemSelected(items, posicion);
+                    mItemClicAdapter.itemClicAdapter(items, posicion);
                 }
             });
         }
@@ -186,6 +189,7 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
     public void removerItem(int posicion) {
         mListaRecordatorios.remove(posicion);
         notifyItemRemoved(posicion);
+        notifyItemRangeChanged(posicion, mListaRecordatorios.size());
     }
 
     public void agregarItem(Recordatorios recordatorios) {
@@ -197,8 +201,7 @@ public class ListaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaRecor
        notifyItemChanged(posicion);
     }
 
-
-    // Devuelve el tamaño de tu conjunto de datos (invocado por el administrador de diseño)
+    // Devuelve el tamaño del data
     @Override
     public int getItemCount() {
         return mListaRecordatorios.size();

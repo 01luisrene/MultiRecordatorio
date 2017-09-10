@@ -34,7 +34,7 @@
             android:layout_height="@dimen/civ_lista_recordatorios"
             android:src="@mipmap/ic_launcher"
             android:layout_centerVertical="true"
-            card_view:civ_border_color="@color/color_borde_imagen_circular"
+            card_view:civ_border_color="@color/cbic_all"
             card_view:civ_border_width="@dimen/civ_borde"/>
 
         <TextView
