@@ -37,7 +37,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
-public class AgregarCategotiaRecordatorioFragmento extends Fragment implements View.OnClickListener {
+public class AgregarCategotiaFragmento extends Fragment implements View.OnClickListener {
     private static final String IMAGE_SELECT_ALL_TYPE = "image/*";
     private static final String REGEX_LATINOS = "^[a-zA-Z0-9 áÁéÉíÍóÓúÚñÑüÜ]+$";
     private static final int PROTECCION = 0;
@@ -56,7 +56,7 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
 
     DataBaseManagerRecordatorios mManager;
 
-    public AgregarCategotiaRecordatorioFragmento() {
+    public AgregarCategotiaFragmento() {
         // Required empty public constructor
     }
 
@@ -156,12 +156,17 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
                 mCivImagen.setImageResource(R.drawable.ic_image_150dp);
                 mEtTituloRecordatorio.setText("");
                 mRutaImagen = null;
+
+                //Función que sirve para devolver una respuesta de retorno
+                //al formulario nuevo recordatorio
+                Intent i = new Intent();
+                i.putExtra(LLAVE_RETORNO_CATEGORIA, respuestaRetornoCategoria);
+                getActivity().setResult(RESULT_OK, i);
+
             }
         }
 
     }
-
-
 
 
     private boolean esTituloCategoriaRecordatorioValido(String titulo){
@@ -268,12 +273,5 @@ public class AgregarCategotiaRecordatorioFragmento extends Fragment implements V
         }
         snackbar.show();
 
-    }
-    //Función que sirve para devolver una respuesta de retorno
-    //al formulario nuevo recordatorio
-    public void enviarNuevasCategoriasRecordatorios(){
-        Intent i = new Intent();
-        i.putExtra(LLAVE_RETORNO_CATEGORIA, respuestaRetornoCategoria);
-        getActivity().setResult(RESULT_OK, i);
     }
 }

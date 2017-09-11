@@ -51,7 +51,7 @@ public class DetalleRecordatorioFragmento extends Fragment
 
     // Objeto de la interfaz remover, con este objeto llamaremos el
     // método de la interfaz
-    private InterfaceCrud mCud; //Cud: crear, actualizar, eliminar
+    private InterfaceCrud mCrud; //CRUD: crear, leer, actualizar, eliminar
 
 
     public DetalleRecordatorioFragmento() {
@@ -73,6 +73,7 @@ public class DetalleRecordatorioFragmento extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments().containsKey(KEY_RECORDATORIO)) {
+            cover = new Cover();
             activity = this.getActivity();
             mItemRecordatorio = getArguments().getParcelable(KEY_RECORDATORIO);
 
@@ -200,7 +201,7 @@ public class DetalleRecordatorioFragmento extends Fragment
                 eliminarRecordatorio();
                 break;
             case R.id.ib_editar_toolbar:
-                mCud.actualizarItem(mItemRecordatorio);
+                mCrud.actualizarItem(mItemRecordatorio);
                 break;
         }
     }
@@ -217,14 +218,15 @@ public class DetalleRecordatorioFragmento extends Fragment
                     //Eliminar registro
                     String idRecordatorio = mItemRecordatorio.getId();
                     mManager.eliminarRecordatorio(idRecordatorio); //Elimino el registro
-                    //Fragments
-                    cover = new Cover();
+
                     //Cambio al cover
                     getActivity().getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fl_contenedor_lateral, cover).commit();
+                            .replace(R.id.fl_contenedor_lateral, cover)
+                            .addToBackStack(cover.getClass().getName())
+                            .commit();
                     //Interfaz que sirve para remover el item
-                    mCud.removerItem();
+                    mCrud.removerItem();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -246,7 +248,7 @@ public class DetalleRecordatorioFragmento extends Fragment
         // Aquí nos aseguramos de que en la actividad se haya implementado la interfaz,
         // si el programador no la implementado se lanza el mensaje de error.
         try {
-            mCud = (InterfaceCrud) context;
+            mCrud = (InterfaceCrud) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " Debe implementar las interfaces en su Activity");
         }
@@ -256,7 +258,7 @@ public class DetalleRecordatorioFragmento extends Fragment
     @Override
     public void onDetach() {
         super.onDetach();
-        mCud = null;
+        mCrud = null;
     }
 
 }

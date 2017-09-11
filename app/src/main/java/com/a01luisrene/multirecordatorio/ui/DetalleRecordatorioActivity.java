@@ -28,8 +28,7 @@ import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 
 
 public class DetalleRecordatorioActivity extends AppCompatActivity
-        implements View.OnClickListener,
-        InterfaceCrud {
+        implements View.OnClickListener, InterfaceCrud{
 
     //Constantes
     public static final int MILISEGUNDOS_ESPERA = 300;
@@ -243,7 +242,6 @@ public class DetalleRecordatorioActivity extends AppCompatActivity
         mFabEditar.setScaleX(1);
         mFabEditar.setScaleY(1);
     }
-
 
     @Override
     public void removerItem() {

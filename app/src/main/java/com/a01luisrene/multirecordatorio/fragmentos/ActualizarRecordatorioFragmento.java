@@ -106,6 +106,9 @@ public class ActualizarRecordatorioFragmento extends Fragment
     ArrayList<String> comboListaCategorias;
     ArrayAdapter<String> comboAdapter;
 
+    //Fragmento cover
+    Cover cover;
+
     //Obtener número de los contactos del phone
     Cursor contactCursor, phoneCursor;
     Uri contactoUri;
@@ -164,8 +167,9 @@ public class ActualizarRecordatorioFragmento extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments().containsKey(DetalleRecordatorioFragmento.KEY_RECORDATORIO)) {
-
             activity = this.getActivity();
+            cover = new Cover();
+
             mItemRecordatorio = getArguments().getParcelable(DetalleRecordatorioFragmento.KEY_RECORDATORIO);
 
             if(Utilidades.smartphone) {
@@ -507,9 +511,9 @@ public class ActualizarRecordatorioFragmento extends Fragment
         if(resultCode == RESULT_OK){
             //Volver a recargar el spinner de categorías
             if(requestCode == CODIGO_RESPUESTA_CATEGORIA){
-                if(data.hasExtra(AgregarCategotiaRecordatorioFragmento.LLAVE_RETORNO_CATEGORIA)){
+                if(data.hasExtra(AgregarCategotiaFragmento.LLAVE_RETORNO_CATEGORIA)){
                     boolean valorObtenido = data.getExtras()
-                            .getBoolean(AgregarCategotiaRecordatorioFragmento.LLAVE_RETORNO_CATEGORIA);
+                            .getBoolean(AgregarCategotiaFragmento.LLAVE_RETORNO_CATEGORIA);
                     if(valorObtenido){
                         //Recargo el spinner siempre y cuando que el valor retornado sea `true`
                         poblarSpinner();
@@ -580,8 +584,17 @@ public class ActualizarRecordatorioFragmento extends Fragment
                 } finally {
                     //Mensaje de registro guardado con exito
                     Toast.makeText(getActivity(), getString(R.string.mensaje_actualizado_satisfactoriamente), Toast.LENGTH_SHORT).show();
-                    //Cierro la activity
-                    esperarYCerrar(MILISEGUNDOS_ESPERA);
+
+                    //Cierro la activity siempre que me encuentre en un smartphone
+                    if(Utilidades.smartphone){
+                        esperarYCerrar(MILISEGUNDOS_ESPERA);
+                    }else{
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fl_contenedor_lateral, cover)
+                                .addToBackStack(cover.getClass().getName())
+                                .commit();
+                    }
                 }
             } else if (!titulo) {
                 mostrarMensaje(getString(R.string.error_titulo_recordatorio), 0);

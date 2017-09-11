@@ -109,6 +109,9 @@ public class AgregarRecordatorioFragmento extends Fragment
     Cursor contactCursor, phoneCursor;
     Uri contactoUri;
 
+    //Fragmento cover
+    Cover cover;
+
     //Calendario para obtener fecha & hora
     public final Calendar c = Calendar.getInstance();
 
@@ -152,6 +155,7 @@ public class AgregarRecordatorioFragmento extends Fragment
         super.onCreate(savedInstanceState);
 
         activity = this.getActivity();
+        cover = new Cover();
 
         if(Utilidades.smartphone) {
             //Widgets de la activity Detalle Recordatorio
@@ -314,6 +318,7 @@ public class AgregarRecordatorioFragmento extends Fragment
                         if (mValorImagenCategoria != null){
                             Picasso.with(getActivity().getApplicationContext())
                                     .load(new File(mValorImagenCategoria))
+                                    .error(R.drawable.ic_image_150dp)
                                     .noFade()
                                     .into(mCivImagenRecordatorio);
                         }else{
@@ -458,9 +463,9 @@ public class AgregarRecordatorioFragmento extends Fragment
         if(resultCode == RESULT_OK){
             //Volver a recargar el spinner de categorías
             if(requestCode == CODIGO_RESPUESTA_CATEGORIA){
-                if(data.hasExtra(AgregarCategotiaRecordatorioFragmento.LLAVE_RETORNO_CATEGORIA)){
+                if(data.hasExtra(AgregarCategotiaFragmento.LLAVE_RETORNO_CATEGORIA)){
                     boolean valorObtenido = data.getExtras()
-                            .getBoolean(AgregarCategotiaRecordatorioFragmento.LLAVE_RETORNO_CATEGORIA);
+                            .getBoolean(AgregarCategotiaFragmento.LLAVE_RETORNO_CATEGORIA);
                     if(valorObtenido){
                         //Recargo el spinner siempre y cuando que el valor retornado sea `true`
                         poblarSpinner();
@@ -530,8 +535,17 @@ public class AgregarRecordatorioFragmento extends Fragment
                 } finally {
                     //Mensaje de registro guardado con exito
                     Toast.makeText(getActivity(), getString(R.string.mensaje_agregado_satisfactoriamente), Toast.LENGTH_SHORT).show();
-                    //Cierro la activity
-                    esperarYCerrar(MILISEGUNDOS_ESPERA);
+                    //Cierro la activity siempre que me encuentre en un smartphone
+                    if(Utilidades.smartphone){
+                        esperarYCerrar(MILISEGUNDOS_ESPERA);
+                    }else{
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fl_contenedor_lateral, cover)
+                                .addToBackStack(cover.getClass().getName())
+                                .commit();
+                    }
+
                 }
             } else if (!titulo) {
                 mostrarMensaje(getString(R.string.error_titulo_recordatorio), 0);

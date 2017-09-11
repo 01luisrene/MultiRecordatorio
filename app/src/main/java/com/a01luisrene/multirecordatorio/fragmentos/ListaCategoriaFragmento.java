@@ -17,19 +17,19 @@ import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 import java.util.List;
 
 
-public class ListaCategoriaRecordatoriosFragmento extends Fragment{
+public class ListaCategoriaFragmento extends Fragment{
 
     RecyclerView mTipoRecordatorioListRecyclerView;
     ListaCategoriaRecordatoriosAdaptador mListaCategoriaRecordatoriosAdaptador;
     List<CategoriaRecordatorios> mListaItemsCategoriaRecordatorios;
     DataBaseManagerRecordatorios mManager;
 
-    public ListaCategoriaRecordatoriosFragmento() {
+    public ListaCategoriaFragmento() {
         // Required empty public constructor
     }
 
-    public static ListaCategoriaRecordatoriosFragmento newInstance(String param1, String param2) {
-        ListaCategoriaRecordatoriosFragmento fragment = new ListaCategoriaRecordatoriosFragmento();
+    public static ListaCategoriaFragmento newInstance(String param1, String param2) {
+        ListaCategoriaFragmento fragment = new ListaCategoriaFragmento();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
