@@ -316,13 +316,13 @@ public class ActualizarRecordatorioFragmento extends Fragment
 
         comboListaCategorias = new ArrayList<>();
 
-        int sizeListaCat = mManagerRecordatorios.getListaCategoriasSpinner().size();
+        int sizeListaCat = mManagerRecordatorios.getListaCategorias().size();
 
         comboListaCategorias.add(getString(R.string.selecciona_categoria_spinner));
 
         for(int i = 0; i < sizeListaCat; i++){
             comboListaCategorias.add(mManagerRecordatorios
-                    .getListaCategoriasSpinner().get(i).getCategorioRecordatorio());
+                    .getListaCategorias().get(i).getCategorioRecordatorio());
         }
 
         comboAdapter = new ArrayAdapter<>(getActivity(),
@@ -342,13 +342,13 @@ public class ActualizarRecordatorioFragmento extends Fragment
             case R.id.sp_categorias_recordatorios:
                 if(position != 0) {
                     mValorIdCategoria = mManagerRecordatorios
-                            .getListaCategoriaRecordatorios()
+                            .getListaCategorias()
                             .get(position-1).getId();
                     mValorImagenCategoria = mManagerRecordatorios
-                            .getListaCategoriaRecordatorios()
+                            .getListaCategorias()
                             .get(position-1).getImagen();
                     mValorTituloCategoria = mManagerRecordatorios
-                            .getListaCategoriaRecordatorios()
+                            .getListaCategorias()
                             .get(position-1).getCategorioRecordatorio();
 
                     if(Utilidades.smartphone) {
@@ -566,16 +566,17 @@ public class ActualizarRecordatorioFragmento extends Fragment
                             mItemRecordatorio.getId(),                          //[_id]
                             mTieTituloRecordatorio.getText().toString(),        //[Titulo]
                             mTieEntidadOtros.getText().toString(),              //[Entidad - Otros]
-                            mValorIdCategoria,                                  //[Id Categoría]
                             mTieContenidoMensaje.getText().toString(),          //[Contenido del mensaje]
-                            mTieTelefono.getText().toString(),                  //[Teléfono]
-                            mValorEnviarMensaje,                                //[Envio mesaje]
                             mValorFacebook,                                     //[Publicar en facebook]
                             mValorTwitter,                                      //[Publicar en twitter]
+                            mValorEnviarMensaje,                                //[Envio mesaje]
+                            mTieTelefono.getText().toString(),                  //[Teléfono]
                             mItemRecordatorio.getFechaCreacionRecordatorio(),    //[Fecha creación]
                             mTieFecha.getText().toString(),                     //[Fecha del recordatorio]
                             mTieHora.getText().toString(),                      //[Hora del recordatorio]
-                            ESTADO_RECORDATORIO);
+                            ESTADO_RECORDATORIO,
+                            mValorIdCategoria                                  //[Id Categoría]
+                            );
 
 
                 } catch (Exception e) {

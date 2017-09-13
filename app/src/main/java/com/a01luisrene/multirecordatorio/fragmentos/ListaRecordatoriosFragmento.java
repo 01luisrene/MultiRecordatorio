@@ -25,6 +25,8 @@ import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ListaRecordatoriosFragmento extends Fragment{
@@ -87,14 +89,15 @@ public class ListaRecordatoriosFragmento extends Fragment{
     public void listaRecordatorios(){
         mItemsRecordatorios = mManager.getListaRecordatorios();
 
-        mAdapter = new ListaRecordatoriosAdaptador(getActivity(),
+        mAdapter = new ListaRecordatoriosAdaptador(getActivity().getApplicationContext(),
                 mItemsRecordatorios,
                 new InterfaceItemClicAdapter() {
                     @Override
                     public void itemClicAdapter(Recordatorios recordatorios, int position) {
 
+                        if(mItemClic != null)
+                            mItemClic.itemSeleccionado(recordatorios);
                         posicionItem = position;
-                        mItemClic.itemSeleccionado(recordatorios);
 
                     }
                 });
@@ -102,6 +105,8 @@ public class ListaRecordatoriosFragmento extends Fragment{
         mRecordatoriosRecyclerView.setAdapter(mAdapter);
 
         mRecordatoriosRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
 
         //Verifico si la lista sigue vacía
         if (mItemsRecordatorios.isEmpty()) {
@@ -127,15 +132,15 @@ public class ListaRecordatoriosFragmento extends Fragment{
         }
     }
 
-    public void inserterItemRecordatorio(Recordatorios recordatorios){
+    public void agregarItemRecordatorio(Recordatorios recordatorios){
         //[Insertar un item en la lista]
-        mAdapter.agregarItem(new Recordatorios(recordatorios));
-        mRecordatoriosRecyclerView.scrollToPosition(0);
+        mAdapter.agregarItem(recordatorios, posicionItem);
+        mRecordatoriosRecyclerView.smoothScrollToPosition(0);
 
     }
-    public void actualizarItemRecordatorio(int posicion){
-        //mItemsRecordatorios.set();
-        mAdapter.notifyItemChanged(posicion);
+    public void actualizarItemRecordatorio(){
+       // mItemsRecordatorios.set(posicionItem, );
+        mAdapter.notifyItemChanged(posicionItem);
 
     }
 

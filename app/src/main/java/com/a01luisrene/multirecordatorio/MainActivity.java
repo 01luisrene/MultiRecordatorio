@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -192,16 +193,19 @@ public class MainActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && data != null){
-            if(requestCode == CODIGO_RESPUESTA_NUEVO_RECORDATORIO ){
-                boolean valorObtenido = data.getExtras()
-                        .getBoolean(AgregarRecordatorioFragmento.LLAVE_RETORNO_RECORDATORIO);
-                if(valorObtenido){
-                    //Recargo el spinner siempre y cuando que el valor retornado sea `true`
-                    if(mListaRecordatoriosFragmento != null){
-                        //mListaRecordatoriosFragmento.inserterItemRecordatorio();
-                    }
+            if(requestCode == CODIGO_RESPUESTA_NUEVO_RECORDATORIO ) {
+                //boolean valorObtenido = data.getExtras().getBoolean(AgregarRecordatorioFragmento.LLAVE_RETORNO_RECORDATORIO);
 
+                Recordatorios recordatorios = data.getExtras().getParcelable(AgregarRecordatorioFragmento.LLAVE_RETORNO_RECORDATORIO);
+
+                //Recargo el spinner siempre y cuando que el valor retornado sea `true`
+                if (mListaRecordatoriosFragmento != null) {
+                    mListaRecordatoriosFragmento.agregarItemRecordatorio(recordatorios);
                 }
+                Log.i("log", String.valueOf(recordatorios + " -  valor: "));
+
+                //if(valorObtenido){}}
+
             }
 
             if(requestCode == CODIGO_RESPUESTA_ELIMINAR_RECORDATORIO){
@@ -327,6 +331,13 @@ public class MainActivity extends AppCompatActivity implements
             i.putExtra(DetalleRecordatorioFragmento.KEY_RECORDATORIO, recordatorios);
             startActivityForResult(i, CODIGO_RESPUESTA_ELIMINAR_RECORDATORIO);
 
+        }
+    }
+
+    @Override
+    public void agregarItem(Recordatorios recordatorios) {
+        if(mListaRecordatoriosFragmento != null){
+            mListaRecordatoriosFragmento.agregarItemRecordatorio(recordatorios);
         }
     }
 

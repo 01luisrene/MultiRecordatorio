@@ -98,7 +98,6 @@ public class DetalleRecordatorioFragmento extends Fragment
         View v = inflater.inflate(R.layout.fragment_detalle_recordatorio, container, false);
         mManager = new DataBaseManagerRecordatorios(getActivity().getApplicationContext());
 
-
         if(mItemRecordatorio != null) {
 
             if (Utilidades.smartphone) {
@@ -143,8 +142,8 @@ public class DetalleRecordatorioFragmento extends Fragment
 
             ((TextView) v.findViewById(R.id.tv_titulo)).setText(mItemRecordatorio.getTitulo());
             ((TextView) v.findViewById(R.id.tv_entidad_otros)).setText(mItemRecordatorio.getEntidadOtros());
-            ((TextView) v.findViewById(R.id.tv_telefono)).setText(mItemRecordatorio.getTelefono());
             ((TextView) v.findViewById(R.id.tv_mensaje)).setText(mItemRecordatorio.getContenidoMensaje());
+            ((TextView) v.findViewById(R.id.tv_telefono)).setText(mItemRecordatorio.getTelefono());
 
             //Almaceno el valor de del campo Entidad Otros
             String entidadOtrosValor = mItemRecordatorio.getEntidadOtros();

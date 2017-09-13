@@ -7,56 +7,39 @@ public class Recordatorios implements Parcelable {
     private String id;
     private String titulo;
     private String entidadOtros;
-    private String rutaImagenRecordatorio;
-    private String categoriaRecordatorio;
-    private String telefono;
     private String contenidoMensaje;
-    private String envioMensaje;
     private String publicarFacebook;
     private String publicarTwitter;
+    private String envioMensaje;
+    private String telefono;
     private String fechaCreacionRecordatorio;
     private String fechaPublicacionRecordatorio;
     private String horaPublicacionRecordatorio;
-
+    private String categoriaRecordatorio;
+    private String rutaImagenRecordatorio;
 
     /**
      * CONSTRUCTOR
      */
-    public Recordatorios(){
-
-    }
-
-    public Recordatorios(String id, String titulo, String entidadOtros, String rutaImagenRecordatorio, String categoriaRecordatorio, String telefono, String contenidoMensaje, String envioMensaje, String publicarFacebook, String publicarTwitter, String fechaCreacionRecordatorio, String fechaPublicacionRecordatorio, String horaPublicacionRecordatorio) {
+    public Recordatorios(String id, String titulo, String entidadOtros, String contenidoMensaje, String publicarFacebook, String publicarTwitter, String envioMensaje, String telefono, String fechaCreacionRecordatorio, String fechaPublicacionRecordatorio, String horaPublicacionRecordatorio, String categoriaRecordatorio, String rutaImagenRecordatorio) {
         this.id = id;
         this.titulo = titulo;
         this.entidadOtros = entidadOtros;
-        this.rutaImagenRecordatorio = rutaImagenRecordatorio;
-        this.categoriaRecordatorio = categoriaRecordatorio;
-        this.telefono = telefono;
         this.contenidoMensaje = contenidoMensaje;
-        this.envioMensaje = envioMensaje;
         this.publicarFacebook = publicarFacebook;
         this.publicarTwitter = publicarTwitter;
+        this.envioMensaje = envioMensaje;
+        this.telefono = telefono;
         this.fechaCreacionRecordatorio = fechaCreacionRecordatorio;
         this.fechaPublicacionRecordatorio = fechaPublicacionRecordatorio;
         this.horaPublicacionRecordatorio = horaPublicacionRecordatorio;
+        this.categoriaRecordatorio = categoriaRecordatorio;
+        this.rutaImagenRecordatorio = rutaImagenRecordatorio;
     }
 
-    public Recordatorios(Recordatorios recordatorios){
-        this.id = recordatorios.id;
-        this.titulo = recordatorios.titulo;
-        this.entidadOtros = recordatorios.entidadOtros;
-        this.rutaImagenRecordatorio = recordatorios.rutaImagenRecordatorio;
-        this.categoriaRecordatorio = recordatorios.categoriaRecordatorio;
-        this.telefono = recordatorios.telefono;
-        this.contenidoMensaje = recordatorios.contenidoMensaje;
-        this.envioMensaje = recordatorios.envioMensaje;
-        this.publicarFacebook = recordatorios.publicarFacebook;
-        this.publicarTwitter = recordatorios.publicarTwitter;
-        this.fechaCreacionRecordatorio = recordatorios.fechaCreacionRecordatorio;
-        this.fechaPublicacionRecordatorio = recordatorios.fechaPublicacionRecordatorio;
-        this.horaPublicacionRecordatorio = recordatorios.horaPublicacionRecordatorio;
-    }
+    /**
+     * GETTERS & SETTERS
+     */
 
     public String getId() {
         return id;
@@ -82,44 +65,12 @@ public class Recordatorios implements Parcelable {
         this.entidadOtros = entidadOtros;
     }
 
-    public String getRutaImagenRecordatorio() {
-        return rutaImagenRecordatorio;
-    }
-
-    public void setRutaImagenRecordatorio(String rutaImagenRecordatorio) {
-        this.rutaImagenRecordatorio = rutaImagenRecordatorio;
-    }
-
-    public String getCategoriaRecordatorio() {
-        return categoriaRecordatorio;
-    }
-
-    public void setCategoriaRecordatorio(String categoriaRecordatorio) {
-        this.categoriaRecordatorio = categoriaRecordatorio;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
     public String getContenidoMensaje() {
         return contenidoMensaje;
     }
 
     public void setContenidoMensaje(String contenidoMensaje) {
         this.contenidoMensaje = contenidoMensaje;
-    }
-
-    public String getEnvioMensaje() {
-        return envioMensaje;
-    }
-
-    public void setEnvioMensaje(String envioMensaje) {
-        this.envioMensaje = envioMensaje;
     }
 
     public String getPublicarFacebook() {
@@ -136,6 +87,22 @@ public class Recordatorios implements Parcelable {
 
     public void setPublicarTwitter(String publicarTwitter) {
         this.publicarTwitter = publicarTwitter;
+    }
+
+    public String getEnvioMensaje() {
+        return envioMensaje;
+    }
+
+    public void setEnvioMensaje(String envioMensaje) {
+        this.envioMensaje = envioMensaje;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getFechaCreacionRecordatorio() {
@@ -162,6 +129,22 @@ public class Recordatorios implements Parcelable {
         this.horaPublicacionRecordatorio = horaPublicacionRecordatorio;
     }
 
+    public String getCategoriaRecordatorio() {
+        return categoriaRecordatorio;
+    }
+
+    public void setCategoriaRecordatorio(String categoriaRecordatorio) {
+        this.categoriaRecordatorio = categoriaRecordatorio;
+    }
+
+    public String getRutaImagenRecordatorio() {
+        return rutaImagenRecordatorio;
+    }
+
+    public void setRutaImagenRecordatorio(String rutaImagenRecordatorio) {
+        this.rutaImagenRecordatorio = rutaImagenRecordatorio;
+    }
+
 
     @Override
     public int describeContents() {
@@ -173,35 +156,35 @@ public class Recordatorios implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.titulo);
         dest.writeString(this.entidadOtros);
-        dest.writeString(this.rutaImagenRecordatorio);
-        dest.writeString(this.categoriaRecordatorio);
-        dest.writeString(this.telefono);
         dest.writeString(this.contenidoMensaje);
-        dest.writeString(this.envioMensaje);
         dest.writeString(this.publicarFacebook);
         dest.writeString(this.publicarTwitter);
+        dest.writeString(this.envioMensaje);
+        dest.writeString(this.telefono);
         dest.writeString(this.fechaCreacionRecordatorio);
         dest.writeString(this.fechaPublicacionRecordatorio);
         dest.writeString(this.horaPublicacionRecordatorio);
+        dest.writeString(this.categoriaRecordatorio);
+        dest.writeString(this.rutaImagenRecordatorio);
     }
 
     protected Recordatorios(Parcel in) {
         this.id = in.readString();
         this.titulo = in.readString();
         this.entidadOtros = in.readString();
-        this.rutaImagenRecordatorio = in.readString();
-        this.categoriaRecordatorio = in.readString();
-        this.telefono = in.readString();
         this.contenidoMensaje = in.readString();
-        this.envioMensaje = in.readString();
         this.publicarFacebook = in.readString();
         this.publicarTwitter = in.readString();
+        this.envioMensaje = in.readString();
+        this.telefono = in.readString();
         this.fechaCreacionRecordatorio = in.readString();
         this.fechaPublicacionRecordatorio = in.readString();
         this.horaPublicacionRecordatorio = in.readString();
+        this.categoriaRecordatorio = in.readString();
+        this.rutaImagenRecordatorio = in.readString();
     }
 
-    public static final Parcelable.Creator<Recordatorios> CREATOR = new Parcelable.Creator<Recordatorios>() {
+    public static final Creator<Recordatorios> CREATOR = new Creator<Recordatorios>() {
         @Override
         public Recordatorios createFromParcel(Parcel source) {
             return new Recordatorios(source);

@@ -4,6 +4,7 @@ import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 
 //Cud: create, update, delete
 public interface InterfaceCrud {
+    public void agregarItem(Recordatorios recordatorios);
     public void removerItem();
 
     //Actualizar item

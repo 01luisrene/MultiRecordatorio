@@ -1,6 +1,6 @@
 package com.a01luisrene.multirecordatorio.modelos;
 
-public class CategoriaRecordatorios {
+public class Categorias {
     private String id;
     private String imagen;
     private String categorioRecordatorio;
@@ -9,11 +9,11 @@ public class CategoriaRecordatorios {
      * CONSTRUCTOR
      */
 
-    public CategoriaRecordatorios() {
+    public Categorias() {
 
     }
 
-    public CategoriaRecordatorios(String id, String imagen, String categorioRecordatorio) {
+    public Categorias(String id, String imagen, String categorioRecordatorio) {
         this.id = id;
         this.imagen = imagen;
         this.categorioRecordatorio = categorioRecordatorio;

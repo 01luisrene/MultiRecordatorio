@@ -28,30 +28,30 @@ public abstract class DataBaseManager {
     abstract public void insertarRecoratorio(String id,
                                              String titulo,
                                              String nombresOtros,
-                                             String tipoMensaje,
                                              String contenidoMensaje,
-                                             String telefono,
-                                             String envioMensaje,
                                              String publicarFacebook,
                                              String publicarTwitter,
+                                             String envioMensaje,
+                                             String telefono,
                                              String fechaCreacion,
                                              String fechaRecordatorio,
                                              String horaRecordatorio,
-                                             String estadoRecordatorio);
+                                             String estadoRecordatorio,
+                                             String categoria);
     //Actualizar un registro
     abstract public void actualizarRecoratorio(String id,
                                                String titulo,
                                                String nombresOtros,
-                                               String tipoMensaje,
                                                String contenidoMensaje,
-                                               String telefono,
-                                               String envioMensaje,
                                                String publicarFacebook,
                                                String publicarTwitter,
+                                               String envioMensaje,
+                                               String telefono,
                                                String fechaCreacion,
                                                String fechaRecordatorio,
                                                String horaRecordatorio,
-                                               String estadoRecordatorio);
+                                               String estadoRecordatorio,
+                                               String categoria);
 
     //Eliminar el recordatorio seleccionado
     abstract public void eliminarRecordatorio(String id);
@@ -64,6 +64,8 @@ public abstract class DataBaseManager {
     abstract public  Cursor buscarRecordatorio(String titulo);
 
     abstract public Boolean compruebaRegistroRecordatorio(String id);
+
+    abstract public int idRecordatorioMax();
 
     /**
      *
@@ -86,9 +88,7 @@ public abstract class DataBaseManager {
 
     abstract public void eliminarCategoriaRecordatorios();
 
-    abstract public Cursor cargarCategoriaSpinner();
-
-    abstract public Cursor cargarCursorCategoriaRecordatorios();
+    abstract public Cursor cargarCursorCategorias();
 
     abstract public Cursor buscarCategoriasRecordatorios(String categoriaRecordatorio);
 

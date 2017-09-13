@@ -5,6 +5,7 @@ package com.a01luisrene.multirecordatorio.fragmentos;
         import android.app.Activity;
         import android.app.DatePickerDialog;
         import android.app.TimePickerDialog;
+        import android.content.Context;
         import android.content.DialogInterface;
         import android.content.Intent;
         import android.content.pm.PackageManager;
@@ -28,6 +29,7 @@ package com.a01luisrene.multirecordatorio.fragmentos;
         import android.support.v7.app.AlertDialog;
         import android.text.Editable;
         import android.text.TextWatcher;
+        import android.util.Log;
         import android.util.Patterns;
         import android.view.LayoutInflater;
         import android.view.View;
@@ -46,6 +48,8 @@ package com.a01luisrene.multirecordatorio.fragmentos;
         import android.widget.Toast;
         import static android.app.Activity.RESULT_OK;
         import com.a01luisrene.multirecordatorio.R;
+        import com.a01luisrene.multirecordatorio.interfaces.InterfaceCrud;
+        import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
         import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
         import com.a01luisrene.multirecordatorio.ui.DetalleCategoriaActivity;
         import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
@@ -54,6 +58,7 @@ package com.a01luisrene.multirecordatorio.fragmentos;
         import java.io.File;
         import java.util.ArrayList;
         import java.util.Calendar;
+        import java.util.List;
         import java.util.regex.Pattern;
 
         import de.hdodenhof.circleimageview.CircleImageView;
@@ -102,7 +107,7 @@ public class AgregarRecordatorioFragmento extends Fragment
     //[Combo categoria recordatorios]
     Spinner mSpinnerListaCategotegorias;
     //Variables para el combo
-    ArrayList<String> comboListaCategorias;
+    List<String> comboListaCategorias;
     ArrayAdapter<String> comboAdapter;
 
     //Obtener número de los contactos del phone
@@ -129,8 +134,13 @@ public class AgregarRecordatorioFragmento extends Fragment
 
     int cantidadMensajesInfo;
 
+    // Objeto de la interfaz remover, con este objeto llamaremos el
+    // método de la interfaz
+    private InterfaceCrud mCrud; //CRUD: crear, leer, actualizar, eliminar
+
     //Referencia a manager de SQLite
     DataBaseManagerRecordatorios mManagerRecordatorios;
+    Recordatorios recordatorios;
 
     //Referencias de widgets que se encuentran en activity detalle
     CollapsingToolbarLayout mCtCategoriaRecordatorio;
@@ -265,13 +275,13 @@ public class AgregarRecordatorioFragmento extends Fragment
 
         comboListaCategorias = new ArrayList<>();
 
-        int sizeListaCat = mManagerRecordatorios.getListaCategoriasSpinner().size();
+        int sizeListaCat = mManagerRecordatorios.getListaCategorias().size();
 
         comboListaCategorias.add(getString(R.string.selecciona_categoria_spinner));
 
         for(int i = 0; i < sizeListaCat; i++){
             comboListaCategorias.add(mManagerRecordatorios
-                    .getListaCategoriasSpinner().get(i).getCategorioRecordatorio());
+                    .getListaCategorias().get(i).getCategorioRecordatorio());
         }
 
         comboAdapter = new ArrayAdapter<>(getActivity(),
@@ -293,13 +303,13 @@ public class AgregarRecordatorioFragmento extends Fragment
             case R.id.sp_categorias_recordatorios:
                 if(position != 0) {
                     mValorIdCategoria = mManagerRecordatorios
-                            .getListaCategoriaRecordatorios()
+                            .getListaCategorias()
                             .get(position-1).getId();
                     mValorImagenCategoria = mManagerRecordatorios
-                            .getListaCategoriaRecordatorios()
+                            .getListaCategorias()
                             .get(position-1).getImagen();
                     mValorTituloCategoria = mManagerRecordatorios
-                            .getListaCategoriaRecordatorios()
+                            .getListaCategorias()
                             .get(position-1).getCategorioRecordatorio();
 
                     if(Utilidades.smartphone) {
@@ -495,7 +505,6 @@ public class AgregarRecordatorioFragmento extends Fragment
     }
 
     public void validarDatos() {
-
         String stTitulo = mTieTituloRecordatorio.getText().toString();
         String stEntidadOtros = mTieEntidadOtros.getText().toString();
         String stContenidoMensaje = mTieContenidoMensaje.getText().toString();
@@ -517,17 +526,16 @@ public class AgregarRecordatorioFragmento extends Fragment
                     mManagerRecordatorios.insertarRecoratorio(null,
                             mTieTituloRecordatorio.getText().toString(), //[Titulo]
                             mTieEntidadOtros.getText().toString(),       //[Entidad - Otros]
-                            mValorIdCategoria,                          //[Id Categoría]
                             mTieContenidoMensaje.getText().toString(),   //[Contenido del mensaje]
-                            mTieTelefono.getText().toString(),           //[Teléfono]
-                            mValorEnviarMensaje,                        //[Envio mesaje]
                             mValorFacebook,                             //[Publicar en facebook]
                             mValorTwitter,                              //[Publicar en twitter]
+                            mValorEnviarMensaje,                        //[Envio mesaje]
+                            mTieTelefono.getText().toString(),           //[Teléfono]
                             Utilidades.fechaHora(),                     //[Fecha creación]
                             mTieFecha.getText().toString(),              //[Fecha del recordatorio]
                             mTieHora.getText().toString(),               //[Hora del recordatorio]
-                            ESTADO_RECORDATORIO);
-
+                            ESTADO_RECORDATORIO,                         //Estado activo recordatorio
+                            mValorIdCategoria);                          //[Id Categoría]
 
                 } catch (Exception e) {
                     //Mensaje de error
@@ -535,16 +543,44 @@ public class AgregarRecordatorioFragmento extends Fragment
                 } finally {
                     //Mensaje de registro guardado con exito
                     Toast.makeText(getActivity(), getString(R.string.mensaje_agregado_satisfactoriamente), Toast.LENGTH_SHORT).show();
+
+                    int idMax = mManagerRecordatorios.idRecordatorioMax();
+
+                    recordatorios = new Recordatorios(
+                            String.valueOf(idMax),
+                            mTieTituloRecordatorio.getText().toString(),
+                            mTieEntidadOtros.getText().toString(),
+                            mTieContenidoMensaje.getText().toString(),
+                            mValorFacebook,
+                            mValorTwitter,
+                            mValorEnviarMensaje,
+                            mTieTelefono.getText().toString(),
+                            Utilidades.fechaHora(),
+                            mTieFecha.getText().toString(),
+                            mTieHora.getText().toString(),
+                            mValorTituloCategoria,
+                            mValorImagenCategoria
+                    );
+
+                    respuestaRetornoRecordatorio = true;
+                    Intent i = new Intent();
+                    //i.putExtra(LLAVE_RETORNO_RECORDATORIO, respuestaRetornoRecordatorio);
+                    i.putExtra(LLAVE_RETORNO_RECORDATORIO, recordatorios);
+                    getActivity().setResult(RESULT_OK, i);
+
                     //Cierro la activity siempre que me encuentre en un smartphone
                     if(Utilidades.smartphone){
                         esperarYCerrar(MILISEGUNDOS_ESPERA);
-                    }else{
+                    }else {
                         getActivity().getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.fl_contenedor_lateral, cover)
                                 .addToBackStack(cover.getClass().getName())
                                 .commit();
+
+                        mCrud.agregarItem(recordatorios);
                     }
+
 
                 }
             } else if (!titulo) {
@@ -941,13 +977,6 @@ public class AgregarRecordatorioFragmento extends Fragment
         handler.postDelayed(new Runnable() {
             public void run() {
                 // [cerrar activity]
-
-                respuestaRetornoRecordatorio = true;
-                Intent i = new Intent();
-                i.putExtra(LLAVE_RETORNO_RECORDATORIO, respuestaRetornoRecordatorio);
-                getActivity().setResult(RESULT_OK, i);
-
-
                 getActivity().finish();
 
             }
@@ -1061,6 +1090,26 @@ public class AgregarRecordatorioFragmento extends Fragment
             snackBarView.setBackgroundColor(Color.argb(255, 239, 83, 80));
         }
         snackbar.show();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // Aquí nos aseguramos de que en la actividad se haya implementado la interfaz,
+        // si el programador no la implementado se lanza el mensaje de error.
+        try {
+            mCrud = (InterfaceCrud) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " Debe implementar las interfaces en su Activity");
+        }
+    }
+
+    //Función llamada cuando el fragment es desasociada de una actividad
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCrud = null;
     }
 
 }

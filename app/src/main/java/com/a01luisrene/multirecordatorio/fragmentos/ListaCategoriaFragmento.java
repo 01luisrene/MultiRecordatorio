@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.adaptadores.ListaCategoriaRecordatoriosAdaptador;
-import com.a01luisrene.multirecordatorio.modelos.CategoriaRecordatorios;
+import com.a01luisrene.multirecordatorio.modelos.Categorias;
 import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class ListaCategoriaFragmento extends Fragment{
 
     RecyclerView mTipoRecordatorioListRecyclerView;
     ListaCategoriaRecordatoriosAdaptador mListaCategoriaRecordatoriosAdaptador;
-    List<CategoriaRecordatorios> mListaItemsCategoriaRecordatorios;
+    List<Categorias> mListaItemsCategoriaRecordatorios;
     DataBaseManagerRecordatorios mManager;
 
     public ListaCategoriaFragmento() {
@@ -56,7 +56,7 @@ public class ListaCategoriaFragmento extends Fragment{
 
         mManager = new DataBaseManagerRecordatorios(getActivity());
 
-        mListaItemsCategoriaRecordatorios = mManager.getListaCategoriaRecordatorios();
+        mListaItemsCategoriaRecordatorios = mManager.getListaCategorias();
 
         mListaCategoriaRecordatoriosAdaptador =  new ListaCategoriaRecordatoriosAdaptador(mListaItemsCategoriaRecordatorios, getActivity());
 

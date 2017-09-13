@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.a01luisrene.multirecordatorio.interfaces.InterfaceItemClicAdapter;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
@@ -17,6 +18,7 @@ import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -67,8 +69,8 @@ public class ListaRecordatoriosAdaptador
         CircleImageView civImagenRecordatorio;
         ImageView ivFacebook, ivTwitter, ivSms;
         Drawable drawable_deshabilitado, drawable_facebook, drawable_twitter, drawable_sms;
-        String valorTitulo, valorImagen, tituloFormateado,
-                mensajeFormateado, valorFacebook, valorTwitter, valorSms;
+        String valorTitulo, valorImagen, valorContenidoMensaje, tituloFormateado,
+                contenidoMensajeFormateado, valorFacebook, valorTwitter, valorSms;
 
         ViewHolder(View v) {
             super(v);
@@ -98,12 +100,13 @@ public class ListaRecordatoriosAdaptador
 
              //Almaceno los valores devueltos para realizar algunos cambios
             valorTitulo = items.getTitulo();
-            valorImagen = items.getRutaImagenRecordatorio();
+            valorContenidoMensaje = items.getContenidoMensaje();
             fecha.setText(items.getFechaPublicacionRecordatorio());
             hora.setText(items.getHoraPublicacionRecordatorio());
             valorFacebook = items.getPublicarFacebook();
             valorTwitter = items.getPublicarTwitter();
             valorSms = items.getEnvioMensaje();
+            valorImagen = items.getRutaImagenRecordatorio();
 
             //Título formateado
             if(valorTitulo.length() >= 45){
@@ -116,19 +119,18 @@ public class ListaRecordatoriosAdaptador
 
             if(Utilidades.smartphone){ //Se aplica para resoluciones pequeñas como [smartphones]
                 //TEXTO DEL CONTENIDO MENSAJE FORMATEADO
-                String valoraMensaje = items.getContenidoMensaje();
 
                 //Condiciono para saber si la cadena tiene mas de 70 caracteres
-                if(valoraMensaje.length() >= 65){
+                if(valorContenidoMensaje.length() >= 65){
                     //Agrego ellipsis al texto si es mayor de 50
-                    mensajeFormateado = valoraMensaje.substring(0, 65) + ELLIPSIS;
+                    contenidoMensajeFormateado = valorContenidoMensaje.substring(0, 65) + ELLIPSIS;
                 }else{
                     //Muestro el texto original
-                    mensajeFormateado = valoraMensaje;
+                    contenidoMensajeFormateado = valorContenidoMensaje;
                 }
 
                 //cargo los valores devueltos en el EditText
-                contenidoMensaje.setText(mensajeFormateado);
+                contenidoMensaje.setText(contenidoMensajeFormateado);
 
                 //Condiciono para manejar si el valor devuelto es vacío
                 if(valorImagen == null ||valorImagen.isEmpty()){
@@ -192,11 +194,13 @@ public class ListaRecordatoriosAdaptador
         notifyItemRangeChanged(posicion, mListaRecordatorios.size());
     }
 
-    public void agregarItem(Recordatorios recordatorios) {
+    public void agregarItem(Recordatorios recordatorios, int pocision) {
         mListaRecordatorios.add(0, recordatorios);
         notifyItemInserted(0);
+        notifyItemRangeChanged(pocision, mListaRecordatorios.size());
+
     }
-    public void actualizarItem(Recordatorios recordatorios, int posicion){
+    public void actualizarItem(int posicion, Recordatorios recordatorios){
         mListaRecordatorios.set(posicion, recordatorios);
        notifyItemChanged(posicion);
     }

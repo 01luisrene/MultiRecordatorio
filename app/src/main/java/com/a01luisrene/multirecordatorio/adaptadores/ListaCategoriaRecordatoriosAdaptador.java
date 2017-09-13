@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.a01luisrene.multirecordatorio.R;
-import com.a01luisrene.multirecordatorio.modelos.CategoriaRecordatorios;
+import com.a01luisrene.multirecordatorio.modelos.Categorias;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -17,7 +17,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ListaCategoriaRecordatoriosAdaptador extends RecyclerView.Adapter<ListaCategoriaRecordatoriosAdaptador.ViewHolder> {
-    private List<CategoriaRecordatorios> mDataset;
+    private List<Categorias> mDataset;
     private Context mMainContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -34,7 +34,7 @@ public class ListaCategoriaRecordatoriosAdaptador extends RecyclerView.Adapter<L
     }
 
     // Proporcionar un constructor adecuado (depende del tipo de conjunto de datos)
-    public ListaCategoriaRecordatoriosAdaptador(List<CategoriaRecordatorios> mDataset, Context mainContext) {
+    public ListaCategoriaRecordatoriosAdaptador(List<Categorias> mDataset, Context mainContext) {
         this.mDataset = mDataset;
         this.mMainContext = mainContext;
     }

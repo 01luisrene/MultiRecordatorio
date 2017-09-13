@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
-import com.a01luisrene.multirecordatorio.modelos.CategoriaRecordatorios;
+import com.a01luisrene.multirecordatorio.modelos.Categorias;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,24 +58,24 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     //===[CADENA DE SENTECIA SQL PARA GENERAR LA TABLA RECORDATORIOS]===//
     public static final String
             CREAR_TABLA_RECORDATORIOS = String.format("CREATE TABLE %1$s (%2$s INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "%3$s TEXT NOT NULL, %4$s TEXT NULL, %5$s TEXT NOT NULL, %6$s TEXT NULL, %7$s TEXT NOT NULL, " +
-                    "%8$s INTEGER NOT NULL, %9$s INTEGER NOT NULL, %10$s INTEGER NOT NULL, " +
-                    "%11$s TEXT NOT NULL, %12$s TEXT NOT NULL, %13$s TEXT NOT NULL, %14$s INTEGER NOT NULL, " +
+                    "%3$s TEXT NOT NULL, %4$s TEXT NULL, %5$s TEXT NOT NULL, %6$s INTEGER NOT NULL, %7$s INTEGER NOT NULL, " +
+                    "%8$s INTEGER NOT NULL, %9$s TEXT NULL, %10$s TEXT NOT NULL, " +
+                    "%11$s TEXT NOT NULL, %12$s TEXT NOT NULL, %13$s INTEGER NOT NULL, %14$s INTEGER NOT NULL, " +
                     "FOREIGN KEY(%15$s) REFERENCES %16$s(%17$s));",
             TABLA_RECORDATORIOS,            //[1]
             ID_RECORDATORIO,                //[2]
             TITULO_RECORDATORIO,            //{3}
             ENTIDAD_OTROS_RECORDATORIO,     //[4]
-            LLAVE_CATEGORIA_RECORDATORIO,   //[5]
-            TELEFONO_RECORDATORIO,          //[6]
-            CONTENIDO_MENSAJE_RECORDATOIO,  //[7]
+            CONTENIDO_MENSAJE_RECORDATOIO,  //[5]
+            PUBLICAR_FACEBOOK_RECORDATORIO, //[6]
+            PUBLICAR_TWITTER_RECORDATORIO,  //[7]
             ENVIO_MENSAJE_RECORDATORIO,     //[8]
-            PUBLICAR_FACEBOOK_RECORDATORIO, //[9]
-            PUBLICAR_TWITTER_RECORDATORIO,  //[10]
-            FECHA_CREACION_RECORDATORIO,    //[11]
-            FECHA_AVISO_RECORDATORIO,       //[12]
-            HORA_AVISO_RECORDATORIO,        //[13]
-            ESTADO_RECORDATORIO,            //[14]
+            TELEFONO_RECORDATORIO,          //[9]
+            FECHA_CREACION_RECORDATORIO,    //[10]
+            FECHA_AVISO_RECORDATORIO,       //[11]
+            HORA_AVISO_RECORDATORIO,        //[12]
+            ESTADO_RECORDATORIO,            //[13]
+            LLAVE_CATEGORIA_RECORDATORIO,   //[14]
             LLAVE_CATEGORIA_RECORDATORIO,   //[15]
             TABLA_CATEGORIAS_RECORDATORIOS, //[16]
             ID_CATEGORIA);                  //[17]
@@ -134,32 +134,32 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     //Constructor usado para insertar registros
     private ContentValues cvRecordatorios(String id,
                                           String titulo,
-                                          String nombres_otros,
-                                          String categoriaRecordatorio,
+                                          String nombresOtros,
                                           String contenidoMensaje,
-                                          String telefono,
-                                          String envioMensaje,
                                           String publicarFacebook,
                                           String publicarTwitter,
+                                          String envioMensaje,
+                                          String telefono,
                                           String fechaCreacion,
                                           String fechaRecordatorio,
                                           String horaRecordatorio,
-                                          String estadoRecordatorio){
+                                          String estadoRecordatorio,
+                                          String categoria){
 
         ContentValues valores = new ContentValues();
         valores.put(ID_RECORDATORIO, id);
         valores.put(TITULO_RECORDATORIO, titulo);
-        valores.put(ENTIDAD_OTROS_RECORDATORIO, nombres_otros);
-        valores.put(LLAVE_CATEGORIA_RECORDATORIO, categoriaRecordatorio);
-        valores.put(TELEFONO_RECORDATORIO, telefono);
+        valores.put(ENTIDAD_OTROS_RECORDATORIO, nombresOtros);
         valores.put(CONTENIDO_MENSAJE_RECORDATOIO, contenidoMensaje);
-        valores.put(ENVIO_MENSAJE_RECORDATORIO, envioMensaje);
         valores.put(PUBLICAR_FACEBOOK_RECORDATORIO, publicarFacebook);
         valores.put(PUBLICAR_TWITTER_RECORDATORIO, publicarTwitter);
+        valores.put(ENVIO_MENSAJE_RECORDATORIO, envioMensaje);
+        valores.put(TELEFONO_RECORDATORIO, telefono);
         valores.put(FECHA_CREACION_RECORDATORIO, fechaCreacion);
         valores.put(FECHA_AVISO_RECORDATORIO, fechaRecordatorio);
         valores.put(HORA_AVISO_RECORDATORIO, horaRecordatorio);
         valores.put(ESTADO_RECORDATORIO, estadoRecordatorio);
+        valores.put(LLAVE_CATEGORIA_RECORDATORIO, categoria);
 
         return valores;
 
@@ -169,16 +169,16 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     public void insertarRecoratorio(String id,
                                     String titulo,
                                     String nombresOtros,
-                                    String categoriaRecordatorio,
                                     String contenidoMensaje,
-                                    String telefono,
-                                    String envioMensaje,
                                     String publicarFacebook,
                                     String publicarTwitter,
+                                    String envioMensaje,
+                                    String telefono,
                                     String fechaCreacion,
                                     String fechaRecordatorio,
                                     String horaRecordatorio,
-                                    String estadoRecordatorio) {
+                                    String estadoRecordatorio,
+                                    String categoria) {
 
         getDb().beginTransaction();
         try{
@@ -186,16 +186,16 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
             super.getDb().insertOrThrow(TABLA_RECORDATORIOS, null, cvRecordatorios(id,
                     titulo,
                     nombresOtros,
-                    categoriaRecordatorio,
                     contenidoMensaje,
-                    telefono,
-                    envioMensaje,
                     publicarFacebook,
                     publicarTwitter,
+                    envioMensaje,
+                    telefono,
                     fechaCreacion,
                     fechaRecordatorio,
                     horaRecordatorio,
-                    estadoRecordatorio));
+                    estadoRecordatorio,
+                    categoria));
 
             getDb().setTransactionSuccessful();
 
@@ -211,31 +211,31 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     public void actualizarRecoratorio(String id,
                                       String titulo,
                                       String nombresOtros,
-                                      String categoriaRecordatorio,
                                       String contenidoMensaje,
-                                      String telefono,
-                                      String envioMensaje,
                                       String publicarFacebook,
                                       String publicarTwitter,
+                                      String envioMensaje,
+                                      String telefono,
                                       String fechaCreacion,
                                       String fechaRecordatorio,
                                       String horaRecordatorio,
-                                      String estadoRecordatorio) {
+                                      String estadoRecordatorio,
+                                      String categoria) {
 
         String[] args = new String[]{id};
         super.getDb().update(TABLA_RECORDATORIOS, cvRecordatorios(id,
                 titulo,
                 nombresOtros,
-                categoriaRecordatorio,
                 contenidoMensaje,
-                telefono,
-                envioMensaje,
                 publicarFacebook,
                 publicarTwitter,
+                envioMensaje,
+                telefono,
                 fechaCreacion,
                 fechaRecordatorio,
                 horaRecordatorio,
-                estadoRecordatorio), ID_RECORDATORIO + "=?",args);
+                estadoRecordatorio,
+                categoria), ID_RECORDATORIO + "=?",args);
     }
 
     @Override
@@ -257,22 +257,22 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     public Cursor cargarCursorRecordatorios() {
         //Cadena que contiene la consulta de las tablas recordatorios y categoria_recoordatorios
         String sql =
-                String.format("SELECT r.%1$s, r.%2$s, r.%3$s, cr.%4$s, cr.%5$s, r.%6$s, r.%7$s, r.%8$s, r.%9$s, r.%10$s, " +
-                                "r.%11$s, r.%12$s, r.%13$s FROM %14$s r, %15$s cr WHERE r.%16$s = cr.%17$s " +
+                String.format("SELECT r.%1$s, r.%2$s, r.%3$s, r.%4$s, r.%5$s, r.%6$s, r.%7$s, r.%8$s, r.%9$s, r.%10$s, " +
+                                "r.%11$s, cr.%12$s, cr.%13$s FROM %14$s r, %15$s cr WHERE r.%16$s = cr.%17$s " +
                                 "AND r.%18$s = %19$d ORDER BY r.%20$s DESC",
                         ID_RECORDATORIO, //[1]
                         TITULO_RECORDATORIO, //[2]
                         ENTIDAD_OTROS_RECORDATORIO, //[3]
-                        RUTA_IMAGEN_CATEGORIA, //[4] Constantes de categoría
-                        TITULO_CATEGORIA, //[5] Constantes de categoría
-                        TELEFONO_RECORDATORIO, //[6]
-                        CONTENIDO_MENSAJE_RECORDATOIO, //[7]
-                        ENVIO_MENSAJE_RECORDATORIO, //[8]
-                        PUBLICAR_FACEBOOK_RECORDATORIO, //[9]
-                        PUBLICAR_TWITTER_RECORDATORIO, //[10]
-                        FECHA_CREACION_RECORDATORIO, //[11]
-                        FECHA_AVISO_RECORDATORIO, //[12]
-                        HORA_AVISO_RECORDATORIO, //[13]
+                        CONTENIDO_MENSAJE_RECORDATOIO, //[4]
+                        PUBLICAR_FACEBOOK_RECORDATORIO, //[5]
+                        PUBLICAR_TWITTER_RECORDATORIO, //[6]
+                        ENVIO_MENSAJE_RECORDATORIO, //[7]
+                        TELEFONO_RECORDATORIO, //[8]
+                        FECHA_CREACION_RECORDATORIO, //[9]
+                        FECHA_AVISO_RECORDATORIO, //[10]
+                        HORA_AVISO_RECORDATORIO, //[11]
+                        TITULO_CATEGORIA, //[12] Constantes de categoría
+                        RUTA_IMAGEN_CATEGORIA, //[13] Constantes de categoría
                         TABLA_RECORDATORIOS, //[14]
                         TABLA_CATEGORIAS_RECORDATORIOS, //[15] Constantes de categoría
                         LLAVE_CATEGORIA_RECORDATORIO, //[16]
@@ -300,11 +300,12 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
 
     //Comprobar si existe un registro por el valor de un dato
     @Override
-    public Boolean compruebaRegistroRecordatorio(String id){
+    public Boolean compruebaRegistroRecordatorio(String titulo){
         boolean existe;
-        Cursor resultSet = super.getDb().rawQuery("SELECT _id FROM " + TABLA_RECORDATORIOS + " WHERE " + ID_RECORDATORIO + "=" + id, null);
+        Cursor resultSet = super.getDb().rawQuery("SELECT "+TITULO_RECORDATORIO+" FROM "
+                +TABLA_RECORDATORIOS + " WHERE " + TITULO_RECORDATORIO + "=" + titulo, null);
 
-        if(resultSet.getCount() <= 0)
+        if(resultSet.getCount() >= 0)
             existe = false;
         else
             existe = true;
@@ -315,13 +316,45 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
 
     }
 
+    @Override
+    public int idRecordatorioMax() {
+        int max_id = 0;
+        Cursor resultSet = super.getDb().rawQuery("SELECT MAX(_id) FROM " + TABLA_RECORDATORIOS, null);
+
+        if(resultSet.getCount()>0){
+            resultSet.moveToFirst();
+            max_id = resultSet.getInt(0);
+        }
+        resultSet.close();
+
+        return max_id;
+    }
+
     public List<Recordatorios> getListaRecordatorios(){
-        List<Recordatorios> list = new ArrayList<>();
+        List<Recordatorios> lista = new ArrayList<>();
 
         Cursor cursor = cargarCursorRecordatorios();
 
+        Recordatorios recordatorio;
+
         while (cursor.moveToNext()){
-            Recordatorios recordatorio = new Recordatorios();
+            recordatorio = new Recordatorios(
+                    cursor.getString(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    cursor.getString(6),
+                    cursor.getString(7),
+                    cursor.getString(8),
+                    cursor.getString(9),
+                    cursor.getString(10),
+                    cursor.getString(11),
+                    cursor.getString(12)
+
+            );
+            /*
             recordatorio.setId(cursor.getString(0));
             recordatorio.setTitulo(cursor.getString(1));
             recordatorio.setEntidadOtros(cursor.getString(2));
@@ -335,10 +368,12 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
             recordatorio.setFechaCreacionRecordatorio(cursor.getString(10));
             recordatorio.setFechaPublicacionRecordatorio(cursor.getString(11));
             recordatorio.setHoraPublicacionRecordatorio(cursor.getString(12));
-            list.add(recordatorio);
+
+            */
+            lista.add(recordatorio);
         }
 
-        return list;
+        return lista;
     }
 
     /**
@@ -397,22 +432,11 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     }
 
     @Override
-    public Cursor cargarCategoriaSpinner() {
+    public Cursor cargarCursorCategorias() {
         String[] columnas = new String[]{ID_CATEGORIA,
                 RUTA_IMAGEN_CATEGORIA,
                 TITULO_CATEGORIA};
         String order_by = ID_CATEGORIA + " DESC";
-        return super.getDb().query(TABLA_CATEGORIAS_RECORDATORIOS, columnas, null, null, null, null, order_by);
-    }
-
-    @Override
-    public Cursor cargarCursorCategoriaRecordatorios() {
-
-        String[] columnas = new String[]{ID_CATEGORIA,
-                RUTA_IMAGEN_CATEGORIA,
-                TITULO_CATEGORIA};
-        String order_by = ID_CATEGORIA + " DESC";
-        //query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy)
         return super.getDb().query(TABLA_CATEGORIAS_RECORDATORIOS, columnas, null, null, null, null, order_by);
     }
 
@@ -426,39 +450,21 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
         return null;
     }
 
-    public List<CategoriaRecordatorios> getListaCategoriasSpinner(){
-        List<CategoriaRecordatorios> list = new ArrayList<>();
+    public List<Categorias> getListaCategorias(){
+        List<Categorias> lista = new ArrayList<>();
 
-        Cursor cursor = cargarCategoriaSpinner();
+        Cursor cursor = cargarCursorCategorias();
 
         while (cursor.moveToNext()){
-            CategoriaRecordatorios catRecordatorio = new CategoriaRecordatorios();
+            Categorias catRecordatorio = new Categorias();
 
             catRecordatorio.setId(cursor.getString(0));
             catRecordatorio.setImagen(cursor.getString(1));
             catRecordatorio.setCategorioRecordatorio(cursor.getString(2));
 
-            list.add(catRecordatorio);
+            lista.add(catRecordatorio);
         }
 
-        return list;
-    }
-
-    public List<CategoriaRecordatorios> getListaCategoriaRecordatorios(){
-        List<CategoriaRecordatorios> list = new ArrayList<>();
-
-        Cursor cursor = cargarCursorCategoriaRecordatorios();
-
-        while (cursor.moveToNext()){
-            CategoriaRecordatorios catRecordatorio = new CategoriaRecordatorios();
-
-            catRecordatorio.setId(cursor.getString(0));
-            catRecordatorio.setImagen(cursor.getString(1));
-            catRecordatorio.setCategorioRecordatorio(cursor.getString(2));
-
-            list.add(catRecordatorio);
-        }
-
-        return list;
+        return lista;
     }
 }

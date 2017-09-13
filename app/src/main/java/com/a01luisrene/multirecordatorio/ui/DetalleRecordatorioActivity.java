@@ -244,6 +244,11 @@ public class DetalleRecordatorioActivity extends AppCompatActivity
     }
 
     @Override
+    public void agregarItem(Recordatorios recordatorios) {
+        //Vacío
+    }
+
+    @Override
     public void removerItem() {
         //Vacío
     }
