@@ -1,4 +1,4 @@
-package com.a01luisrene.multirecordatorio.fragmentos;
+package com.a01luisrene.multirecordatorio.ui.fragmentos;
 
 
         import android.Manifest;
@@ -29,7 +29,6 @@ package com.a01luisrene.multirecordatorio.fragmentos;
         import android.support.v7.app.AlertDialog;
         import android.text.Editable;
         import android.text.TextWatcher;
-        import android.util.Log;
         import android.util.Patterns;
         import android.view.LayoutInflater;
         import android.view.View;
@@ -50,7 +49,7 @@ package com.a01luisrene.multirecordatorio.fragmentos;
         import com.a01luisrene.multirecordatorio.R;
         import com.a01luisrene.multirecordatorio.interfaces.InterfaceCrud;
         import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
-        import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
+        import com.a01luisrene.multirecordatorio.io.db.DataBaseManagerRecordatorios;
         import com.a01luisrene.multirecordatorio.ui.DetalleCategoriaActivity;
         import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
         import com.squareup.picasso.Picasso;
@@ -80,7 +79,7 @@ public class AgregarRecordatorioFragmento extends Fragment
     public static final String UNO = "1";
     public static final String BARRA = "/";
     public static final String DOS_PUNTOS = ":";
-    public static final String LLAVE_RETORNO_RECORDATORIO = "llave.retorno.recordatorio";
+    public static final String LLAVE_RETORNO_AGREGAR_RECORDATORIO = "llave.retorno.agregar.recordatorio";
     public static int MILISEGUNDOS_ESPERA = 1000;
     public static final int CODIGO_RESPUESTA_CATEGORIA = 100;
     public static final int PICK_CONTACT_REQUEST = 101;
@@ -102,7 +101,6 @@ public class AgregarRecordatorioFragmento extends Fragment
 
     //Booleanos
     boolean guardarNumeroTelefono = true;
-    boolean respuestaRetornoRecordatorio = false;
 
     //[Combo categoria recordatorios]
     Spinner mSpinnerListaCategotegorias;
@@ -113,9 +111,6 @@ public class AgregarRecordatorioFragmento extends Fragment
     //Obtener número de los contactos del phone
     Cursor contactCursor, phoneCursor;
     Uri contactoUri;
-
-    //Fragmento cover
-    Cover cover;
 
     //Calendario para obtener fecha & hora
     public final Calendar c = Calendar.getInstance();
@@ -165,7 +160,6 @@ public class AgregarRecordatorioFragmento extends Fragment
         super.onCreate(savedInstanceState);
 
         activity = this.getActivity();
-        cover = new Cover();
 
         if(Utilidades.smartphone) {
             //Widgets de la activity Detalle Recordatorio
@@ -473,9 +467,9 @@ public class AgregarRecordatorioFragmento extends Fragment
         if(resultCode == RESULT_OK){
             //Volver a recargar el spinner de categorías
             if(requestCode == CODIGO_RESPUESTA_CATEGORIA){
-                if(data.hasExtra(AgregarCategotiaFragmento.LLAVE_RETORNO_CATEGORIA)){
+                if(data.hasExtra(AgregarCategoriaFragmento.LLAVE_RETORNO_CATEGORIA)){
                     boolean valorObtenido = data.getExtras()
-                            .getBoolean(AgregarCategotiaFragmento.LLAVE_RETORNO_CATEGORIA);
+                            .getBoolean(AgregarCategoriaFragmento.LLAVE_RETORNO_CATEGORIA);
                     if(valorObtenido){
                         //Recargo el spinner siempre y cuando que el valor retornado sea `true`
                         poblarSpinner();
@@ -562,21 +556,15 @@ public class AgregarRecordatorioFragmento extends Fragment
                             mValorImagenCategoria
                     );
 
-                    respuestaRetornoRecordatorio = true;
-                    Intent i = new Intent();
-                    //i.putExtra(LLAVE_RETORNO_RECORDATORIO, respuestaRetornoRecordatorio);
-                    i.putExtra(LLAVE_RETORNO_RECORDATORIO, recordatorios);
-                    getActivity().setResult(RESULT_OK, i);
-
                     //Cierro la activity siempre que me encuentre en un smartphone
                     if(Utilidades.smartphone){
+                        //Envio la respuesta con los datos del modelo
+                        Intent i = new Intent();
+                        i.putExtra(LLAVE_RETORNO_AGREGAR_RECORDATORIO, recordatorios);
+                        getActivity().setResult(RESULT_OK, i);
+
                         esperarYCerrar(MILISEGUNDOS_ESPERA);
                     }else {
-                        getActivity().getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fl_contenedor_lateral, cover)
-                                .addToBackStack(cover.getClass().getName())
-                                .commit();
 
                         mCrud.agregarItem(recordatorios);
                     }

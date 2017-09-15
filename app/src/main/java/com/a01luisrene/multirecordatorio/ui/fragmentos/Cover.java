@@ -1,4 +1,4 @@
-package com.a01luisrene.multirecordatorio.fragmentos;
+package com.a01luisrene.multirecordatorio.ui.fragmentos;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
-import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

@@ -14,45 +14,38 @@
     card_view:contentPadding="4dp"
     card_view:cardUseCompatPadding="true">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/civ_categoria_item"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:contentDescription="@string/descripcion_imagen_lista_item"
-            android:src="@drawable/ic_image_150dp"
-            app:civ_border_color="@color/cbic_all"
-            app:civ_border_width="@dimen/civ_borde"
-            card_view:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="12dp"
-            card_view:layout_constraintLeft_toLeftOf="parent"/>
-
-
-        <TextView
-            android:id="@+id/tv_titulo_item"
-            style="@style/lista_titulo"
-            android:layout_width="417dp"
-            android:layout_height="wrap_content"
-            tools:text="Cumpleaños de mi padre"
-            card_view:layout_constraintLeft_toRightOf="@+id/civ_categoria_item"
-            android:layout_marginStart="8dp"
-            card_view:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            card_view:layout_constraintBottom_toTopOf="@+id/relativeLayout"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_categoria_item"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:contentDescription="@string/descripcion_imagen_lista_item"
+                android:src="@drawable/ic_image_150dp"
+                app:civ_border_color="@color/cbic_all"
+                app:civ_border_width="@dimen/civ_borde"/>
+            <TextView
+                android:id="@+id/tv_titulo_item"
+                style="@style/lista_titulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Cumpleaños de mi padre"
+                android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/civ_categoria_item"/>
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="8dp"
-            android:padding="4dp"
-            card_view:layout_constraintLeft_toLeftOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/civ_categoria_item">
+            android:layout_marginTop="16dp"
+            android:padding="4dp">
 
             <TextView
                 android:id="@+id/tv_fecha_item"
@@ -60,22 +53,20 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:gravity="center"
                 android:layout_marginEnd="6dp"
                 android:drawableStart="@drawable/ic_date_range_24dp"
+                android:gravity="center"
                 tools:text="08/09/2017"/>
-
             <TextView
                 android:id="@+id/tv_hora_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:gravity="center"
                 android:layout_toEndOf="@+id/tv_fecha_item"
                 android:drawableStart="@drawable/ic_access_time_24dp"
+                android:gravity="center"
                 tools:ignore="RelativeOverlap"
                 tools:text="19:34"/>
-
             <ImageView
                 android:id="@+id/iv_facebook_item"
                 android:layout_width="wrap_content"
@@ -86,7 +77,6 @@
                 android:background="@drawable/bt_facebook_item"
                 android:src="@drawable/ic_facebook"
                 tools:ignore="ContentDescription,RelativeOverlap"/>
-
             <ImageView
                 android:id="@+id/iv_twitter_item"
                 android:layout_width="wrap_content"
@@ -97,7 +87,6 @@
                 android:background="@drawable/bt_twitter_item"
                 android:src="@drawable/ic_twitter"
                 tools:ignore="ContentDescription"/>
-
             <ImageView
                 android:id="@+id/iv_sms_item"
                 android:layout_width="wrap_content"
@@ -109,5 +98,5 @@
                 tools:ignore="ContentDescription"/>
 
         </RelativeLayout>
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 </android.support.v7.widget.CardView>

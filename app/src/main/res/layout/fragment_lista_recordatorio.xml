@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/contenedor_margen"
     android:paddingRight="@dimen/contenedor_margen"
     android:orientation="vertical"
-    tools:context="com.a01luisrene.multirecordatorio.fragmentos.ListaRecordatoriosFragmento">
+    tools:context=".ui.fragmentos.ListaRecordatoriosFragmento">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_lista_recordatorio"
@@ -24,9 +24,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
-        android:layout_marginTop="@dimen/lista_vacia"
-        android:text="@string/lista_vacia"
-        android:visibility="gone"
+        android:layout_marginTop="-64dp"
+        android:visibility="invisible"
         style="@style/lista_vacia"/>
 
 </LinearLayout>

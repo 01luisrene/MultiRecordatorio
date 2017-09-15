@@ -1,4 +1,4 @@
-package com.a01luisrene.multirecordatorio.sqlite;
+package com.a01luisrene.multirecordatorio.io.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -301,14 +301,15 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     //Comprobar si existe un registro por el valor de un dato
     @Override
     public Boolean compruebaRegistroRecordatorio(String titulo){
-        boolean existe;
+        boolean existe ;
         Cursor resultSet = super.getDb().rawQuery("SELECT "+TITULO_RECORDATORIO+" FROM "
                 +TABLA_RECORDATORIOS + " WHERE " + TITULO_RECORDATORIO + "=" + titulo, null);
 
-        if(resultSet.getCount() >= 0)
-            existe = false;
-        else
+        if(resultSet.getCount() > 0){
+            resultSet.moveToFirst();
             existe = true;
+        } else
+            existe = false;
 
         resultSet.close();
 

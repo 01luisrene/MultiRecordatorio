@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import com.a01luisrene.multirecordatorio.R;
-import com.a01luisrene.multirecordatorio.fragmentos.ListaCategoriaFragmento;
+import com.a01luisrene.multirecordatorio.ui.fragmentos.ListaCategoriaFragmento;
 
 
 public class CategoriaActivity extends AppCompatActivity{

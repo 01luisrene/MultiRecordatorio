@@ -1,4 +1,4 @@
-package com.a01luisrene.multirecordatorio.fragmentos;
+package com.a01luisrene.multirecordatorio.ui.fragmentos;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -26,7 +26,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.a01luisrene.multirecordatorio.R;
-import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
+import com.a01luisrene.multirecordatorio.io.db.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 import com.squareup.picasso.Picasso;
 
@@ -37,7 +37,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
-public class AgregarCategotiaFragmento extends Fragment implements View.OnClickListener {
+public class AgregarCategoriaFragmento extends Fragment implements View.OnClickListener {
     private static final String IMAGE_SELECT_ALL_TYPE = "image/*";
     private static final String REGEX_LATINOS = "^[a-zA-Z0-9 áÁéÉíÍóÓúÚñÑüÜ]+$";
     private static final int PROTECCION = 0;
@@ -56,7 +56,9 @@ public class AgregarCategotiaFragmento extends Fragment implements View.OnClickL
 
     DataBaseManagerRecordatorios mManager;
 
-    public AgregarCategotiaFragmento() {
+    protected View mView;
+
+    public AgregarCategoriaFragmento() {
         // Required empty public constructor
     }
 
@@ -69,6 +71,7 @@ public class AgregarCategotiaFragmento extends Fragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_agregar_categoria_recordatorios, container, false);
+        this.mView = v;
 
         //Asignamos nuestro manager que contiene nuestros metodos CRUD
        mManager = new DataBaseManagerRecordatorios(getActivity());
@@ -181,9 +184,13 @@ public class AgregarCategotiaFragmento extends Fragment implements View.OnClickL
     }
 
     public void verGaleria(){
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType(IMAGE_SELECT_ALL_TYPE);
-        startActivityForResult(intent.createChooser(intent, getString(R.string.seleccionar_app_imagen)), REQUEST_CODE_GALLERY);
+        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        i.setType(IMAGE_SELECT_ALL_TYPE);
+
+        Intent ic = Intent.createChooser(i, getString(R.string.seleccionar_app_imagen));
+
+        startActivityForResult(ic, REQUEST_CODE_GALLERY);
+
     }
 
     @Override
@@ -218,12 +225,22 @@ public class AgregarCategotiaFragmento extends Fragment implements View.OnClickL
 
     public String getRealPathFromURI(Uri contentUri) {
         Cursor cursor = null;
+        int column_index;
+        String ruta = null;
+
         try {
             String[] proj = { MediaStore.Images.Media.DATA };
             cursor = getActivity().getContentResolver().query(contentUri,  proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
+
+            if (cursor != null){
+
+                column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                ruta = cursor.getString(column_index);
+
+            }
+            return ruta;
+
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -259,7 +276,7 @@ public class AgregarCategotiaFragmento extends Fragment implements View.OnClickL
 
     private void mostrarMensaje(String mensaje, int estado){
 
-        Snackbar snackbar = Snackbar.make(getView(), mensaje, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(mView, mensaje, Snackbar.LENGTH_LONG);
         //Color de boton de accion
         View snackBarView = snackbar.getView();
         //Cambiando el color del texto

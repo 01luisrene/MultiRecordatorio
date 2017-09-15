@@ -1,4 +1,4 @@
-package com.a01luisrene.multirecordatorio.fragmentos;
+package com.a01luisrene.multirecordatorio.ui.fragmentos;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.a01luisrene.multirecordatorio.R;
-import com.a01luisrene.multirecordatorio.adaptadores.ListaCategoriaRecordatoriosAdaptador;
+import com.a01luisrene.multirecordatorio.ui.adaptadores.ListaCategoriaRecordatoriosAdaptador;
 import com.a01luisrene.multirecordatorio.modelos.Categorias;
-import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
+import com.a01luisrene.multirecordatorio.io.db.DataBaseManagerRecordatorios;
 
 import java.util.List;
 

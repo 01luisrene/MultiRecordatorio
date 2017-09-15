@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.a01luisrene.multirecordatorio.R;
-import com.a01luisrene.multirecordatorio.fragmentos.AgregarCategotiaFragmento;
+import com.a01luisrene.multirecordatorio.ui.fragmentos.AgregarCategoriaFragmento;
 
 public class DetalleCategoriaActivity extends AppCompatActivity {
 
     Toolbar mToolbar;
-    AgregarCategotiaFragmento mAgregarCatRecordatorioFrag;
+    AgregarCategoriaFragmento mAgregarCatRecordatorioFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +20,7 @@ public class DetalleCategoriaActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        mAgregarCatRecordatorioFrag = new AgregarCategotiaFragmento();
+        mAgregarCatRecordatorioFrag = new AgregarCategoriaFragmento();
 
         if (savedInstanceState == null){
             getSupportFragmentManager()

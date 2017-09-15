@@ -17,14 +17,13 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.a01luisrene.multirecordatorio.MainActivity;
 import com.a01luisrene.multirecordatorio.R;
-import com.a01luisrene.multirecordatorio.fragmentos.ActualizarRecordatorioFragmento;
-import com.a01luisrene.multirecordatorio.fragmentos.AgregarRecordatorioFragmento;
-import com.a01luisrene.multirecordatorio.fragmentos.DetalleRecordatorioFragmento;
+import com.a01luisrene.multirecordatorio.ui.fragmentos.ActualizarRecordatorioFragmento;
+import com.a01luisrene.multirecordatorio.ui.fragmentos.AgregarRecordatorioFragmento;
+import com.a01luisrene.multirecordatorio.ui.fragmentos.DetalleRecordatorioFragmento;
 import com.a01luisrene.multirecordatorio.interfaces.InterfaceCrud;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
-import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
+import com.a01luisrene.multirecordatorio.io.db.DataBaseManagerRecordatorios;
 
 
 public class DetalleRecordatorioActivity extends AppCompatActivity
@@ -222,9 +221,9 @@ public class DetalleRecordatorioActivity extends AppCompatActivity
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                // acciones que se ejecutan tras los milisegundos
-                // [cerrar activity]
-                finish();
+            // acciones que se ejecutan tras los milisegundos
+            // [cerrar activity]
+            finish();
 
             }
         }, milisegundos);
@@ -250,6 +249,11 @@ public class DetalleRecordatorioActivity extends AppCompatActivity
 
     @Override
     public void removerItem() {
+        //Vacío
+    }
+
+    @Override
+    public void cargarItem(Recordatorios recordatorios) {
         //Vacío
     }
 

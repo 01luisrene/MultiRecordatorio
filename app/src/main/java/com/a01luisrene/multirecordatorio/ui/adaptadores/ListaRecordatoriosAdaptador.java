@@ -1,4 +1,4 @@
-package com.a01luisrene.multirecordatorio.adaptadores;
+package com.a01luisrene.multirecordatorio.ui.adaptadores;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.a01luisrene.multirecordatorio.interfaces.InterfaceItemClicAdapter;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
@@ -18,7 +17,6 @@ import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -194,10 +192,10 @@ public class ListaRecordatoriosAdaptador
         notifyItemRangeChanged(posicion, mListaRecordatorios.size());
     }
 
-    public void agregarItem(Recordatorios recordatorios, int pocision) {
+    public void agregarItem(Recordatorios recordatorios) {
         mListaRecordatorios.add(0, recordatorios);
         notifyItemInserted(0);
-        notifyItemRangeChanged(pocision, mListaRecordatorios.size());
+        notifyItemRangeChanged(0, mListaRecordatorios.size());
 
     }
     public void actualizarItem(int posicion, Recordatorios recordatorios){

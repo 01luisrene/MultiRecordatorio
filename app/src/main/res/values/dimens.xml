@@ -23,7 +23,4 @@
     <!--Detalle del fragment-->
     <dimen name="detail_elevation">8dp</dimen>
 
-    <!--margen negativo de lista vacía restamos la altura del toolbar-->
-    <dimen name="lista_vacia">-56dp</dimen>
-
 </resources>

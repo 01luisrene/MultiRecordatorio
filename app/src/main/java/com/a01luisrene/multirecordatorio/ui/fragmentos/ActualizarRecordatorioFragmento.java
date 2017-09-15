@@ -1,9 +1,10 @@
-package com.a01luisrene.multirecordatorio.fragmentos;
+package com.a01luisrene.multirecordatorio.ui.fragmentos;
 
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -44,8 +45,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.a01luisrene.multirecordatorio.R;
+import com.a01luisrene.multirecordatorio.interfaces.InterfaceCrud;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
-import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
+import com.a01luisrene.multirecordatorio.io.db.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.ui.DetalleCategoriaActivity;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 import com.squareup.picasso.Picasso;
@@ -76,7 +78,7 @@ public class ActualizarRecordatorioFragmento extends Fragment
     public static final String UNO = "1";
     public static final String BARRA = "/";
     public static final String DOS_PUNTOS = ":";
-    public static final String LLAVE_RETORNO_RECORDATORIO = "llave.retorno.recordatorio";
+    public static final String LLAVE_RETORNO_ACTUALIZAR_RECORDATORIO = "llave.retorno.actualizar.recordatorio";
     public static int MILISEGUNDOS_ESPERA = 1000;
     public static final int CODIGO_RESPUESTA_CATEGORIA = 100;
     public static final int PICK_CONTACT_REQUEST = 101;
@@ -98,16 +100,12 @@ public class ActualizarRecordatorioFragmento extends Fragment
 
     //Booleanos
     boolean guardarNumeroTelefono = true;
-    boolean respuestaRetornoRecordatorio = false;
 
     //[Combo categoria recordatorios]
     Spinner mSpinnerListaCategotegorias;
     //Variables para el combo
     ArrayList<String> comboListaCategorias;
     ArrayAdapter<String> comboAdapter;
-
-    //Fragmento cover
-    Cover cover;
 
     //Obtener número de los contactos del phone
     Cursor contactCursor, phoneCursor;
@@ -134,6 +132,10 @@ public class ActualizarRecordatorioFragmento extends Fragment
     DataBaseManagerRecordatorios mManagerRecordatorios;
     //POJO (Plain Old Java Object)
     Recordatorios mItemRecordatorio;
+
+    // Objeto de la interfaz remover, con este objeto llamaremos el
+    // método de la interfaz
+    private InterfaceCrud mCrud; //CRUD: crear, leer, actualizar, eliminar
 
     //Referencias de widgets que se encuentran en activity detalle
     CollapsingToolbarLayout mCtCategoriaRecordatorio;
@@ -168,8 +170,6 @@ public class ActualizarRecordatorioFragmento extends Fragment
         super.onCreate(savedInstanceState);
         if (getArguments().containsKey(DetalleRecordatorioFragmento.KEY_RECORDATORIO)) {
             activity = this.getActivity();
-            cover = new Cover();
-
             mItemRecordatorio = getArguments().getParcelable(DetalleRecordatorioFragmento.KEY_RECORDATORIO);
 
             if(Utilidades.smartphone) {
@@ -511,9 +511,9 @@ public class ActualizarRecordatorioFragmento extends Fragment
         if(resultCode == RESULT_OK){
             //Volver a recargar el spinner de categorías
             if(requestCode == CODIGO_RESPUESTA_CATEGORIA){
-                if(data.hasExtra(AgregarCategotiaFragmento.LLAVE_RETORNO_CATEGORIA)){
+                if(data.hasExtra(AgregarCategoriaFragmento.LLAVE_RETORNO_CATEGORIA)){
                     boolean valorObtenido = data.getExtras()
-                            .getBoolean(AgregarCategotiaFragmento.LLAVE_RETORNO_CATEGORIA);
+                            .getBoolean(AgregarCategoriaFragmento.LLAVE_RETORNO_CATEGORIA);
                     if(valorObtenido){
                         //Recargo el spinner siempre y cuando que el valor retornado sea `true`
                         poblarSpinner();
@@ -586,15 +586,33 @@ public class ActualizarRecordatorioFragmento extends Fragment
                     //Mensaje de registro guardado con exito
                     Toast.makeText(getActivity(), getString(R.string.mensaje_actualizado_satisfactoriamente), Toast.LENGTH_SHORT).show();
 
+                    Recordatorios actualizarItem = new Recordatorios(
+                            mItemRecordatorio.getId(),
+                            mTieTituloRecordatorio.getText().toString(),
+                            mTieEntidadOtros.getText().toString(),
+                            mTieContenidoMensaje.getText().toString(),
+                            mValorFacebook,
+                            mValorTwitter,
+                            mValorEnviarMensaje,
+                            mTieTelefono.getText().toString(),
+                            Utilidades.fechaHora(),
+                            mTieFecha.getText().toString(),
+                            mTieHora.getText().toString(),
+                            mValorTituloCategoria,
+                            mValorImagenCategoria
+                    );
+
                     //Cierro la activity siempre que me encuentre en un smartphone
                     if(Utilidades.smartphone){
+                        //Envio la respuesta con los datos del modelo
+                        Intent i = new Intent();
+                        i.putExtra(LLAVE_RETORNO_ACTUALIZAR_RECORDATORIO, actualizarItem);
+                        getActivity().setResult(RESULT_OK, i);
+
                         esperarYCerrar(MILISEGUNDOS_ESPERA);
-                    }else{
-                        getActivity().getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fl_contenedor_lateral, cover)
-                                .addToBackStack(cover.getClass().getName())
-                                .commit();
+                    }else {
+
+                       mCrud.actualizarItem(actualizarItem);
                     }
                 }
             } else if (!titulo) {
@@ -994,12 +1012,6 @@ public class ActualizarRecordatorioFragmento extends Fragment
             public void run() {
                 // [cerrar activity]
 
-                respuestaRetornoRecordatorio = true;
-                Intent i = new Intent();
-                i.putExtra(LLAVE_RETORNO_RECORDATORIO, respuestaRetornoRecordatorio);
-                getActivity().setResult(RESULT_OK, i);
-
-
                 getActivity().finish();
 
             }
@@ -1114,6 +1126,26 @@ public class ActualizarRecordatorioFragmento extends Fragment
             snackBarView.setBackgroundColor(Color.argb(255, 239, 83, 80));
         }
         snackbar.show();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // Aquí nos aseguramos de que en la actividad se haya implementado la interfaz,
+        // si el programador no la implementado se lanza el mensaje de error.
+        try {
+            mCrud = (InterfaceCrud) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " Debe implementar las interfaces en su Activity");
+        }
+    }
+
+    //Función llamada cuando el fragment es desasociada de una actividad
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCrud = null;
     }
 
 }

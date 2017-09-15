@@ -1,4 +1,4 @@
-package com.a01luisrene.multirecordatorio.fragmentos;
+package com.a01luisrene.multirecordatorio.ui.fragmentos;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.a01luisrene.multirecordatorio.R;
 import com.a01luisrene.multirecordatorio.interfaces.InterfaceCrud;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
-import com.a01luisrene.multirecordatorio.sqlite.DataBaseManagerRecordatorios;
+import com.a01luisrene.multirecordatorio.io.db.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 import com.squareup.picasso.Picasso;
 
@@ -41,9 +41,6 @@ public class DetalleRecordatorioFragmento extends Fragment
     String mValorFacebook, mValorTwitter, mValorMensaje, mValorRutaImagen;
     TextView mTvTelefono, mTvEntidadOtros;
     ImageButton mIbEliminarRecordatorio, mIbAcutualizarRecordatorio;
-
-    //Fragmantos
-    Cover cover;
 
     Activity activity;
 
@@ -73,7 +70,7 @@ public class DetalleRecordatorioFragmento extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments().containsKey(KEY_RECORDATORIO)) {
-            cover = new Cover();
+
             activity = this.getActivity();
             mItemRecordatorio = getArguments().getParcelable(KEY_RECORDATORIO);
 
@@ -200,7 +197,7 @@ public class DetalleRecordatorioFragmento extends Fragment
                 eliminarRecordatorio();
                 break;
             case R.id.ib_editar_toolbar:
-                mCrud.actualizarItem(mItemRecordatorio);
+                mCrud.cargarItem(mItemRecordatorio);
                 break;
         }
     }
@@ -218,14 +215,9 @@ public class DetalleRecordatorioFragmento extends Fragment
                     String idRecordatorio = mItemRecordatorio.getId();
                     mManager.eliminarRecordatorio(idRecordatorio); //Elimino el registro
 
-                    //Cambio al cover
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fl_contenedor_lateral, cover)
-                            .addToBackStack(cover.getClass().getName())
-                            .commit();
                     //Interfaz que sirve para remover el item
                     mCrud.removerItem();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

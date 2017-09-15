@@ -1,4 +1,4 @@
-package com.a01luisrene.multirecordatorio.adaptadores;
+package com.a01luisrene.multirecordatorio.ui.adaptadores;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

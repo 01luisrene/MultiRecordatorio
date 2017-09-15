@@ -1,7 +1,7 @@
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.a01luisrene.multirecordatorio.fragmentos.DetalleRecordatorioFragmento"
+    tools:context=".ui.fragmentos.DetalleRecordatorioFragmento"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 

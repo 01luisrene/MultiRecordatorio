@@ -1,4 +1,4 @@
-package com.a01luisrene.multirecordatorio.sqlite;
+package com.a01luisrene.multirecordatorio.io.db;
 
 import android.content.Context;
 import android.database.Cursor;

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/contenedor_relleno"
-    tools:context="com.a01luisrene.multirecordatorio.fragmentos.AgregarRecordatorioFragmento">
+    tools:context=".ui.fragmentos.AgregarRecordatorioFragmento">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
