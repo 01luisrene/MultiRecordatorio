@@ -264,6 +264,18 @@ public class AgregarRecordatorioFragmento extends Fragment
         return v;
 
     }
+    //Reseteo los valores por defecto de los widgets
+    public void resetearWidgets(){
+        mTieTituloRecordatorio.setText(VALOR_VACIO);
+        mTieEntidadOtros.setText(VALOR_VACIO);
+        mTieContenidoMensaje.setText(VALOR_VACIO);
+        mSwFacebook.setChecked(false);
+        mSwTwitter.setChecked(false);
+        mSwEnviarMensaje.setChecked(false);
+        mTieTelefono.setText(VALOR_VACIO);
+        mTieFecha.setText(VALOR_VACIO);
+        mTieHora.setText(VALOR_VACIO);
+    }
 
     public void poblarSpinner(){
 
@@ -568,8 +580,8 @@ public class AgregarRecordatorioFragmento extends Fragment
 
                         mCrud.agregarItem(recordatorios);
                     }
-
-
+                    //Cargo valores por defecto
+                    resetearWidgets();
                 }
             } else if (!titulo) {
                 mostrarMensaje(getString(R.string.error_titulo_recordatorio), 0);

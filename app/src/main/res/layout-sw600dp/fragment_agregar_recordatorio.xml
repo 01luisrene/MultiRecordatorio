@@ -86,7 +86,7 @@
             android:id="@+id/sw_twitter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:drawableStart="@drawable/ic_twitter_gray"
             app:layout_constraintTop_toBottomOf="@+id/sw_facebook"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -96,7 +96,7 @@
             android:id="@+id/sw_enviar_mensaje"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:drawableStart="@drawable/ic_message_24dp"
             app:layout_constraintTop_toBottomOf="@+id/sw_twitter"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -207,18 +207,18 @@
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_nuevo_telefono"
-            android:layout_width="125dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
+            android:layout_marginStart="8dp"
             android:visibility="gone"
             app:layout_constraintLeft_toRightOf="@+id/sw_enviar_mensaje"
-            app:layout_constraintTop_toBottomOf="@+id/sw_twitter">
+            app:layout_constraintTop_toBottomOf="@+id/sw_twitter"
+            android:layout_marginTop="-29dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/tie_nuevo_telefono"
-                style="@style/nuevo_telefono"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_phone_iphone_24dp"
                 android:ems="10"
                 android:hint="@string/nuevo_telefono_recordatorio"
