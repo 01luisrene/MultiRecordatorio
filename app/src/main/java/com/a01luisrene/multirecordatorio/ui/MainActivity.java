@@ -1,13 +1,23 @@
 package com.a01luisrene.multirecordatorio.ui;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -17,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.a01luisrene.multirecordatorio.R;
@@ -43,6 +54,13 @@ public class MainActivity extends AppCompatActivity implements
     public static final int VALOR_ENVIADO_NUEVO_RECORDATORIO = 1;
     public static final int CODIGO_RESPUESTA_NUEVO_RECORDATORIO = 103;
     public static final int CODIGO_RESPUESTA_ACTUALIZAR_ELIMINAR_RECORDATORIO = 1986;
+
+    private static final int READ_WRITE_EXTERNAL_STORAGE_PERMISSION = 2;
+    private static final int REQUEST_CODE_READ_WRITE_EXTERNAL_STORAGE = 3;
+    private static final int READ_CONTACTS_PERMISSION = 6;
+    private static final int REQUEST_CODE_READ_CONTACTS = 7;
+    private static final int SEND_SMS_PERMISSION = 8;
+    private static final int REQUEST_CODE_SEND_SMS = 9;
 
     FragmentManager fm;
     ListaRecordatoriosFragmento mListaRecordatoriosFragmento;
@@ -94,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements
         determinePaneLayout(savedInstanceState);
 
         //TODO: agregar una función para agregar los permisos en tiempo de ejecución que utilizara mi app
-        //SMS, CONTACTOS, READ_STORAGE_PERMISSION
+        //SMS, CONTACTOS, READ_EXTERNAL_STORAGE_PERMISSION
 
         }
 
@@ -159,10 +177,8 @@ public class MainActivity extends AppCompatActivity implements
                     startActivityForResult(i, CODIGO_RESPUESTA_NUEVO_RECORDATORIO);
 
                 }else{
-
                     //Reemplazar fragmento por AgregarRecordatorioFragmento
                     abrirFragmento(mAgregarRecordatorioFragmento);
-
                     //Oculto el botón FAB agregar
                     if(!esFabAbrir){
                         animateFAB(fab_cerrar, false);

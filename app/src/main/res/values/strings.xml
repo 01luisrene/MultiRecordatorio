@@ -46,11 +46,20 @@
     <string name="error_hora_menor_actual">La hora debe ser igual o superior al actual</string>
     <string name="error_minuto_menor_actual">El minuto debe ser superior al actual</string>
     <string name="error_completar_campos_recordatorios">Complete todos los campos obligatorios</string>
+
     <string name="permiso_denegado_contacto">¡No tienes permiso para acceder a la agenda de contactos!</string>
-    <!--AlertDialog.Builder-->
+    <string name="permiso_denegado_sms">¡No tienes permiso para enviar mensajes de texto!</string>
+
+    <!--AlertDialog.Builder solicitar permisos-->
     <string name="adb_titulo">Autorización</string>
-    <string name="adb_cancelar">Haz rechazado la petición.</string>
-    <string name="adb_mensaje_contacto">Necesito permiso para acceder a los contactos de tu dispositivo.</string>
+    <string name="adb_mensaje_permiso_almacenamiento">Necesito permiso leer y manipular las fotos e imágenes de tu dispositivo.</string>
+    <string name="adb_mensaje_permiso_contactos">Necesito permiso para acceder a los contactos de tu dispositivo.</string>
+    <string name="adb_mensaje_permiso_sms">Necesito permiso para enviar mensajes desde tu dispositivo.</string>
+    <string name="adb_cancelar">Haz rechazado la petición, por favor considere en aceptarla.</string>
+
+    <!--AlertDialog.Builder-->
+    <string name="adb_titulo_eliminar">¿Desea eliminar el recordatorio?</string>
+    <string name="adb_mensaje_eliminar">El recordatorio sera eliminado de manera permanente.</string>
 
     <!--=======Fin formulario agregar recordatorio=======-->
 
@@ -70,15 +79,12 @@
     <string name="fecha_recordatorio">Fecha &#38; hora del recordatorio:</string>
     <string name="descripcion_cover">Imagen principal del recordatorio</string>
 
-    <string name="adb_titulo_eliminar">¿Desea eliminar el recordatorio?</string>
-    <string name="adb_mensaje_eliminar">El recordatorio sera eliminado de manera permanente.</string>
     <!--Formulario agregar categoría recordatorio-->
     <string name="seleccionar_imagen">Seleccionar imagen</string>
     <string name="titulo_categoria">Titulo categoría (Cita, Cummpleaños,&#8230;)</string>
     <string name="mensaje_agregado_satisfactoriamente">Datos Agregados correctamente</string>
-    <string name="adb_mensaje_categoria">Necesito permiso para acceder a las fotos e imágenes de tu dispositivo.</string>
     <string name="seleccionar_app_imagen">Seleccionar una aplicación</string>
-    <string name="permiso_denegado_read_storage">¡No tienes permiso para ver fotos o imágenes!</string>
+    <string name="permiso_denegado_storage">¡No tienes permiso para ver, modificar fotos o imágenes!</string>
     <string name="error_titulo_categoria">Ingrese un título válido</string>
 
     <!--Nombres de botones-->

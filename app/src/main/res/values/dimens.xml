@@ -23,4 +23,8 @@
     <!--Detalle del fragment-->
     <dimen name="detail_elevation">8dp</dimen>
 
+    <!--Spinner categorías-->
+    <dimen name="sp_cat_titulo">20dp</dimen>
+    <dimen name="sp_cat_titulo_items">18dp</dimen>
+
 </resources>

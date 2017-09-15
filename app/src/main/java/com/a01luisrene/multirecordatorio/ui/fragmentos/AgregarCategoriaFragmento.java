@@ -15,6 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -109,13 +110,21 @@ public class AgregarCategoriaFragmento extends Fragment implements View.OnClickL
                  //si la API 23 a mas
                  if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                      //Habilitar permisos para la version de API 23 a mas
-                    if(ActivityCompat.checkSelfPermission(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                     int verificarPermisoReadExternalStorage = ContextCompat
+                             .checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+                     int verificarPermisoWriteExternalStorage = ContextCompat
+                             .checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    if((verificarPermisoReadExternalStorage != PackageManager.PERMISSION_GRANTED) ||
+                            (verificarPermisoWriteExternalStorage != PackageManager.PERMISSION_GRANTED)){
                         //solicitar permiso
                         if(shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)){
                             mostrarExplicacion(REQUEST_CODE_GALLERY);
                         }else{
 
-                            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_STORAGE_PERMISSION);
+                            String [] read_write_permission = {Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE};
+                            requestPermissions(read_write_permission, READ_STORAGE_PERMISSION);
+
                         }
 
                     }else{
@@ -197,12 +206,14 @@ public class AgregarCategoriaFragmento extends Fragment implements View.OnClickL
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            if(requestCode == READ_STORAGE_PERMISSION) {
-                verGaleria();
-            }
-        }else {
-            mostrarMensaje(getString(R.string.permiso_denegado_read_storage), 0);
+        switch (requestCode){
+            case READ_STORAGE_PERMISSION:
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    verGaleria();
+                }else {
+                    mostrarMensaje(getString(R.string.permiso_denegado_storage), 0);
+                }
+                break;
         }
     }
 
@@ -252,7 +263,7 @@ public class AgregarCategoriaFragmento extends Fragment implements View.OnClickL
 
         new AlertDialog.Builder(getActivity())
                 .setTitle(getString(R.string.adb_titulo))
-                .setMessage(getString(R.string.adb_mensaje_categoria))
+                .setMessage(getString(R.string.adb_mensaje_permiso_almacenamiento))
                 .setPositiveButton(getString(R.string.boton_aceptar), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

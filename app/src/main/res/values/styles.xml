@@ -42,10 +42,6 @@
         <item name="android:paddingEnd">5dp</item>
     </style>
 
-    <style name="spinner_categorias">
-        <item name="android:background">@drawable/spinner</item>
-    </style>
-
     <!--Estilos para el formulario detalle-->
     <style name="titulo_principal">
         <item name="android:textSize">26sp</item>

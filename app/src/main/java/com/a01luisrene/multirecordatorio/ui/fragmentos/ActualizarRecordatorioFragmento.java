@@ -49,12 +49,14 @@ import com.a01luisrene.multirecordatorio.interfaces.InterfaceCrud;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 import com.a01luisrene.multirecordatorio.io.db.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.ui.DetalleCategoriaActivity;
+import com.a01luisrene.multirecordatorio.ui.adaptadores.SpinnerCategoriasAdaptador;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -82,7 +84,9 @@ public class ActualizarRecordatorioFragmento extends Fragment
     public static int MILISEGUNDOS_ESPERA = 1000;
     public static final int CODIGO_RESPUESTA_CATEGORIA = 100;
     public static final int PICK_CONTACT_REQUEST = 101;
-    private static final int READ_CONTACTS_PERMISSION = 102;
+    private static final int PICK_SMS_REQUEST = 102;
+    private static final int READ_CONTACTS_PERMISSION = 103;
+    public static final int SEND_SMS_PERMISSION = 104;
 
     //Expresiones regulares
     public static final String REGEX_CARACTERES_LATINOS = "^[a-zA-Z0-9-/°. áÁéÉíÍóÓúÚñÑüÜ]*$";
@@ -104,8 +108,7 @@ public class ActualizarRecordatorioFragmento extends Fragment
     //[Combo categoria recordatorios]
     Spinner mSpinnerListaCategotegorias;
     //Variables para el combo
-    ArrayList<String> comboListaCategorias;
-    ArrayAdapter<String> comboAdapter;
+    List<String> comboListaCategorias;
 
     //Obtener número de los contactos del phone
     Cursor contactCursor, phoneCursor;
@@ -268,12 +271,9 @@ public class ActualizarRecordatorioFragmento extends Fragment
             mIbFecha.setOnClickListener(this);
             mIbHora.setOnClickListener(this);
 
-
+            //[INICIO COMBO]
             poblarSpinner();
-
-            String categoria = mItemRecordatorio.getCategoriaRecordatorio();
-
-            mSpinnerListaCategotegorias.setSelection(Utilidades.getIndexSpinner(mSpinnerListaCategotegorias, categoria));
+            //[FIN COMBO]
 
             mSpinnerListaCategotegorias.setOnItemSelectedListener(this);
 
@@ -312,6 +312,7 @@ public class ActualizarRecordatorioFragmento extends Fragment
         return v;
     }
 
+    //===============================FUNCIONES PROPIAS=================================//
     public void poblarSpinner(){
 
         comboListaCategorias = new ArrayList<>();
@@ -325,148 +326,13 @@ public class ActualizarRecordatorioFragmento extends Fragment
                     .getListaCategorias().get(i).getCategorioRecordatorio());
         }
 
-        comboAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.spinner_item, comboListaCategorias);
+        mSpinnerListaCategotegorias.setAdapter(new SpinnerCategoriasAdaptador(
+                getActivity().getApplicationContext(), comboListaCategorias));
 
-        comboAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        String categoria = mItemRecordatorio.getCategoriaRecordatorio();
 
-        mSpinnerListaCategotegorias.setAdapter(comboAdapter);
+        mSpinnerListaCategotegorias.setSelection(Utilidades.getIndexSpinner(mSpinnerListaCategotegorias, categoria));
 
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        int idItemSelected = parent.getId();
-        switch (idItemSelected){
-            case R.id.sp_categorias_recordatorios:
-                if(position != 0) {
-                    mValorIdCategoria = mManagerRecordatorios
-                            .getListaCategorias()
-                            .get(position-1).getId();
-                    mValorImagenCategoria = mManagerRecordatorios
-                            .getListaCategorias()
-                            .get(position-1).getImagen();
-                    mValorTituloCategoria = mManagerRecordatorios
-                            .getListaCategorias()
-                            .get(position-1).getCategorioRecordatorio();
-
-                    if(Utilidades.smartphone) {
-
-                        mCtCategoriaRecordatorio.setTitle(mValorTituloCategoria);
-                        if (mValorImagenCategoria != null){
-                            Picasso.with(getActivity().getApplicationContext())
-                                    .load(new File(mValorImagenCategoria))
-                                    .error(R.drawable.ic_image_150dp)
-                                    .noFade()
-                                    .into(mIvImagenRecordatorio);
-                        }else{
-                            mIvImagenRecordatorio.setImageDrawable(null);
-                        }
-                    }else{
-                        mTvTituloCategoriaRecordatorio.setText(mValorTituloCategoria);
-                        if (mValorImagenCategoria != null){
-                            Picasso.with(getActivity().getApplicationContext())
-                                    .load(new File(mValorImagenCategoria))
-                                    .error(R.drawable.ic_image_150dp)
-                                    .noFade()
-                                    .into(mCivImagenRecordatorio);
-                        }else{
-                            mCivImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
-                        }
-                    }
-
-
-                }else{
-                    //Colocar el valor de id categoría en nulo
-                    mValorIdCategoria = ID_CATEGORIA_NULO;
-
-                    if(Utilidades.smartphone) {
-                        mCtCategoriaRecordatorio.setTitle(getString(R.string.agregar_recordatorio));
-                        mIvImagenRecordatorio.setImageDrawable(null);
-                    }else{
-                        mTvTituloCategoriaRecordatorio.setText(getString(R.string.agregar_recordatorio));
-                        mCivImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
-                    }
-
-                }
-                break;
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        int idBotonToggle = buttonView.getId();
-        switch(idBotonToggle) {
-            case R.id.sw_facebook:
-                if(isChecked){
-                    mValorFacebook = ENVIAR_ON;
-                }else{
-                    mValorFacebook = ENVIAR_OFF;
-                }
-                break;
-            case R.id.sw_twitter:
-                if(isChecked){
-                    mValorTwitter = ENVIAR_ON;
-                }else{
-                    mValorTwitter = ENVIAR_OFF;
-                }
-                break;
-            case R.id.sw_enviar_mensaje:
-                if(isChecked){
-                    mValorEnviarMensaje = ENVIAR_ON;
-                    mIbContactos.setVisibility(View.VISIBLE);
-                    mTilTelefono.setVisibility(View.VISIBLE);
-
-                    //Compruebo si el campo de teléfono es válido
-                    String numeroTelefono = mTieTelefono.getText().toString();
-
-                    //False
-                    guardarNumeroTelefono = false;
-
-                    //True
-                    if(!numeroTelefono.isEmpty()){
-                        guardarNumeroTelefono = esTelefonoValido(numeroTelefono);
-                    }
-
-
-                }else{
-                    mValorEnviarMensaje = ENVIAR_OFF;
-                    mIbContactos.setVisibility(View.GONE);
-                    mTilTelefono.setVisibility(View.GONE);
-                    mTieTelefono.setText(VALOR_VACIO);
-                    //Si el usuario no desea enviar mensaje [Guardo compo teléfono vacío]
-                    guardarNumeroTelefono = true;
-                }
-                break;
-        }
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.bt_nuevo_guardar:
-                validarDatos();
-                break;
-            case R.id.bt_agregar_categoria:
-                abrirFormularioNuevaCategoria();
-                break;
-            case R.id.bt_contactos:
-                accederAgendaContactos();
-                break;
-            case R.id.ib_obtener_fecha:
-                obtenerFecha();
-                break;
-            case R.id.ib_obtener_hora:
-                obtenerHora();
-                break;
-        }
     }
 
     private void abrirFormularioNuevaCategoria() {
@@ -476,6 +342,55 @@ public class ActualizarRecordatorioFragmento extends Fragment
 
     }
 
+    private void enviarSms(){
+        //si la API 23 a mas
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            int verificarPermisoSendSms = ContextCompat
+                    .checkSelfPermission(getActivity(), Manifest.permission.SEND_SMS);
+            if(verificarPermisoSendSms != PackageManager.PERMISSION_GRANTED){
+                //solicitar permiso
+                if(shouldShowRequestPermissionRationale(Manifest.permission.SEND_SMS)){
+
+                    mostrarExplicacion(PICK_SMS_REQUEST, getString(R.string.adb_mensaje_permiso_sms));
+                    noEnviarSms();
+                }else{
+                    requestPermissions(new String[]{Manifest.permission.SEND_SMS}, SEND_SMS_PERMISSION);
+                }
+
+            }else{
+                activarEnvioSms();
+            }
+        }
+    }
+    private void noEnviarSms(){
+        mValorEnviarMensaje = ENVIAR_OFF;
+        mIbContactos.setVisibility(View.GONE);
+        mTilTelefono.setVisibility(View.GONE);
+        mTieTelefono.setText(VALOR_VACIO);
+        //Si el usuario no desea enviar mensaje [Guardo compo teléfono vacío]
+        guardarNumeroTelefono = true;
+        mSwEnviarMensaje.setChecked(false);
+    }
+
+    private void activarEnvioSms(){
+        mValorEnviarMensaje = ENVIAR_ON;
+        mIbContactos.setVisibility(View.VISIBLE);
+        mTilTelefono.setVisibility(View.VISIBLE);
+
+        //Compruebo si el campo de teléfono es válido
+        String numeroTelefono = mTieTelefono.getText().toString();
+
+        //False
+        guardarNumeroTelefono = false;
+
+        //True
+        if(!numeroTelefono.isEmpty()){
+            guardarNumeroTelefono = esTelefonoValido(numeroTelefono);
+        }
+
+        mSwEnviarMensaje.setChecked(true);
+    }
+
     private void accederAgendaContactos(){
         //si la API 23 a mas
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
@@ -483,7 +398,8 @@ public class ActualizarRecordatorioFragmento extends Fragment
             if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
                 //solicitar permiso
                 if(shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)){
-                    mostrarExplicacion(PICK_CONTACT_REQUEST);
+                    mostrarExplicacion(PICK_CONTACT_REQUEST,
+                            getString(R.string.adb_mensaje_permiso_contactos));
                 }else{
 
                     requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION);
@@ -502,44 +418,6 @@ public class ActualizarRecordatorioFragmento extends Fragment
     public void abrirIntentContactos(){
         Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(i, PICK_CONTACT_REQUEST);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(resultCode == RESULT_OK){
-            //Volver a recargar el spinner de categorías
-            if(requestCode == CODIGO_RESPUESTA_CATEGORIA){
-                if(data.hasExtra(AgregarCategoriaFragmento.LLAVE_RETORNO_CATEGORIA)){
-                    boolean valorObtenido = data.getExtras()
-                            .getBoolean(AgregarCategoriaFragmento.LLAVE_RETORNO_CATEGORIA);
-                    if(valorObtenido){
-                        //Recargo el spinner siempre y cuando que el valor retornado sea `true`
-                        poblarSpinner();
-                    }
-                }
-            }
-            //Obtener el número de teléfono
-            if(requestCode == PICK_CONTACT_REQUEST && data != null ){
-
-                contactoUri = data.getData();
-                mostrarSmartphone(contactoUri);
-
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            if(requestCode == READ_CONTACTS_PERMISSION) {
-                accederAgendaContactos();
-            }
-        }else {
-            mostrarMensaje(getString(R.string.permiso_denegado_contacto), 0);
-        }
     }
 
     public void validarDatos() {
@@ -576,7 +454,7 @@ public class ActualizarRecordatorioFragmento extends Fragment
                             mTieHora.getText().toString(),                      //[Hora del recordatorio]
                             ESTADO_RECORDATORIO,
                             mValorIdCategoria                                  //[Id Categoría]
-                            );
+                    );
 
 
                 } catch (Exception e) {
@@ -612,7 +490,7 @@ public class ActualizarRecordatorioFragmento extends Fragment
                         esperarYCerrar(MILISEGUNDOS_ESPERA);
                     }else {
 
-                       mCrud.actualizarItem(actualizarItem);
+                        mCrud.actualizarItem(actualizarItem);
                     }
                 }
             } else if (!titulo) {
@@ -930,80 +808,6 @@ public class ActualizarRecordatorioFragmento extends Fragment
 
 
     }
-    //====================================== Observadores de texto =======================================//
-
-    private TextWatcher twTituloRecordatorio = new TextWatcher(){
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mTilTituloRecordatorio.setError(null);
-        }
-        @Override
-        public void afterTextChanged(Editable s) {}
-    };
-
-
-    private TextWatcher twEntidadOtros = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mTilEntidadOtros.setError(null);
-        }
-        @Override
-        public void afterTextChanged(Editable s) {}
-    };
-
-    private TextWatcher twContenidoMensaje = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            validarBotonesInfo(String.valueOf(s));
-            mTilContenidoMensaje.setError(null);
-        }
-        @Override
-        public void afterTextChanged(Editable s) {}
-    };
-    private  TextWatcher twTelefono = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(s.length() > 0){
-                guardarNumeroTelefono = esTelefonoValido(String.valueOf(s));
-            }
-
-        }
-        @Override
-        public void afterTextChanged(Editable s) { }
-    };
-
-    private TextWatcher twFecha = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mTilFecha.setError(null);
-            obtenerCantidadCaracteresCampoFecha = s.length();
-        }
-        @Override
-        public void afterTextChanged(Editable s) {}
-    };
-
-    private TextWatcher twHora = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mTilHora.setError(null);
-        }
-        @Override
-        public void afterTextChanged(Editable s) {}
-    };
-
 
     //Esperar unos segundos antes de cerrar la activity
     public void esperarYCerrar(int milisegundos) {
@@ -1085,17 +889,19 @@ public class ActualizarRecordatorioFragmento extends Fragment
         return smartphone;
     }
 
-    private void mostrarExplicacion(final int tipoPeticion) {
+    private void mostrarExplicacion(final int tipoPeticion, String mensaje) {
 
         new AlertDialog.Builder(getActivity())
                 .setTitle(getString(R.string.adb_titulo))
-                .setMessage(getString(R.string.adb_mensaje_contacto))
+                .setMessage(mensaje)
                 .setPositiveButton(getString(R.string.boton_aceptar), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //pedir permiso
                         if(tipoPeticion == PICK_CONTACT_REQUEST){
                             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION);
+                        }else if(tipoPeticion == PICK_SMS_REQUEST){
+                            requestPermissions(new String[]{Manifest.permission.SEND_SMS}, SEND_SMS_PERMISSION);
                         }else{
                             throw new IllegalArgumentException();
                         }
@@ -1110,7 +916,6 @@ public class ActualizarRecordatorioFragmento extends Fragment
                 })
                 .show();
     }
-
     private void mostrarMensaje(String mensaje, int estado){
 
         Snackbar snackbar = Snackbar.make(mView, mensaje, Snackbar.LENGTH_LONG);
@@ -1126,6 +931,254 @@ public class ActualizarRecordatorioFragmento extends Fragment
             snackBarView.setBackgroundColor(Color.argb(255, 239, 83, 80));
         }
         snackbar.show();
+    }
+
+    //====================================== Observadores de texto =======================================//
+
+    private TextWatcher twTituloRecordatorio = new TextWatcher(){
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            mTilTituloRecordatorio.setError(null);
+        }
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+
+    private TextWatcher twEntidadOtros = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            mTilEntidadOtros.setError(null);
+        }
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher twContenidoMensaje = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            validarBotonesInfo(String.valueOf(s));
+            mTilContenidoMensaje.setError(null);
+        }
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+    private  TextWatcher twTelefono = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if(s.length() > 0){
+                guardarNumeroTelefono = esTelefonoValido(String.valueOf(s));
+            }
+
+        }
+        @Override
+        public void afterTextChanged(Editable s) { }
+    };
+
+    private TextWatcher twFecha = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            mTilFecha.setError(null);
+            obtenerCantidadCaracteresCampoFecha = s.length();
+        }
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher twHora = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            mTilHora.setError(null);
+        }
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    //===============================@Override=================================//
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        int idItemSelected = parent.getId();
+        switch (idItemSelected){
+            case R.id.sp_categorias_recordatorios:
+                if(position != 0) {
+                    mValorIdCategoria = mManagerRecordatorios
+                            .getListaCategorias()
+                            .get(position-1).getId();
+                    mValorImagenCategoria = mManagerRecordatorios
+                            .getListaCategorias()
+                            .get(position-1).getImagen();
+                    mValorTituloCategoria = mManagerRecordatorios
+                            .getListaCategorias()
+                            .get(position-1).getCategorioRecordatorio();
+
+                    if(Utilidades.smartphone) {
+
+                        mCtCategoriaRecordatorio.setTitle(mValorTituloCategoria);
+                        if (mValorImagenCategoria != null){
+                            Picasso.with(getActivity().getApplicationContext())
+                                    .load(new File(mValorImagenCategoria))
+                                    .error(R.drawable.ic_image_150dp)
+                                    .noFade()
+                                    .into(mIvImagenRecordatorio);
+                        }else{
+                            mIvImagenRecordatorio.setImageDrawable(null);
+                        }
+                    }else{
+
+                        String mTituloCategoriaFormateado;
+
+                        if(mValorTituloCategoria.length() >= 40){
+                            mTituloCategoriaFormateado = mValorTituloCategoria.substring(0, 40);
+                        }else{
+                            mTituloCategoriaFormateado = mValorTituloCategoria;
+                        }
+
+                        mTvTituloCategoriaRecordatorio.setText(mTituloCategoriaFormateado);
+                        if (mValorImagenCategoria != null){
+                            Picasso.with(getActivity().getApplicationContext())
+                                    .load(new File(mValorImagenCategoria))
+                                    .error(R.drawable.ic_image_150dp)
+                                    .noFade()
+                                    .into(mCivImagenRecordatorio);
+                        }else{
+                            mCivImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
+                        }
+                    }
+
+
+                }else{
+                    //Colocar el valor de id categoría en nulo
+                    mValorIdCategoria = ID_CATEGORIA_NULO;
+
+                    if(Utilidades.smartphone) {
+                        mCtCategoriaRecordatorio.setTitle(getString(R.string.agregar_recordatorio));
+                        mIvImagenRecordatorio.setImageDrawable(null);
+                    }else{
+                        mTvTituloCategoriaRecordatorio.setText(getString(R.string.agregar_recordatorio));
+                        mCivImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
+                    }
+
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        int idBotonToggle = buttonView.getId();
+        switch(idBotonToggle) {
+            case R.id.sw_facebook:
+                if(isChecked){
+                    mValorFacebook = ENVIAR_ON;
+                }else{
+                    mValorFacebook = ENVIAR_OFF;
+                }
+                break;
+            case R.id.sw_twitter:
+                if(isChecked){
+                    mValorTwitter = ENVIAR_ON;
+                }else{
+                    mValorTwitter = ENVIAR_OFF;
+                }
+                break;
+            case R.id.sw_enviar_mensaje:
+                if(isChecked){
+                    enviarSms();
+                }else{
+                    noEnviarSms();
+                }
+                break;
+        }
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.bt_nuevo_guardar:
+                validarDatos();
+                break;
+            case R.id.bt_agregar_categoria:
+                abrirFormularioNuevaCategoria();
+                break;
+            case R.id.bt_contactos:
+                accederAgendaContactos();
+                break;
+            case R.id.ib_obtener_fecha:
+                obtenerFecha();
+                break;
+            case R.id.ib_obtener_hora:
+                obtenerHora();
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK){
+            //Volver a recargar el spinner de categorías
+            if(requestCode == CODIGO_RESPUESTA_CATEGORIA){
+                if(data.hasExtra(AgregarCategoriaFragmento.LLAVE_RETORNO_CATEGORIA)){
+                    boolean valorObtenido = data.getExtras()
+                            .getBoolean(AgregarCategoriaFragmento.LLAVE_RETORNO_CATEGORIA);
+                    if(valorObtenido){
+                        //Recargo el spinner siempre y cuando que el valor retornado sea `true`
+                        poblarSpinner();
+                    }
+                }
+            }
+            //Obtener el número de teléfono
+            if(requestCode == PICK_CONTACT_REQUEST && data != null ){
+
+                contactoUri = data.getData();
+                mostrarSmartphone(contactoUri);
+
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case READ_CONTACTS_PERMISSION:
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    accederAgendaContactos();
+                }else {
+                    mostrarMensaje(getString(R.string.permiso_denegado_contacto), 0);
+                }
+                break;
+            case SEND_SMS_PERMISSION:
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    enviarSms();
+                }else {
+                    noEnviarSms();
+                    mostrarMensaje(getString(R.string.permiso_denegado_sms), 0);
+                }
+                break;
+        }
+
     }
 
     @Override
