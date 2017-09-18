@@ -131,21 +131,26 @@ public class ListaRecordatoriosFragmento extends Fragment{
     }
     //Cargo esta función si la lista no contiene datos
     public void listaVacia(){
-        Resources res = getResources();
-        String text = String.format(res.getString(R.string.lista_vacia), getString(R.string.l_recordatorios));
+        //Formatear cadenas
+        String textoListaVacia = Utilidades.formatearCadenasInt(
+                getActivity(),
+                R.string.lista_vacia,
+                R.string.l_recordatorios);
+
         //Formato personalizado del texto lista vacía
-        Spannable spannable = Utilidades.setSpanCustomText(getActivity(),
-                text,
-                6,
+        Spannable listaRecordatoriosVacia = Utilidades.setSpanCustomText(getActivity(),
+                textoListaVacia,
+                7,
                 20,
                 Color.BLACK,
                 1.2f,
                 Typeface.BOLD);
 
-        mListaVacia.setText(spannable);
+        mListaVacia.setText(listaRecordatoriosVacia);
         mListaVacia.setVisibility(View.VISIBLE);
         mRecordatoriosRecyclerView.setVisibility(View.GONE);
     }
+
     //Cargo esta función si la lista contiene datos
     public void listaConDatos(){
         mListaVacia.setVisibility(View.GONE);

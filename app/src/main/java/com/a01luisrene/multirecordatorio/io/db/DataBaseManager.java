@@ -4,6 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.a01luisrene.multirecordatorio.modelos.Categorias;
+import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
+
+import java.util.List;
+
 public abstract class DataBaseManager {
 
     private SQLiteOpenHelper mRecordatoriosDbHelper;
@@ -63,9 +68,17 @@ public abstract class DataBaseManager {
 
     abstract public  Cursor buscarRecordatorio(String titulo);
 
-    abstract public Boolean compruebaRegistroRecordatorio(String id);
+    abstract public boolean compruebaTituloRecordatorio(String titulo);
+
+    abstract public String tituloRecordatorioQueExiste(String titulo);
+
+    abstract public boolean compruebaTituloRecordatorioUp(String titulo, String tituloObtenido);
+
+    abstract public String tituloRecordatorioQueExisteUp(String titulo);
 
     abstract public int idRecordatorioMax();
+
+    abstract public List<Recordatorios> getListaRecordatorios();
 
     /**
      *
@@ -92,7 +105,15 @@ public abstract class DataBaseManager {
 
     abstract public Cursor buscarCategoriasRecordatorios(String categoriaRecordatorio);
 
-    abstract public Boolean compruebaRegistroCategoriaRecordatorio(String id);
+    abstract public boolean compruebaTituloCategoria(String tituloCategoria);
+
+    abstract public String tituloCategoriaQueExiste(String tituloCategoria);
+
+    abstract public boolean compruebaTituloCategoriaUp(String tituloCategoria, String tituloCategoriaObtenido);
+
+    abstract public String tituloCategoriaQueExisteUp(String tituloCategoria);
+
+    abstract public List<Categorias> getListaCategorias();
 
 
     /**

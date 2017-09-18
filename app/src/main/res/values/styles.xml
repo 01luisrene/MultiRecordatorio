@@ -44,42 +44,42 @@
 
     <!--Estilos para el formulario detalle-->
     <style name="titulo_principal">
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">26sp</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="subtitulo_principal">
+        <item name="android:textColor">@color/color_subtitulo</item>
         <item name="android:textSize">22sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:color">@color/color_subtitulo</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    <style name="contenido_mensaje">
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
     <style name="subtitulo">
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:color">@color/color_subtitulo</item>
-    </style>
-    <style name="mensaje_recordatorio">
-        <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:color">@color/color_subtitulo</item>
     </style>
     <style name="texto_detalle">
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textStyle">normal</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">normal</item>
     </style>
-    <style name="texto_detalle_small">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">normal</item>
-    </style>
-
 
     <!--Estilos para los items de la lista -->
     <style name="lista_titulo">
         <item name="android:textSize">17sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primary_text</item>
     </style>
     <style name="lista_mensaje">
         <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/color_subtitulo</item>
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <!--lista vacía-->

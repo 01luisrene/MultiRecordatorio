@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -26,13 +27,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.Spannable;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -99,6 +100,7 @@ public class ActualizarRecordatorioFragmento extends Fragment
     TextInputLayout mTilTituloRecordatorio, mTilEntidadOtros, mTilTelefono, mTilContenidoMensaje, mTilFecha, mTilHora;
     Switch mSwFacebook, mSwTwitter, mSwEnviarMensaje;
     String mValorFacebook, mValorTwitter, mValorEnviarMensaje;
+    String[] tituloObtenido;
     ImageButton mIbContactos, mIbFecha, mIbHora, mIbFacebookInfo, mIbTwitterInfo, mIbMensajeInfo;
     TextView mTvTwitterInfo, mTvMensajeInfo;
 
@@ -204,6 +206,10 @@ public class ActualizarRecordatorioFragmento extends Fragment
 
             //Asignamos nuestro manager que contiene nuestros metodos CRUD
             mManagerRecordatorios = new DataBaseManagerRecordatorios(getActivity().getApplicationContext());
+
+            //String[]
+            tituloObtenido = new String[]{mItemRecordatorio.getTitulo()};
+
             //Spinner
             mSpinnerListaCategotegorias = (Spinner) v.findViewById(R.id.sp_categorias_recordatorios);
 
@@ -360,6 +366,8 @@ public class ActualizarRecordatorioFragmento extends Fragment
             }else{
                 activarEnvioSms();
             }
+        }else{
+            activarEnvioSms();
         }
     }
     private void noEnviarSms(){
@@ -421,39 +429,62 @@ public class ActualizarRecordatorioFragmento extends Fragment
     }
 
     public void validarDatos() {
+        String stTitulo = mTieTituloRecordatorio.getText().toString().trim();
+        String stEntidadOtros = mTieEntidadOtros.getText().toString().trim();
+        String stContenidoMensaje = mTieContenidoMensaje.getText().toString().trim();
+        String stTelefono = mTieTelefono.getText().toString().trim();
+        String stFecha = mTieFecha.getText().toString().trim();
+        String stHora = mTieHora.getText().toString().trim();
+        String existeTitulo = mManagerRecordatorios.tituloRecordatorioQueExisteUp(stTitulo);
+        String mensajeTextoExiste = Utilidades.formatearCadenasStr(
+                getActivity(),
+                R.string.error_titulo_recordatorio_existe,
+                existeTitulo
+        );
 
-        String stTitulo = mTieTituloRecordatorio.getText().toString();
-        String stEntidadOtros = mTieEntidadOtros.getText().toString();
-        String stContenidoMensaje = mTieContenidoMensaje.getText().toString();
-        String stFecha = mTieFecha.getText().toString();
-        String stHora = mTieHora.getText().toString();
+        int valorInicialSpannable = 10;
+        int valorFinalSpannable = existeTitulo.length() + valorInicialSpannable;
 
         boolean titulo = esTituloRecordatorioValido(stTitulo);
         boolean entidadOtros = esEntidadOtrosValido(stEntidadOtros);
         boolean contenidoMensaje = esContenidoMensajeValido(stContenidoMensaje);
         boolean fechaIngresada = esFechaIngresadaValido(stFecha);
         boolean horaIngresada = esHoraIngresadaValido(stHora);
+        boolean existeTituloDb = mManagerRecordatorios
+                .compruebaTituloRecordatorioUp(stTitulo, tituloObtenido[0]);
+
+        //Formato personalizado del texto [Recordatorio existe]
+        Spannable tituloRecordatorioExiste = Utilidades.setSpanCustomText(getActivity(),
+                mensajeTextoExiste,
+                valorInicialSpannable,
+                valorFinalSpannable,
+                Color.WHITE,
+                1.2f,
+                Typeface.BOLD);
+
+
 
         if (!mValorIdCategoria.equals(ID_CATEGORIA_NULO)) {
 
-            if (titulo && entidadOtros && contenidoMensaje && guardarNumeroTelefono
-                    && fechaIngresada && horaIngresada) {
+            if (existeTituloDb && titulo && entidadOtros &&
+                    contenidoMensaje && guardarNumeroTelefono &&
+                    fechaIngresada && horaIngresada) {
 
                 try {
                     mManagerRecordatorios.actualizarRecoratorio(
                             mItemRecordatorio.getId(),                          //[_id]
-                            mTieTituloRecordatorio.getText().toString(),        //[Titulo]
-                            mTieEntidadOtros.getText().toString(),              //[Entidad - Otros]
-                            mTieContenidoMensaje.getText().toString(),          //[Contenido del mensaje]
+                            stTitulo,                                           //[Titulo]
+                            stEntidadOtros,                                     //[Entidad - Otros]
+                            stContenidoMensaje,                                 //[Contenido del mensaje]
                             mValorFacebook,                                     //[Publicar en facebook]
                             mValorTwitter,                                      //[Publicar en twitter]
                             mValorEnviarMensaje,                                //[Envio mesaje]
-                            mTieTelefono.getText().toString(),                  //[Teléfono]
+                            stTelefono,                                         //[Teléfono]
                             mItemRecordatorio.getFechaCreacionRecordatorio(),    //[Fecha creación]
-                            mTieFecha.getText().toString(),                     //[Fecha del recordatorio]
-                            mTieHora.getText().toString(),                      //[Hora del recordatorio]
-                            ESTADO_RECORDATORIO,
-                            mValorIdCategoria                                  //[Id Categoría]
+                            stFecha,                                            //[Fecha del recordatorio]
+                            stHora,                                             //[Hora del recordatorio]
+                            ESTADO_RECORDATORIO,                                //[Estado recordatorio]
+                            mValorIdCategoria                                   //[Id Categoría]
                     );
 
 
@@ -462,20 +493,21 @@ public class ActualizarRecordatorioFragmento extends Fragment
                     mostrarMensaje(getString(R.string.error_al_guardar), 0);
                 } finally {
                     //Mensaje de registro guardado con exito
-                    Toast.makeText(getActivity(), getString(R.string.mensaje_actualizado_satisfactoriamente), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.actualizado_recordatorio_almacenado),
+                            Toast.LENGTH_SHORT).show();
 
                     Recordatorios actualizarItem = new Recordatorios(
                             mItemRecordatorio.getId(),
-                            mTieTituloRecordatorio.getText().toString(),
-                            mTieEntidadOtros.getText().toString(),
-                            mTieContenidoMensaje.getText().toString(),
+                            stTitulo,
+                            stEntidadOtros,
+                            stContenidoMensaje,
                             mValorFacebook,
                             mValorTwitter,
                             mValorEnviarMensaje,
-                            mTieTelefono.getText().toString(),
+                            stTelefono,
                             Utilidades.fechaHora(),
-                            mTieFecha.getText().toString(),
-                            mTieHora.getText().toString(),
+                            stFecha,
+                            stHora,
                             mValorTituloCategoria,
                             mValorImagenCategoria
                     );
@@ -488,11 +520,13 @@ public class ActualizarRecordatorioFragmento extends Fragment
                         getActivity().setResult(RESULT_OK, i);
 
                         esperarYCerrar(MILISEGUNDOS_ESPERA);
-                    }else {
 
+                    }else {
                         mCrud.actualizarItem(actualizarItem);
                     }
                 }
+            }else if(!existeTituloDb){
+                mensajeTituloRecordatorioExiste(tituloRecordatorioExiste);
             } else if (!titulo) {
                 mostrarMensaje(getString(R.string.error_titulo_recordatorio), 0);
             } else if (!contenidoMensaje) {
@@ -931,6 +965,20 @@ public class ActualizarRecordatorioFragmento extends Fragment
             snackBarView.setBackgroundColor(Color.argb(255, 239, 83, 80));
         }
         snackbar.show();
+    }
+    private void mensajeTituloRecordatorioExiste(Spannable mensaje){
+
+        Snackbar snackbar = Snackbar.make(mView, mensaje, Snackbar.LENGTH_LONG);
+        //Color de boton de accion
+        View snackBarView = snackbar.getView();
+        //Cambiando el color del texto
+        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+
+        snackBarView.setBackgroundColor(Color.argb(255, 239, 83, 80));
+
+        snackbar.show();
+
     }
 
     //====================================== Observadores de texto =======================================//

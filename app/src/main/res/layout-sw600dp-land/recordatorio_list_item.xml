@@ -25,7 +25,7 @@
                 android:id="@+id/civ_categoria_item"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:contentDescription="@string/descripcion_imagen_lista_item"
+                android:contentDescription="@string/item_recordatorio_descripcion_imagen"
                 android:src="@drawable/ic_image_150dp"
                 app:civ_border_color="@color/cbic_all"
                 app:civ_border_width="@dimen/civ_borde"/>

@@ -11,6 +11,7 @@
     <!--=======Formulario agregar recordatorio=======-->
     <string name="selecciona_categoria_spinner">Seleccionar una categoria:</string>
     <string name="label_o">O</string>
+    <string name="preferencias_recordatorio">Preferencias:</string>
     <string name="agregar_categoria_boton">Agregar</string>
     <string name="nuevo_titulo_recordatorio">Título del recordatorio</string>
     <string name="nuevo_entidad_otros">Subtítulo (nombre, empresa, lugar, &#8230;)</string>
@@ -20,9 +21,14 @@
     <string name="nuevo_titulo_fecha_recordatorio">Fecha &#38; hora del recordatorio:</string>
     <string name="nuevo_fecha_recordatorio">DD/MM/AAAA</string>
     <string name="nuevo_hora_recordatorio">HH:MM</string>
+    <string name="nuevo_recordatorio_almacenado">Recordatorio almacenado correctamente</string>
+    <!--Error al almacenar datos-->
+    <string name="error_al_guardar">Error: no se pudo guardar los datos!</string>
+
     <!--Mensajes de error (Nuevo recordatorio)-->
     <string name="error_spinner_categorias">Seleccione una categoría</string>
     <string name="error_titulo_recordatorio">Ingrese un título válido</string>
+    <string name="error_titulo_recordatorio_existe">El título %1$s ya existe en la base de datos</string>
     <string name="error_titulo_recordatorio_min_char">Ingrese mínimo 4 caracteres</string>
     <string name="error_titulo_recordatorio_max_char">Ingrese máximo 100 caracteres</string>
     <string name="error_entidad_otros">Ingrese un subtítulo válido</string>
@@ -64,28 +70,27 @@
     <!--=======Fin formulario agregar recordatorio=======-->
 
     <!--=======Formulario actualizar=======-->
-    <string name="mensaje_actualizado_satisfactoriamente">Datos actualizados correctamente</string>
+    <string name="actualizado_recordatorio_almacenado">Recordatorio actualizado correctamente</string>
 
     <!---Formulario detalle recordatorio-->
-    <string name="titulo_recordatorio">Titulo Recordatorio:</string>
-    <string name="endidad_otros_recordatorio">Persona, Empresa, otros:</string>
-    <string name="tipo_recordatorio">Tipo Recordatorio:</string>
-    <string name="teleforno_recordatorio">Teléfono:</string>
-    <string name="mensaje_recordatorio">Mensaje:</string>
-    <string name="preferencias_recordatorio">Preferencias:</string>
-    <string name="facebook_recordatorio">Publicar en Facebook</string>
-    <string name="twitter_recordatorio">Publicar en Twitter</string>
-    <string name="enviar_mensaje_recordatorio">Enviar mensaje</string>
-    <string name="fecha_recordatorio">Fecha &#38; hora del recordatorio:</string>
     <string name="descripcion_cover">Imagen principal del recordatorio</string>
+    <string name="detalle_facebook_recordatorio">Publicar en Facebook</string>
+    <string name="detalle_twitter_recordatorio">Publicar en Twitter</string>
+    <string name="detalle_enviar_mensaje">Enviar mensaje</string>
+    <string name="detalle_fecha_hora_recordatorio">Fecha &#38; hora del recordatorio:</string>
 
     <!--Formulario agregar categoría recordatorio-->
     <string name="seleccionar_imagen">Seleccionar imagen</string>
-    <string name="titulo_categoria">Titulo categoría (Cita, Cummpleaños,&#8230;)</string>
-    <string name="mensaje_agregado_satisfactoriamente">Datos Agregados correctamente</string>
     <string name="seleccionar_app_imagen">Seleccionar una aplicación</string>
-    <string name="permiso_denegado_storage">¡No tienes permiso para ver, modificar fotos o imágenes!</string>
+    <string name="nuevo_titulo_categoria">Titulo categoría (Cita, Cummpleaños,&#8230;)</string>
+    <string name="permiso_denegado_storage">¡No tienes permiso para ver, modificar las fotos o imágenes!</string>
+    <string name="mensaje_agregado_satisfactoriamente">Categoría almacenada correctamente</string>
+    <!--Mensajes de errores - categoría-->
     <string name="error_titulo_categoria">Ingrese un título válido</string>
+    <string name="error_ingresar_categoria">Ingrese un título para la categoría</string>
+    <string name="error_titulo_categoria_char_min">Ingrese mínimo 4 caracteres</string>
+    <string name="error_titulo_categoria_char_max">Ingrese un máximo de 60 caracteres</string>
+    <string name="error_titulo_categoria_existe">La categoria %1$s ya existe en la base de datos</string>
 
     <!--Nombres de botones-->
     <string name="boton_eliminar">Eliminar</string>
@@ -106,10 +111,7 @@
     <!--Mensaje de lista vacía-->
     <string name="lista_vacia">No hay %1$s para mostrar.</string>
 
-    <!--Descripción de imagenes-->
-    <string name="descripcion_imagen_lista_item">Imagen de la categoría recordatorio</string>
-
-    <!--Mensajes de errores-->
-    <string name="error_al_guardar">Error: no se pudo guardar los datos!</string>
+    <!--String item lista recordatorios-->
+    <string name="item_recordatorio_descripcion_imagen">Imagen de la categoría recordatorio</string>
 
 </resources>

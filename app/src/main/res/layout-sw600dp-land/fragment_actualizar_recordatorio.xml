@@ -113,7 +113,7 @@
             android:visibility="gone"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="8dp"
             android:contentDescription="@string/boton_buscar_contacto"
             android:paddingEnd="2dp"
             android:paddingStart="2dp"

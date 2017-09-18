@@ -27,30 +27,30 @@
            android:layout_marginBottom="@dimen/margen_bottom_subtitulo"
            tools:text="Adalino Mas Trigoso"/>
 
-       <TextView
-           android:id="@+id/tv_mensaje"
-           style="@style/mensaje_recordatorio"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:drawableTop="@drawable/ic_assignment_24dp"
-           android:layout_marginBottom="@dimen/margen_bottom_large"
-           tools:text="Te deseo lo mejor mi querido padre en este día especial."/>
+        <TextView
+            android:id="@+id/tv_mensaje"
+            style="@style/contenido_mensaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margen_bottom_large"
+            android:drawableTop="@drawable/ic_assignment_24dp"
+            tools:text="Te deseo lo mejor mi querido padre en este día especial."/>
 
        <CheckBox
            android:id="@+id/cb_facebook"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:text="@string/facebook_recordatorio"
+           android:text="@string/detalle_facebook_recordatorio"
            android:layout_marginBottom="@dimen/margen_bottom_small"
-           style="@style/texto_detalle_small"/>
+           style="@style/texto_detalle"/>
 
        <CheckBox
            android:id="@+id/cb_twtter"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:text="@string/twitter_recordatorio"
+           android:text="@string/detalle_twitter_recordatorio"
            android:layout_marginBottom="@dimen/margen_bottom_small"
-           style="@style/texto_detalle_small"/>
+           style="@style/texto_detalle"/>
 
        <LinearLayout
            android:layout_width="match_parent"
@@ -59,16 +59,16 @@
            android:layout_marginBottom="@dimen/margen_bottom_large">
            <CheckBox
                android:id="@+id/cb_mensaje"
-               style="@style/texto_detalle_small"
+               style="@style/texto_detalle"
                android:layout_width="0dp"
                android:layout_height="wrap_content"
-               android:text="@string/enviar_mensaje_recordatorio"
+               android:text="@string/detalle_enviar_mensaje"
                android:layout_marginBottom="@dimen/margen_bottom_small"
                android:layout_weight="1"/>
 
            <TextView
                android:id="@+id/tv_telefono"
-               style="@style/texto_detalle_small"
+               style="@style/texto_detalle"
                android:layout_width="0dp"
                android:layout_height="wrap_content"
                android:layout_marginBottom="@dimen/margen_bottom_large"
@@ -83,7 +83,7 @@
            style="@style/subtitulo"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:text="@string/fecha_recordatorio"
+           android:text="@string/detalle_fecha_hora_recordatorio"
            android:layout_marginBottom="@dimen/margen_bottom_large"/>
 
        <LinearLayout
@@ -92,7 +92,7 @@
            android:orientation="horizontal">
            <TextView
                android:id="@+id/tv_fecha_recordatorio"
-               style="@style/texto_detalle_small"
+               style="@style/texto_detalle"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:gravity="center_vertical"
@@ -101,7 +101,7 @@
 
            <TextView
                android:id="@+id/tv_hora_recordatorio"
-               style="@style/texto_detalle_small"
+               style="@style/texto_detalle"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_marginStart="24dp"

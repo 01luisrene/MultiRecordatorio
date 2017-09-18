@@ -11,6 +11,7 @@ package com.a01luisrene.multirecordatorio.ui.fragmentos;
         import android.content.pm.PackageManager;
         import android.database.Cursor;
         import android.graphics.Color;
+        import android.graphics.Typeface;
         import android.graphics.drawable.Drawable;
         import android.net.Uri;
         import android.os.Build;
@@ -22,19 +23,18 @@ package com.a01luisrene.multirecordatorio.ui.fragmentos;
         import android.support.design.widget.Snackbar;
         import android.support.design.widget.TextInputEditText;
         import android.support.design.widget.TextInputLayout;
-        import android.support.v4.app.ActivityCompat;
         import android.support.v4.app.Fragment;
         import android.support.v4.content.ContextCompat;
         import android.provider.ContactsContract.CommonDataKinds.Phone;
         import android.support.v7.app.AlertDialog;
         import android.text.Editable;
+        import android.text.Spannable;
         import android.text.TextWatcher;
         import android.util.Patterns;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.AdapterView;
-        import android.widget.ArrayAdapter;
         import android.widget.Button;
         import android.widget.CompoundButton;
         import android.widget.DatePicker;
@@ -137,7 +137,6 @@ public class AgregarRecordatorioFragmento extends Fragment
 
     //Referencia a manager de SQLite
     DataBaseManagerRecordatorios mManagerRecordatorios;
-    Recordatorios recordatorios;
 
     //Referencias de widgets que se encuentran en activity detalle
     CollapsingToolbarLayout mCtCategoriaRecordatorio;
@@ -323,6 +322,8 @@ public class AgregarRecordatorioFragmento extends Fragment
             }else{
                 activarEnvioSms();
             }
+        }else{
+            activarEnvioSms();
         }
     }
 
@@ -388,59 +389,81 @@ public class AgregarRecordatorioFragmento extends Fragment
     }
 
     public void validarDatos() {
-        String stTitulo = mTieTituloRecordatorio.getText().toString();
-        String stEntidadOtros = mTieEntidadOtros.getText().toString();
-        String stContenidoMensaje = mTieContenidoMensaje.getText().toString();
-        String stFecha = mTieFecha.getText().toString();
-        String stHora = mTieHora.getText().toString();
+        String stTitulo = mTieTituloRecordatorio.getText().toString().trim();
+        String stEntidadOtros = mTieEntidadOtros.getText().toString().trim();
+        String stContenidoMensaje = mTieContenidoMensaje.getText().toString().trim();
+        String stTelefono = mTieTelefono.getText().toString().trim();
+        String stFecha = mTieFecha.getText().toString().trim();
+        String stHora = mTieHora.getText().toString().trim();
+        String existeTitulo = mManagerRecordatorios.tituloRecordatorioQueExiste(stTitulo);
+        String mensajeTextoExiste = Utilidades.formatearCadenasStr(
+                getActivity(),
+                R.string.error_titulo_recordatorio_existe,
+                existeTitulo
+        );
+
+        int valorInicialSpannable = 10;
+        int valorFinalSpannable = existeTitulo.length() + valorInicialSpannable;
 
         boolean titulo = esTituloRecordatorioValido(stTitulo);
         boolean entidadOtros = esEntidadOtrosValido(stEntidadOtros);
         boolean contenidoMensaje = esContenidoMensajeValido(stContenidoMensaje);
         boolean fechaIngresada = esFechaIngresadaValido(stFecha);
         boolean horaIngresada = esHoraIngresadaValido(stHora);
+        boolean existeTituloDb = mManagerRecordatorios.compruebaTituloRecordatorio(stTitulo);
+
+        //Formato personalizado del texto [Recordatorio existe]
+        Spannable tituloRecordatorioExiste = Utilidades.setSpanCustomText(getActivity(),
+                mensajeTextoExiste,
+                valorInicialSpannable,
+                valorFinalSpannable,
+                Color.WHITE,
+                1.2f,
+                Typeface.BOLD);
 
         if (!mValorIdCategoria.equals(ID_CATEGORIA_NULO)) {
 
-            if (titulo && entidadOtros && contenidoMensaje && guardarNumeroTelefono
-                    && fechaIngresada && horaIngresada) {
+            if (existeTituloDb && titulo && entidadOtros &&
+                    contenidoMensaje && guardarNumeroTelefono && fechaIngresada &&
+                    horaIngresada) {
 
                 try {
                     mManagerRecordatorios.insertarRecoratorio(null,
-                            mTieTituloRecordatorio.getText().toString(), //[Titulo]
-                            mTieEntidadOtros.getText().toString(),       //[Entidad - Otros]
-                            mTieContenidoMensaje.getText().toString(),   //[Contenido del mensaje]
-                            mValorFacebook,                             //[Publicar en facebook]
-                            mValorTwitter,                              //[Publicar en twitter]
-                            mValorEnviarMensaje,                        //[Envio mesaje]
-                            mTieTelefono.getText().toString(),           //[Teléfono]
-                            Utilidades.fechaHora(),                     //[Fecha creación]
-                            mTieFecha.getText().toString(),              //[Fecha del recordatorio]
-                            mTieHora.getText().toString(),               //[Hora del recordatorio]
-                            ESTADO_RECORDATORIO,                         //Estado activo recordatorio
-                            mValorIdCategoria);                          //[Id Categoría]
+                            stTitulo,                                           //[Titulo]
+                            stEntidadOtros,                                     //[Entidad - Otros]
+                            stContenidoMensaje,                                 //[Contenido del mensaje]
+                            mValorFacebook,                                     //[Publicar en facebook]
+                            mValorTwitter,                                      //[Publicar en twitter]
+                            mValorEnviarMensaje,                                //[Envio mesaje]
+                            stTelefono,                                         //[Teléfono]
+                            Utilidades.fechaHora(),                             //[Fecha creación]
+                            stFecha,                                            //[Fecha del recordatorio]
+                            stHora,                                             //[Hora del recordatorio]
+                            ESTADO_RECORDATORIO,                                //Estado activo recordatorio
+                            mValorIdCategoria);                                 //[Id Categoría]
 
                 } catch (Exception e) {
                     //Mensaje de error
                     mostrarMensaje(getString(R.string.error_al_guardar), 0);
                 } finally {
                     //Mensaje de registro guardado con exito
-                    Toast.makeText(getActivity(), getString(R.string.mensaje_agregado_satisfactoriamente), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.nuevo_recordatorio_almacenado),
+                            Toast.LENGTH_SHORT).show();
 
                     int idMax = mManagerRecordatorios.idRecordatorioMax();
 
-                    recordatorios = new Recordatorios(
+                    Recordatorios recordatorios = new Recordatorios(
                             String.valueOf(idMax),
-                            mTieTituloRecordatorio.getText().toString(),
-                            mTieEntidadOtros.getText().toString(),
-                            mTieContenidoMensaje.getText().toString(),
+                            stTitulo,
+                            stEntidadOtros,
+                            stContenidoMensaje,
                             mValorFacebook,
                             mValorTwitter,
                             mValorEnviarMensaje,
-                            mTieTelefono.getText().toString(),
+                            stTelefono,
                             Utilidades.fechaHora(),
-                            mTieFecha.getText().toString(),
-                            mTieHora.getText().toString(),
+                            stFecha,
+                            stHora,
                             mValorTituloCategoria,
                             mValorImagenCategoria
                     );
@@ -453,13 +476,18 @@ public class AgregarRecordatorioFragmento extends Fragment
                         getActivity().setResult(RESULT_OK, i);
 
                         esperarYCerrar(MILISEGUNDOS_ESPERA);
+
                     }else {
 
                         mCrud.agregarItem(recordatorios);
+
+                        //Cargo valores por defecto
+                        resetearWidgets();
                     }
-                    //Cargo valores por defecto
-                    resetearWidgets();
+
                 }
+            }else if(!existeTituloDb){
+                mensajeTituloRecordatorioExiste(tituloRecordatorioExiste);
             } else if (!titulo) {
                 mostrarMensaje(getString(R.string.error_titulo_recordatorio), 0);
             } else if (!contenidoMensaje) {
@@ -898,8 +926,22 @@ public class AgregarRecordatorioFragmento extends Fragment
         }
         snackbar.show();
     }
+    private void mensajeTituloRecordatorioExiste(Spannable mensaje){
 
-    //====================================== Observadores de texto =======================================//
+        Snackbar snackbar = Snackbar.make(mView, mensaje, Snackbar.LENGTH_LONG);
+        //Color de boton de accion
+        View snackBarView = snackbar.getView();
+        //Cambiando el color del texto
+        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+
+        snackBarView.setBackgroundColor(Color.argb(255, 239, 83, 80));
+
+        snackbar.show();
+
+    }
+
+    //================================ Observadores de texto =====================================//
 
     private TextWatcher twTituloRecordatorio = new TextWatcher(){
         @Override
@@ -911,7 +953,6 @@ public class AgregarRecordatorioFragmento extends Fragment
         @Override
         public void afterTextChanged(Editable s) {}
     };
-
 
     private TextWatcher twEntidadOtros = new TextWatcher() {
         @Override
@@ -936,6 +977,7 @@ public class AgregarRecordatorioFragmento extends Fragment
         @Override
         public void afterTextChanged(Editable s) {}
     };
+
     private  TextWatcher twTelefono = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}

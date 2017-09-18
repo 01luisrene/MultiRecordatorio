@@ -1,8 +1,13 @@
 package com.a01luisrene.multirecordatorio.io.db;
 
+import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.util.Log;
+
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 import com.a01luisrene.multirecordatorio.modelos.Categorias;
 
@@ -11,6 +16,9 @@ import java.util.List;
 
 
 public class DataBaseManagerRecordatorios extends DataBaseManager {
+
+    //==================================CONSTANTES - NO DB ======================//
+    public static final String VALOR_NULO = "nulo";
 
     //
     //===========================================================================
@@ -298,39 +306,99 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
         return super.getDb().query(TABLA_RECORDATORIOS, columnas, TITULO_RECORDATORIO + "=?", args, null, null, null);
     }
 
-    //Comprobar si existe un registro por el valor de un dato
+    //Comprobar si el título que desea guardar  existe
     @Override
-    public Boolean compruebaRegistroRecordatorio(String titulo){
-        boolean existe ;
-        Cursor resultSet = super.getDb().rawQuery("SELECT "+TITULO_RECORDATORIO+" FROM "
-                +TABLA_RECORDATORIOS + " WHERE " + TITULO_RECORDATORIO + "=" + titulo, null);
+    public boolean compruebaTituloRecordatorio(String titulo){
+        boolean existe = true;
+        try {
+            String mTitulo = tituloRecordatorioQueExiste(titulo);
 
-        if(resultSet.getCount() > 0){
-            resultSet.moveToFirst();
-            existe = true;
-        } else
-            existe = false;
+            existe = mTitulo.equals(VALOR_NULO);
 
-        resultSet.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return existe;
+    }
 
+    @Override
+    public String tituloRecordatorioQueExiste(String titulo) {
+        String mTitulo = VALOR_NULO;
+
+        if (titulo.trim().length() > 0){
+            Cursor cursor = super.getDb().rawQuery("SELECT "+TITULO_RECORDATORIO+" FROM "
+                    +TABLA_RECORDATORIOS , null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    if(cursor.getString(0).equalsIgnoreCase(titulo)){
+                        mTitulo = cursor.getString(0);
+                        break;
+                    }
+
+                } while(cursor.moveToNext());
+            }
+            cursor.close();
+        }
+
+        return mTitulo;
+    }
+
+    @Override
+    public boolean compruebaTituloRecordatorioUp(String titulo, String tituloObtenido) {
+
+        boolean existe = true;
+        try {
+            String mTitulo = tituloRecordatorioQueExisteUp(titulo);
+
+            existe = mTitulo.equalsIgnoreCase(tituloObtenido) || mTitulo.equals(VALOR_NULO);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return existe;
+    }
+
+    @Override
+    public String tituloRecordatorioQueExisteUp(String titulo) {
+        String mTitulo = VALOR_NULO;
+
+        if (titulo.trim().length() > 0){
+            Cursor cursor = super.getDb().rawQuery("SELECT "+TITULO_RECORDATORIO+" FROM "
+                    +TABLA_RECORDATORIOS , null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    if(cursor.getString(0).equalsIgnoreCase(titulo)){
+                        mTitulo = cursor.getString(0);
+                        break;
+                    }
+
+                } while(cursor.moveToNext());
+            }
+            cursor.close();
+        }
+
+        return mTitulo;
     }
 
     @Override
     public int idRecordatorioMax() {
-        int max_id = 0;
-        Cursor resultSet = super.getDb().rawQuery("SELECT MAX(_id) FROM " + TABLA_RECORDATORIOS, null);
+        int max_id = 1;
+        Cursor cursor = super.getDb().rawQuery("SELECT MAX("+ID_RECORDATORIO+") FROM " + TABLA_RECORDATORIOS, null);
 
-        if(resultSet.getCount()>0){
-            resultSet.moveToFirst();
-            max_id = resultSet.getInt(0);
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+            max_id = cursor.getInt(0);
         }
-        resultSet.close();
+        cursor.close();
 
         return max_id;
     }
 
+    @Override
     public List<Recordatorios> getListaRecordatorios(){
         List<Recordatorios> lista = new ArrayList<>();
 
@@ -355,24 +423,10 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                     cursor.getString(12)
 
             );
-            /*
-            recordatorio.setId(cursor.getString(0));
-            recordatorio.setTitulo(cursor.getString(1));
-            recordatorio.setEntidadOtros(cursor.getString(2));
-            recordatorio.setRutaImagenRecordatorio(cursor.getString(3));
-            recordatorio.setCategoriaRecordatorio(cursor.getString(4));
-            recordatorio.setTelefono(cursor.getString(5));
-            recordatorio.setContenidoMensaje(cursor.getString(6));
-            recordatorio.setEnvioMensaje(cursor.getString(7));
-            recordatorio.setPublicarFacebook(cursor.getString(8));
-            recordatorio.setPublicarTwitter(cursor.getString(9));
-            recordatorio.setFechaCreacionRecordatorio(cursor.getString(10));
-            recordatorio.setFechaPublicacionRecordatorio(cursor.getString(11));
-            recordatorio.setHoraPublicacionRecordatorio(cursor.getString(12));
 
-            */
             lista.add(recordatorio);
         }
+        cursor.close();
 
         return lista;
     }
@@ -447,10 +501,85 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     }
 
     @Override
-    public Boolean compruebaRegistroCategoriaRecordatorio(String id) {
-        return null;
+    public boolean compruebaTituloCategoria(String titulo) {
+        boolean existe = true;
+
+        try {
+
+            String mTitulo = tituloCategoriaQueExiste(titulo);
+
+            existe = mTitulo.equals(VALOR_NULO);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return existe;
     }
 
+    @Override
+    public String tituloCategoriaQueExiste(String tituloCategoria) {
+
+        String mTituloCategoria = VALOR_NULO;
+        if (tituloCategoria.trim().length()>0) {
+            Cursor cursor = super.getDb().rawQuery("SELECT " + TITULO_CATEGORIA + " FROM "
+                    + TABLA_CATEGORIAS_RECORDATORIOS, null);
+
+            if (cursor.moveToFirst()) {
+                do {
+
+                    if (cursor.getString(0).equalsIgnoreCase(tituloCategoria)) {
+                        mTituloCategoria = cursor.getString(0);
+                        break;
+                    }
+
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+
+        }
+        return mTituloCategoria;
+    }
+
+    @Override
+    public boolean compruebaTituloCategoriaUp(String tituloCategoria, String tituloCategoriaObtenido) {
+        boolean existe = true;
+        try {
+            String mTitulo = tituloCategoriaQueExisteUp(tituloCategoria);
+
+            existe = mTitulo.equalsIgnoreCase(tituloCategoriaObtenido) || mTitulo.equals(VALOR_NULO);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return existe;
+    }
+
+    @Override
+    public String tituloCategoriaQueExisteUp(String tituloCategoria) {
+        String mTitulo = VALOR_NULO;
+
+        if (tituloCategoria.trim().length() > 0){
+            Cursor cursor = super.getDb().rawQuery("SELECT "+TITULO_CATEGORIA+" FROM "
+                    +TABLA_CATEGORIAS_RECORDATORIOS , null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    if(cursor.getString(0).equalsIgnoreCase(tituloCategoria)){
+                        mTitulo = cursor.getString(0);
+                        break;
+                    }
+
+                } while(cursor.moveToNext());
+            }
+            cursor.close();
+        }
+
+        return mTitulo;
+    }
+
+    @Override
     public List<Categorias> getListaCategorias(){
         List<Categorias> lista = new ArrayList<>();
 
@@ -465,6 +594,8 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
 
             lista.add(catRecordatorio);
         }
+
+        cursor.close();
 
         return lista;
     }

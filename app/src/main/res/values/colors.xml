@@ -7,11 +7,11 @@
     <color name="primary_text">#212121</color>
 
     <!--#757575-->
-    <color name="secondary_text">#757575</color>
+    <color name="secondary_text">#727272</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
 
-    <color name="color_subtitulo">#464545</color>
+    <color name="color_subtitulo">#3f474d</color>
 
 
     <color name="color_fondo">@color/icons</color>
