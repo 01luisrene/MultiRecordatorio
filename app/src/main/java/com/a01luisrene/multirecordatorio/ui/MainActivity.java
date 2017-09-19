@@ -55,13 +55,6 @@ public class MainActivity extends AppCompatActivity implements
     public static final int CODIGO_RESPUESTA_NUEVO_RECORDATORIO = 103;
     public static final int CODIGO_RESPUESTA_ACTUALIZAR_ELIMINAR_RECORDATORIO = 1986;
 
-    private static final int READ_WRITE_EXTERNAL_STORAGE_PERMISSION = 2;
-    private static final int REQUEST_CODE_READ_WRITE_EXTERNAL_STORAGE = 3;
-    private static final int READ_CONTACTS_PERMISSION = 6;
-    private static final int REQUEST_CODE_READ_CONTACTS = 7;
-    private static final int SEND_SMS_PERMISSION = 8;
-    private static final int REQUEST_CODE_SEND_SMS = 9;
-
     FragmentManager fm;
     ListaRecordatoriosFragmento mListaRecordatoriosFragmento;
     DetalleRecordatorioFragmento mDetalleRecordatorioFragmento;

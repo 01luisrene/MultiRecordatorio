@@ -66,4 +66,8 @@ public class Utilidades {
         return index;
     }
 
+    public static String obtenerExtensionArchivo(String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+    }
+
 }

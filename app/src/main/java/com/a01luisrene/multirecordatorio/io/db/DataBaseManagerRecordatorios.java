@@ -18,7 +18,7 @@ import java.util.List;
 public class DataBaseManagerRecordatorios extends DataBaseManager {
 
     //==================================CONSTANTES - NO DB ======================//
-    public static final String VALOR_NULO = "nulo";
+    private static final String VALOR_NULO = "nulo";
 
     //
     //===========================================================================
@@ -231,26 +231,46 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                                       String categoria) {
 
         String[] args = new String[]{id};
-        super.getDb().update(TABLA_RECORDATORIOS, cvRecordatorios(id,
-                titulo,
-                nombresOtros,
-                contenidoMensaje,
-                publicarFacebook,
-                publicarTwitter,
-                envioMensaje,
-                telefono,
-                fechaCreacion,
-                fechaRecordatorio,
-                horaRecordatorio,
-                estadoRecordatorio,
-                categoria), ID_RECORDATORIO + "=?",args);
+        getDb().beginTransaction();
+        try {
+            super.getDb().update(TABLA_RECORDATORIOS, cvRecordatorios(id,
+                    titulo,
+                    nombresOtros,
+                    contenidoMensaje,
+                    publicarFacebook,
+                    publicarTwitter,
+                    envioMensaje,
+                    telefono,
+                    fechaCreacion,
+                    fechaRecordatorio,
+                    horaRecordatorio,
+                    estadoRecordatorio,
+                    categoria), ID_RECORDATORIO + "=?",args);
+
+            getDb().setTransactionSuccessful();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            getDb().endTransaction();
+        }
     }
 
     @Override
     public void eliminarRecordatorio(String id) {
 
         String[] args = new String[]{id};
-        super.getDb().delete(TABLA_RECORDATORIOS, ID_RECORDATORIO + "=?", args);
+        getDb().beginTransaction();
+        try {
+            super.getDb().delete(TABLA_RECORDATORIOS, ID_RECORDATORIO + "=?", args);
+
+            getDb().setTransactionSuccessful();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            getDb().endTransaction();
+        }
 
     }
 
@@ -313,7 +333,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
         try {
             String mTitulo = tituloRecordatorioQueExiste(titulo);
 
-            existe = mTitulo.equals(VALOR_NULO);
+            existe = mTitulo.equalsIgnoreCase(VALOR_NULO);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -352,7 +372,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
         try {
             String mTitulo = tituloRecordatorioQueExisteUp(titulo);
 
-            existe = mTitulo.equalsIgnoreCase(tituloObtenido) || mTitulo.equals(VALOR_NULO);
+            existe = mTitulo.equalsIgnoreCase(tituloObtenido) || mTitulo.equalsIgnoreCase(VALOR_NULO);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -457,13 +477,21 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                                               String categoriaRecordatorio,
                                               int proteccion,
                                               String fechaCreacion) {
-        super.getDb().insert(TABLA_CATEGORIAS_RECORDATORIOS,null, cvCategoriaRecordatorio(
-                id,
-                rutaImagenRecordatorio,
-                categoriaRecordatorio,
-                proteccion,
-                fechaCreacion
-        ));
+        getDb().beginTransaction();
+        try {
+            super.getDb().insert(TABLA_CATEGORIAS_RECORDATORIOS,null, cvCategoriaRecordatorio(
+                    id,
+                    rutaImagenRecordatorio,
+                    categoriaRecordatorio,
+                    proteccion,
+                    fechaCreacion
+            ));
+            getDb().setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            getDb().endTransaction();
+        }
 
     }
 
@@ -508,7 +536,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
 
             String mTitulo = tituloCategoriaQueExiste(titulo);
 
-            existe = mTitulo.equals(VALOR_NULO);
+            existe = mTitulo.equalsIgnoreCase(VALOR_NULO);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -547,7 +575,7 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
         try {
             String mTitulo = tituloCategoriaQueExisteUp(tituloCategoria);
 
-            existe = mTitulo.equalsIgnoreCase(tituloCategoriaObtenido) || mTitulo.equals(VALOR_NULO);
+            existe = mTitulo.equalsIgnoreCase(tituloCategoriaObtenido) || mTitulo.equalsIgnoreCase(VALOR_NULO);
 
         } catch (Exception e) {
             e.printStackTrace();
