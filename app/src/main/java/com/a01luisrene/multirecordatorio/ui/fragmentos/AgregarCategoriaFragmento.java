@@ -50,12 +50,19 @@ import static android.app.Activity.RESULT_OK;
 public class AgregarCategoriaFragmento extends Fragment implements View.OnClickListener {
     private static final String IMAGE_SELECT_ALL_TYPE = "image/*";
     private static final String REGEX_LATINOS = "^[a-zA-Z0-9-/°+() áÁéÉíÍóÓúÚñÑüÜ]*$";
-    private static final int PROTECCION = 0;
+    //Constantes para la imagen
+    public static final String CHAR_ORIGINAL= "áàäéèëíìïóòöúùüñ /°()";
+    public static final String CHAR_ASCII = "aaaeeeiiiooouuun_----";
+    public static final String DIRECTORIO_IMAGENES = "IMG-CAT";
+    public static final String PREFIJO_IMG = "IMG_";
+    public static final String TIMESTAMP = "_ddMMyyyy_HHmmss";
+    public static final String BARRA = "/";
     private static final int REQUEST_CODE_GALLERY = 1;
     private static final int WRITE_STORAGE_PERMISSION = 2;
+
+    private static final int PROTECCION = 0;
     public static final String LLAVE_RETORNO_CATEGORIA = "llave.retorno.categoria";
-    public static final String DIRECTORIO_IMAGENES = "IMG-CAT";
-    public static final String BARRA = "/";
+
     public static final String TAG = "log";
 
     boolean respuestaRetornoCategoria = false;
@@ -154,6 +161,7 @@ public class AgregarCategoriaFragmento extends Fragment implements View.OnClickL
 
     }
 
+
     private void validarDatos() {
         //Almacena el valor del campo titulo tipo recordatorio
         String stTitulo = mEtTituloRecordatorio.getText().toString().trim();
@@ -200,7 +208,6 @@ public class AgregarCategoriaFragmento extends Fragment implements View.OnClickL
                     uriFinalImagen = mUriInicialImagen;
                 }
             }
-
             try{
                 mManagerRecordatorios.insertarCategoriaRecordatorio(
                         null,
@@ -241,20 +248,17 @@ public class AgregarCategoriaFragmento extends Fragment implements View.OnClickL
 
         //TODO: comprobar espacio: getFreeSpace() o  getTotalSpace()
         //TODO: eliminar archivos creados: getCacheDir()
-
+        //Arreglo que contiene la uri inicial archivo y la uri final donde se copiara el archivo
         String[] args = {uriInicialImagen, uriFinalImagen};
-
+        //Ruta del directorio IMG_CAT
         File directorio = new File(rutaDirectorio);
 
         //Compruebo si la carpeta IMG_CAT existe
         if (directorio.exists() && directorio.isDirectory()) {
             //Copio la imagen seleccionada a la carpeta IMG_CAT
-
             CopiarArchivo.main(args);
 
-
         } else {//Se ejecuta si la carpeta IMG_CAT no existe
-
             //Creo la carpeta IMG_CAT
             crearCarpetaImagenesCategoria(getActivity().getApplicationContext(), DIRECTORIO_IMAGENES);
             //Copio la imagen seleccionada a la carpeta IMG_CAT creada
@@ -262,14 +266,39 @@ public class AgregarCategoriaFragmento extends Fragment implements View.OnClickL
         }
     }
 
-    private String uriFinalImagen(String rutaDirectorio, String rutaImagen){
-        String prefijo = "IMG_";
-        //Creo una cadena con la fecha y hora
-        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmmss", Locale.getDefault()).format(new Date());
-        //Extraigo la extension de la imagen seleccionada
-        String extensionImagen = String.format(".%s", Utilidades.obtenerExtensionArchivo(rutaImagen));
+    private String uriFinalImagen(String rutaDirectorio, String uriInicialImagen){
+        //Obtengo el valor del string de la caja de texto categorías
+        String entradaCategoria = mEtTituloRecordatorio.getText().toString().trim();
+        //Devuelvo el nombre de para la imagen categoría
+        String nombreImagen = nombreImagenCategoria(entradaCategoria, uriInicialImagen);
         //Devuelvo la ruta final donde se copiara la imagen
-        return String.format("%s%s%s%s%s",rutaDirectorio,BARRA,prefijo,timeStamp,extensionImagen);
+        return String.format("%s%s%s",rutaDirectorio,BARRA,nombreImagen);
+    }
+
+    private String nombreImagenCategoria(String nombreCategoria, String uriInicialImagen){
+        //Nombre de la categoría
+        String nombreCat = removerCaracteresEspeciales(nombreCategoria);
+        //Creo una cadena con la fecha y hora
+        String timeStamp = new SimpleDateFormat(TIMESTAMP, Locale.getDefault()).format(new Date());
+        //Extraigo la extension de la imagen seleccionada
+        String extensionImagen = String.format(".%s", Utilidades.obtenerExtensionArchivo(uriInicialImagen));
+
+        return String.format("%s%s%s%s", PREFIJO_IMG,nombreCat,timeStamp,extensionImagen);
+    }
+
+    public String removerCaracteresEspeciales(String input) {
+
+        //Cadena de caracteres original a sustituir.
+        String original = CHAR_ORIGINAL;
+        //Convierto la cadena recuperada en minúsculas
+        String output = input.toLowerCase();
+        //Recorro la cadena y reemplazo los caracteres
+        for (int i=0; i<original.length(); i++) {
+            //Reemplazamos los caracteres especiales.
+            output = output.replace(original.charAt(i), CHAR_ASCII.charAt(i));
+        }
+        //Devuelvo la cadena final
+        return output;
     }
 
     public File crearCarpetaImagenesCategoria(Context context, String nombreCarpeta) {
