@@ -15,13 +15,14 @@ public class Recordatorios implements Parcelable {
     private String fechaCreacionRecordatorio;
     private String fechaPublicacionRecordatorio;
     private String horaPublicacionRecordatorio;
-    private String categoriaRecordatorio;
+    private String titulocategoria;
     private String rutaImagenRecordatorio;
+    private int proteccionImg;
 
     /**
      * CONSTRUCTOR
      */
-    public Recordatorios(String id, String titulo, String entidadOtros, String contenidoMensaje, String publicarFacebook, String publicarTwitter, String envioMensaje, String telefono, String fechaCreacionRecordatorio, String fechaPublicacionRecordatorio, String horaPublicacionRecordatorio, String categoriaRecordatorio, String rutaImagenRecordatorio) {
+    public Recordatorios(String id, String titulo, String entidadOtros, String contenidoMensaje, String publicarFacebook, String publicarTwitter, String envioMensaje, String telefono, String fechaCreacionRecordatorio, String fechaPublicacionRecordatorio, String horaPublicacionRecordatorio, String titulocategoria, String rutaImagenRecordatorio, int proteccionImg) {
         this.id = id;
         this.titulo = titulo;
         this.entidadOtros = entidadOtros;
@@ -33,14 +34,13 @@ public class Recordatorios implements Parcelable {
         this.fechaCreacionRecordatorio = fechaCreacionRecordatorio;
         this.fechaPublicacionRecordatorio = fechaPublicacionRecordatorio;
         this.horaPublicacionRecordatorio = horaPublicacionRecordatorio;
-        this.categoriaRecordatorio = categoriaRecordatorio;
+        this.titulocategoria = titulocategoria;
         this.rutaImagenRecordatorio = rutaImagenRecordatorio;
+        this.proteccionImg = proteccionImg;
     }
-
     /**
      * GETTERS & SETTERS
      */
-
     public String getId() {
         return id;
     }
@@ -129,12 +129,12 @@ public class Recordatorios implements Parcelable {
         this.horaPublicacionRecordatorio = horaPublicacionRecordatorio;
     }
 
-    public String getCategoriaRecordatorio() {
-        return categoriaRecordatorio;
+    public String getTitulocategoria() {
+        return titulocategoria;
     }
 
-    public void setCategoriaRecordatorio(String categoriaRecordatorio) {
-        this.categoriaRecordatorio = categoriaRecordatorio;
+    public void setTitulocategoria(String titulocategoria) {
+        this.titulocategoria = titulocategoria;
     }
 
     public String getRutaImagenRecordatorio() {
@@ -143,6 +143,14 @@ public class Recordatorios implements Parcelable {
 
     public void setRutaImagenRecordatorio(String rutaImagenRecordatorio) {
         this.rutaImagenRecordatorio = rutaImagenRecordatorio;
+    }
+
+    public int getProteccionImg() {
+        return proteccionImg;
+    }
+
+    public void setProteccionImg(int proteccionImg) {
+        this.proteccionImg = proteccionImg;
     }
 
 
@@ -164,8 +172,9 @@ public class Recordatorios implements Parcelable {
         dest.writeString(this.fechaCreacionRecordatorio);
         dest.writeString(this.fechaPublicacionRecordatorio);
         dest.writeString(this.horaPublicacionRecordatorio);
-        dest.writeString(this.categoriaRecordatorio);
+        dest.writeString(this.titulocategoria);
         dest.writeString(this.rutaImagenRecordatorio);
+        dest.writeInt(this.proteccionImg);
     }
 
     protected Recordatorios(Parcel in) {
@@ -180,8 +189,9 @@ public class Recordatorios implements Parcelable {
         this.fechaCreacionRecordatorio = in.readString();
         this.fechaPublicacionRecordatorio = in.readString();
         this.horaPublicacionRecordatorio = in.readString();
-        this.categoriaRecordatorio = in.readString();
+        this.titulocategoria = in.readString();
         this.rutaImagenRecordatorio = in.readString();
+        this.proteccionImg = in.readInt();
     }
 
     public static final Creator<Recordatorios> CREATOR = new Creator<Recordatorios>() {

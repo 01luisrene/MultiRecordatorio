@@ -161,7 +161,8 @@
             android:hint="@string/nuevo_fecha_recordatorio"
             android:inputType="date"
             tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="23dp"/>
+            tools:layout_editor_absoluteY="23dp"
+            android:nextFocusDown="@+id/tie_nuevo_hora"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -318,7 +319,8 @@
             android:drawableStart="@drawable/ic_label_24dp"
             android:ems="10"
             android:hint="@string/nuevo_entidad_otros"
-            android:inputType="textCapWords"/>
+            android:inputType="textCapWords"
+            android:nextFocusDown="@+id/tie_nuevo_contenido_mensaje"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -346,9 +348,10 @@
             android:ems="10"
             android:gravity="top"
             android:hint="@string/nuevo_mensaje_recordatorio"
-            android:inputType="textCapSentences|textMultiLine"
+            android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
             android:lines="5"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical"
+            android:nextFocusDown="@+id/tie_nuevo_fecha"/>
 
     </android.support.design.widget.TextInputLayout>
 

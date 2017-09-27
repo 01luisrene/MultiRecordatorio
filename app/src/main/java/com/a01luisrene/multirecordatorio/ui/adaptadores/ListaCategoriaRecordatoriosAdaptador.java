@@ -56,7 +56,7 @@ public class ListaCategoriaRecordatoriosAdaptador extends RecyclerView.Adapter<L
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         holder.id.setText(mDataset.get(position).getId());
-        holder.titulo.setText(mDataset.get(position).getCategorioRecordatorio());
+        holder.titulo.setText(mDataset.get(position).getTituloCategoria());
 
         //Almaceno el valor devuelto la la ruta de imagen en string
         String valorImagen = mDataset.get(position).getImagen();

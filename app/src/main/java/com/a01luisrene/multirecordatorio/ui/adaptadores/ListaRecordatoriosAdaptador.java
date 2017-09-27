@@ -69,6 +69,7 @@ public class ListaRecordatoriosAdaptador
         Drawable drawable_deshabilitado, drawable_facebook, drawable_twitter, drawable_sms;
         String valorTitulo, valorImagen, valorContenidoMensaje, tituloFormateado,
                 contenidoMensajeFormateado, valorFacebook, valorTwitter, valorSms;
+        int valorProteccionImg;
 
         ViewHolder(View v) {
             super(v);
@@ -105,6 +106,7 @@ public class ListaRecordatoriosAdaptador
             valorTwitter = items.getPublicarTwitter();
             valorSms = items.getEnvioMensaje();
             valorImagen = items.getRutaImagenRecordatorio();
+            valorProteccionImg = items.getProteccionImg();
 
             //Título formateado
             if(valorTitulo.length() >= 45){
@@ -136,11 +138,19 @@ public class ListaRecordatoriosAdaptador
                     ivImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
 
                 }else{
-                    //Cargo la imagen con la ayuda de la librería picasso
-                    Picasso.with(context)
-                            .load(new File(valorImagen))
-                            .error(R.drawable.ic_image_150dp)
-                            .into(ivImagenRecordatorio);
+                    if(valorProteccionImg==1){
+                        //Cargo la imagen con la ayuda de la librería picasso
+                        Picasso.with(context)
+                                .load(valorImagen)
+                                .error(R.drawable.ic_image_150dp)
+                                .into(ivImagenRecordatorio);
+                    }else{
+                        //Cargo la imagen con la ayuda de la librería picasso
+                        Picasso.with(context)
+                                .load(new File(valorImagen))
+                                .error(R.drawable.ic_image_150dp)
+                                .into(ivImagenRecordatorio);
+                    }
                 }
 
             }else{ //Se aplica para resoluciones grandes como [tablets]
@@ -151,11 +161,19 @@ public class ListaRecordatoriosAdaptador
                     civImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
 
                 }else{
-                    //Cargo la imagen con la ayuda de la librería picasso
-                    Picasso.with(context)
-                            .load(new File(valorImagen))
-                            .error(R.drawable.ic_image_150dp)
-                            .into(civImagenRecordatorio);
+                    if(valorProteccionImg == 1){
+                        //Cargo la imagen con la ayuda de la librería picasso
+                        Picasso.with(context)
+                                .load(valorImagen)
+                                .error(R.drawable.ic_image_150dp)
+                                .into(civImagenRecordatorio);
+                    }else{
+                        //Cargo la imagen con la ayuda de la librería picasso
+                        Picasso.with(context)
+                                .load(new File(valorImagen))
+                                .error(R.drawable.ic_image_150dp)
+                                .into(civImagenRecordatorio);
+                    }
                 }
             }
 

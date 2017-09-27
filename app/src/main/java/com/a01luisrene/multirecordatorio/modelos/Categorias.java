@@ -1,27 +1,25 @@
 package com.a01luisrene.multirecordatorio.modelos;
 
-public class Categorias {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Categorias implements Parcelable {
     private String id;
     private String imagen;
-    private String categorioRecordatorio;
+    private String tituloCategoria;
+    private int proteccion;
 
     /**
      * CONSTRUCTOR
      */
 
-    public Categorias() {
-
-    }
-
-    public Categorias(String id, String imagen, String categorioRecordatorio) {
+    public Categorias(String id, String imagen, String tituloCategoria, int proteccion) {
         this.id = id;
         this.imagen = imagen;
-        this.categorioRecordatorio = categorioRecordatorio;
+        this.tituloCategoria = tituloCategoria;
+        this.proteccion = proteccion;
     }
 
-    /**
-     * GETTER & SETTER
-     */
 
     public String getId() {
         return id;
@@ -39,18 +37,52 @@ public class Categorias {
         this.imagen = imagen;
     }
 
-    public String getCategorioRecordatorio() {
-        return categorioRecordatorio;
+    public String getTituloCategoria() {
+        return tituloCategoria;
     }
 
-    public void setCategorioRecordatorio(String categorioRecordatorio) {
-        this.categorioRecordatorio = categorioRecordatorio;
+    public void setTituloCategoria(String tituloCategoria) {
+        this.tituloCategoria = tituloCategoria;
     }
 
-    //Spinner
-    public String toString(){
-        //Nombre del campo a mostrar en el combo
-        return categorioRecordatorio;
+    public int getProteccion() {
+        return proteccion;
     }
 
+    public void setProteccion(int proteccion) {
+        this.proteccion = proteccion;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.imagen);
+        dest.writeString(this.tituloCategoria);
+        dest.writeInt(this.proteccion);
+    }
+
+    protected Categorias(Parcel in) {
+        this.id = in.readString();
+        this.imagen = in.readString();
+        this.tituloCategoria = in.readString();
+        this.proteccion = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Categorias> CREATOR = new Parcelable.Creator<Categorias>() {
+        @Override
+        public Categorias createFromParcel(Parcel source) {
+            return new Categorias(source);
+        }
+
+        @Override
+        public Categorias[] newArray(int size) {
+            return new Categorias[size];
+        }
+    };
 }

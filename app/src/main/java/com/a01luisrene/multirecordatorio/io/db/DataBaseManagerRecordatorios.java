@@ -180,8 +180,8 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
         //Cadena que contiene la consulta de las tablas recordatorios y categoria_recoordatorios
         String sql =
                 String.format("SELECT r.%1$s, r.%2$s, r.%3$s, r.%4$s, r.%5$s, r.%6$s, r.%7$s, r.%8$s, r.%9$s, r.%10$s, " +
-                                "r.%11$s, cr.%12$s, cr.%13$s FROM %14$s r, %15$s cr WHERE r.%16$s = cr.%17$s " +
-                                "AND r.%18$s = %19$d ORDER BY r.%20$s DESC",
+                                "r.%11$s, cr.%12$s, cr.%13$s, cr.%14$s FROM %15$s r, %16$s cr WHERE r.%17$s = cr.%18$s " +
+                                "AND r.%19$s = %20$d ORDER BY r.%21$s DESC",
                         Constantes.EntradasRecordatorio.ID_RECORDATORIO, //[1]
                         Constantes.EntradasRecordatorio.TITULO_RECORDATORIO, //[2]
                         Constantes.EntradasRecordatorio.ENTIDAD_OTROS_RECORDATORIO, //[3]
@@ -195,13 +195,14 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                         Constantes.EntradasRecordatorio.HORA_AVISO_RECORDATORIO, //[11]
                         Constantes.EntradasCategoria.TITULO_CATEGORIA, //[12] Constantes de categoría
                         Constantes.EntradasCategoria.RUTA_IMAGEN_CATEGORIA, //[13] Constantes de categoría
-                        Constantes.EntradasRecordatorio.TABLA_RECORDATORIOS, //[14]
-                        Constantes.EntradasCategoria.TABLA_CATEGORIAS_RECORDATORIOS, //[15] Constantes de categoría
-                        Constantes.EntradasRecordatorio.LLAVE_CATEGORIA_RECORDATORIO, //[16]
-                        Constantes.EntradasCategoria.ID_CATEGORIA, //[17] Constantes de categoría
-                        Constantes.EntradasRecordatorio.ESTADO_RECORDATORIO, //[18]
-                        1, //[19]
-                        Constantes.EntradasRecordatorio.ID_RECORDATORIO); //[20]
+                        Constantes.EntradasCategoria.PROTECCION_CATEGORIA, //[14] Constantes de categoría
+                        Constantes.EntradasRecordatorio.TABLA_RECORDATORIOS, //[15]
+                        Constantes.EntradasCategoria.TABLA_CATEGORIAS_RECORDATORIOS, //[16] Constantes de categoría
+                        Constantes.EntradasRecordatorio.LLAVE_CATEGORIA_RECORDATORIO, //[17]
+                        Constantes.EntradasCategoria.ID_CATEGORIA, //[18] Constantes de categoría
+                        Constantes.EntradasRecordatorio.ESTADO_RECORDATORIO, //[19]
+                        1, //[20]
+                        Constantes.EntradasRecordatorio.ID_RECORDATORIO); //[21]
 
         //rawQuery(Sentencia SQL, null)
         return super.getDb().rawQuery(sql, null);
@@ -336,8 +337,8 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
                     cursor.getString(9),
                     cursor.getString(10),
                     cursor.getString(11),
-                    cursor.getString(12)
-
+                    cursor.getString(12),
+                    cursor.getInt(13)
             );
 
             lista.add(recordatorio);
@@ -415,7 +416,8 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
     public Cursor cargarCursorCategorias() {
         String[] columnas = new String[]{Constantes.EntradasCategoria.ID_CATEGORIA,
                 Constantes.EntradasCategoria.RUTA_IMAGEN_CATEGORIA,
-                Constantes.EntradasCategoria.TITULO_CATEGORIA};
+                Constantes.EntradasCategoria.TITULO_CATEGORIA,
+                Constantes.EntradasCategoria.PROTECCION_CATEGORIA};
         String order_by = Constantes.EntradasCategoria.ID_CATEGORIA + " DESC";
         return super.getDb().query(Constantes.EntradasCategoria.TABLA_CATEGORIAS_RECORDATORIOS,
                 columnas, null, null, null, null, order_by);
@@ -514,11 +516,12 @@ public class DataBaseManagerRecordatorios extends DataBaseManager {
         Cursor cursor = cargarCursorCategorias();
 
         while (cursor.moveToNext()){
-            Categorias catRecordatorio = new Categorias();
-
-            catRecordatorio.setId(cursor.getString(0));
-            catRecordatorio.setImagen(cursor.getString(1));
-            catRecordatorio.setCategorioRecordatorio(cursor.getString(2));
+            Categorias catRecordatorio = new Categorias(
+                cursor.getString(0),
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getInt(3)
+            );
 
             lista.add(catRecordatorio);
         }

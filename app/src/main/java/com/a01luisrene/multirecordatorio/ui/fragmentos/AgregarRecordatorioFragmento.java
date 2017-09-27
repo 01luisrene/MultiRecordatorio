@@ -142,7 +142,8 @@ public class AgregarRecordatorioFragmento extends Fragment
     //Referencias de widgets que se encuentran en activity detalle
     CollapsingToolbarLayout mCtCategoriaRecordatorio;
     ImageView mIvImagenRecordatorio;
-    String  mValorIdCategoria, mValorImagenCategoria, mValorTituloCategoria;
+    String  mValorIdCategoria, mValorRutaImgCategoria, mValorTituloCategoria;
+    int mValorProteccionImg;
     Activity activity;
 
     //Referencias de widgets que se encuentran en layout toolbar_top.xml
@@ -286,7 +287,7 @@ public class AgregarRecordatorioFragmento extends Fragment
 
         for(int i = 0; i < sizeListaCat; i++){
             comboListaCategorias.add(mManagerRecordatorios
-                    .getListaCategorias().get(i).getCategorioRecordatorio());
+                    .getListaCategorias().get(i).getTituloCategoria());
         }
 
         comboAdapter = new ArrayAdapter<>(getActivity(),
@@ -466,7 +467,8 @@ public class AgregarRecordatorioFragmento extends Fragment
                             stFecha,
                             stHora,
                             mValorTituloCategoria,
-                            mValorImagenCategoria
+                            mValorRutaImgCategoria,
+                            mValorProteccionImg
                     );
 
                     //Cierro la activity siempre que me encuentre en un smartphone
@@ -1027,21 +1029,36 @@ public class AgregarRecordatorioFragmento extends Fragment
                     mValorIdCategoria = mManagerRecordatorios
                             .getListaCategorias()
                             .get(position).getId();
-                    mValorImagenCategoria = mManagerRecordatorios
+                    mValorRutaImgCategoria = mManagerRecordatorios
                             .getListaCategorias()
                             .get(position).getImagen();
                     mValorTituloCategoria = mManagerRecordatorios
                             .getListaCategorias()
-                            .get(position).getCategorioRecordatorio();
+                            .get(position).getTituloCategoria();
+
+                    mValorProteccionImg =  mManagerRecordatorios
+                            .getListaCategorias()
+                            .get(position).getProteccion();
 
                     if(Utilidades.smartphone) {
 
                         mCtCategoriaRecordatorio.setTitle(mValorTituloCategoria);
-                        if (mValorImagenCategoria != null){
-                            Picasso.with(getActivity())
-                                    .load(new File(mValorImagenCategoria))
-                                    .noFade()
-                                    .into(mIvImagenRecordatorio);
+                        if (mValorRutaImgCategoria != null){
+                            if (mValorProteccionImg == 1){
+                                Picasso.with(getActivity())
+                                        .load(mValorRutaImgCategoria)
+                                        .error(R.drawable.ic_image_150dp)
+                                        .noFade()
+                                        .into(mIvImagenRecordatorio);
+
+                            }else {
+                                Picasso.with(getActivity())
+                                        .load(new File(mValorRutaImgCategoria))
+                                        .error(R.drawable.ic_image_150dp)
+                                        .noFade()
+                                        .into(mIvImagenRecordatorio);
+                            }
+
                         }else{
                             mIvImagenRecordatorio.setImageDrawable(null);
                         }
@@ -1056,12 +1073,22 @@ public class AgregarRecordatorioFragmento extends Fragment
 
                         mTvTituloCategoriaRecordatorio.setText(mTituloCategoriaFormateado);
 
-                        if (mValorImagenCategoria != null){
-                            Picasso.with(getActivity().getApplicationContext())
-                                    .load(new File(mValorImagenCategoria))
-                                    .error(R.drawable.ic_image_150dp)
-                                    .noFade()
-                                    .into(mCivImagenRecordatorio);
+                        if (mValorRutaImgCategoria != null){
+                            if (mValorProteccionImg == 1){
+                                Picasso.with(getActivity().getApplicationContext())
+                                        .load(mValorRutaImgCategoria)
+                                        .error(R.drawable.ic_image_150dp)
+                                        .noFade()
+                                        .into(mCivImagenRecordatorio);
+                            }else{
+                                Picasso.with(getActivity().getApplicationContext())
+                                        .load(new File(mValorRutaImgCategoria))
+                                        .error(R.drawable.ic_image_150dp)
+                                        .noFade()
+                                        .into(mCivImagenRecordatorio);
+                            }
+
+
                         }else{
                             mCivImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
                         }

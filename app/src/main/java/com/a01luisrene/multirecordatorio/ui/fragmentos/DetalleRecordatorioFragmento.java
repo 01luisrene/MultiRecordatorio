@@ -41,6 +41,7 @@ public class DetalleRecordatorioFragmento extends Fragment
     String mValorFacebook, mValorTwitter, mValorMensaje, mValorRutaImagen;
     TextView mTvTelefono, mTvEntidadOtros;
     ImageButton mIbEliminarRecordatorio, mIbAcutualizarRecordatorio;
+    int mValorProteccionImg;
 
     Activity activity;
 
@@ -94,28 +95,45 @@ public class DetalleRecordatorioFragmento extends Fragment
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_detalle_recordatorio, container, false);
         mManager = new DataBaseManagerRecordatorios(getActivity().getApplicationContext());
+        mValorProteccionImg = mItemRecordatorio.getProteccionImg();
 
         if(mItemRecordatorio != null) {
 
             if (Utilidades.smartphone) {
 
-                mCtRecordatorio.setTitle(mItemRecordatorio.getCategoriaRecordatorio());
+                mCtRecordatorio.setTitle(mItemRecordatorio.getTitulocategoria());
                 //Condiciona para cargar el ImageView [solo si devuelve un valor diferente a nulo]
                 if(mValorRutaImagen != null){
-                    Picasso.with(getContext())
-                            .load(new File(mValorRutaImagen))
-                            .error(R.drawable.ic_image_150dp)
-                            .into(mIvImagenRecordatorio);
+                    if(mValorProteccionImg == 1){
+                        Picasso.with(getContext())
+                                .load(mValorRutaImagen)
+                                .error(R.drawable.ic_image_150dp)
+                                .into(mIvImagenRecordatorio);
+                    }else{
+                        Picasso.with(getContext())
+                                .load(new File(mValorRutaImagen))
+                                .error(R.drawable.ic_image_150dp)
+                                .into(mIvImagenRecordatorio);
+                    }
                 }
 
             }else{ //Compruebo si es tablet
 
                 if(mValorRutaImagen != null){
-                    //Utilizo la librería Picasso
-                    Picasso.with(getContext())
-                            .load(new File(mValorRutaImagen))
-                            .error(R.drawable.ic_image_150dp)
-                            .into(mCivImagenCategoria);
+                    if(mValorProteccionImg == 1){
+                        //Utilizo la librería Picasso
+                        Picasso.with(getContext())
+                                .load(mValorRutaImagen)
+                                .error(R.drawable.ic_image_150dp)
+                                .into(mCivImagenCategoria);
+                    }else{
+                        //Utilizo la librería Picasso
+                        Picasso.with(getContext())
+                                .load(new File(mValorRutaImagen))
+                                .error(R.drawable.ic_image_150dp)
+                                .into(mCivImagenCategoria);
+                    }
+
 
                 }else{
                     mCivImagenCategoria.setImageResource(R.drawable.ic_image_150dp);
