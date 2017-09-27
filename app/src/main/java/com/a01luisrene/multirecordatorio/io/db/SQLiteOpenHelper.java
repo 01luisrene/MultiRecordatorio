@@ -5,10 +5,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 
-import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 
-
-public class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
+class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
 
     private static SQLiteOpenHelper sInstance;
     private static final String NOMBRE_BASE_DATOS = "multirecordatorio.sqlite";
@@ -66,7 +64,7 @@ public class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
             Constantes.EntradasUsuario.ESTADO_USUARIO);
 
     //[Singleton Pattern] Patrón Singleton
-    public static synchronized SQLiteOpenHelper getInstance(Context context) {
+    static synchronized SQLiteOpenHelper getInstance(Context context) {
         if (sInstance == null) {
             sInstance = new SQLiteOpenHelper(context.getApplicationContext());
         }
@@ -105,41 +103,17 @@ public class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
         db.execSQL(CREAR_TABLA_USUARIOS);
 
 
-       ContentValues cumpleanios =  cargarDatos(
-                null,
-                "",
-                "Cumpleaños",
-                1,
-                Utilidades.fechaHora()
-        );
-        ContentValues cita =  cargarDatos(
-                null,
-                "",
-                "Cita",
-                1,
-                Utilidades.fechaHora()
-        );
-        ContentValues aniversario =  cargarDatos(
-                null,
-                "",
-                "Aniversario",
-                1,
-                Utilidades.fechaHora()
-        );
-
+        //Insertar datos iniciales
         try {
-            //Insertar
-            db.insert(Constantes.EntradasCategoria.TABLA_CATEGORIAS_RECORDATORIOS,
-                    null, cumpleanios);
-            db.insert(Constantes.EntradasCategoria.TABLA_CATEGORIAS_RECORDATORIOS,
-                    null, cita);
-            db.insert(Constantes.EntradasCategoria.TABLA_CATEGORIAS_RECORDATORIOS,
-                    null, aniversario);
+
+            for (int i = 0; i <= DatosIniciales.datosIniciales().length; i++){
+                db.insert(Constantes.EntradasCategoria.TABLA_CATEGORIAS_RECORDATORIOS,
+                        null, DatosIniciales.datosIniciales()[i]);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -159,20 +133,6 @@ public class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
 
             onCreate(db);
         }
-    }
-
-    private ContentValues cargarDatos(String id, String rutaImg, String tituloCat, int proteccion, String fechaCreacion){
-        // Contenedor de valores
-        ContentValues values = new ContentValues();
-
-        // Pares clave-valor
-        values.put(Constantes.EntradasCategoria.ID_CATEGORIA, id);
-        values.put(Constantes.EntradasCategoria.RUTA_IMAGEN_CATEGORIA, rutaImg);
-        values.put(Constantes.EntradasCategoria.TITULO_CATEGORIA, tituloCat);
-        values.put(Constantes.EntradasCategoria.PROTECCION_CATEGORIA, proteccion);
-        values.put(Constantes.EntradasCategoria.FECHA_CREACION_CATEGORIA, fechaCreacion);
-
-        return values;
     }
 
 }
