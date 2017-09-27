@@ -1066,16 +1066,16 @@ public class ActualizarRecordatorioFragmento extends Fragment
         int idItemSelected = parent.getId();
         switch (idItemSelected){
             case R.id.sp_categorias_recordatorios:
-                if(position != 0) {
+                if(position >= 0) {
                     mValorIdCategoria = mManagerRecordatorios
                             .getListaCategorias()
-                            .get(position-1).getId();
+                            .get(position).getId();
                     mValorImagenCategoria = mManagerRecordatorios
                             .getListaCategorias()
-                            .get(position-1).getImagen();
+                            .get(position).getImagen();
                     mValorTituloCategoria = mManagerRecordatorios
                             .getListaCategorias()
-                            .get(position-1).getCategorioRecordatorio();
+                            .get(position).getCategorioRecordatorio();
 
                     if(Utilidades.smartphone) {
 
