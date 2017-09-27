@@ -9,7 +9,7 @@
     <string name="hint_buscar">Buscar&#8230;</string>
 
     <!--=======Formulario agregar recordatorio=======-->
-    <string name="selecciona_categoria_spinner">Seleccionar una categoria:</string>
+    <string name="selecciona_categoria_spinner">Seleccionar una categoría:</string>
     <string name="label_o">O</string>
     <string name="preferencias_recordatorio">Preferencias:</string>
     <string name="agregar_categoria_boton">Agregar</string>

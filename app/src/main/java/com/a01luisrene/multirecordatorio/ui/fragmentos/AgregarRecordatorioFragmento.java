@@ -35,6 +35,7 @@ package com.a01luisrene.multirecordatorio.ui.fragmentos;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.AdapterView;
+        import android.widget.ArrayAdapter;
         import android.widget.Button;
         import android.widget.CompoundButton;
         import android.widget.DatePicker;
@@ -51,7 +52,6 @@ package com.a01luisrene.multirecordatorio.ui.fragmentos;
         import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
         import com.a01luisrene.multirecordatorio.io.db.DataBaseManagerRecordatorios;
         import com.a01luisrene.multirecordatorio.ui.DetalleCategoriaActivity;
-        import com.a01luisrene.multirecordatorio.ui.adaptadores.SpinnerCategoriasAdaptador;
         import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
         import com.squareup.picasso.Picasso;
 
@@ -109,6 +109,7 @@ public class AgregarRecordatorioFragmento extends Fragment
     Spinner mSpinnerListaCategotegorias;
     //Variables para el combo
     List<String> comboListaCategorias;
+    ArrayAdapter<String> comboAdapter;
 
     //Obtener número de los contactos del phone
     Cursor contactCursor, phoneCursor;
@@ -241,6 +242,7 @@ public class AgregarRecordatorioFragmento extends Fragment
 
         //[INICIO COMBO]
         poblarSpinner();
+        mSpinnerListaCategotegorias.setOnItemSelectedListener(this);
         //[FIN COMBO]
 
         //Muestro la cantidad de textos disponibles para twitter
@@ -282,18 +284,17 @@ public class AgregarRecordatorioFragmento extends Fragment
 
         int sizeListaCat = mManagerRecordatorios.getListaCategorias().size();
 
-        comboListaCategorias.add(getString(R.string.selecciona_categoria_spinner));
-
         for(int i = 0; i < sizeListaCat; i++){
             comboListaCategorias.add(mManagerRecordatorios
                     .getListaCategorias().get(i).getCategorioRecordatorio());
         }
 
-        mSpinnerListaCategotegorias.setAdapter(new SpinnerCategoriasAdaptador(
-                getActivity().getApplicationContext(),
-                comboListaCategorias));
+        comboAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.spinner_item, comboListaCategorias);
 
-        mSpinnerListaCategotegorias.setOnItemSelectedListener(this);
+        comboAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+
+        mSpinnerListaCategotegorias.setAdapter(comboAdapter);
 
     }
 

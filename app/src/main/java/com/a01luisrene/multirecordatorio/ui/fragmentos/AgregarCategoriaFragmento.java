@@ -63,7 +63,7 @@ public class AgregarCategoriaFragmento extends Fragment implements View.OnClickL
     private static final int PROTECCION = 0;
     public static final String LLAVE_RETORNO_CATEGORIA = "llave.retorno.categoria";
 
-    public static final String TAG = "log";
+    public static final String TAG = "logcat";
 
     boolean respuestaRetornoCategoria = false;
 
@@ -97,11 +97,11 @@ public class AgregarCategoriaFragmento extends Fragment implements View.OnClickL
        mManagerRecordatorios = new DataBaseManagerRecordatorios(getActivity());
 
         //Asignado los id a las variables
-        mCivImagen = v.findViewById(R.id.civ_imagen_categoria);
-        mBtSeleccionarImagen = v.findViewById(R.id.bt_seleccionar_imagen);
-        mEtTituloRecordatorio = v.findViewById(R.id.et_titulo_recordatorio);
-        mBtGuardarCategoriaRecordatorio = v.findViewById(R.id.bt_guardar_tipo_recordatorio);
-        mTilTituloTipoRecordatorio = v.findViewById(R.id.til_titulo_tipo_recordatorio);
+        mCivImagen = (CircleImageView) v.findViewById(R.id.civ_imagen_categoria);
+        mBtSeleccionarImagen = (Button) v.findViewById(R.id.bt_seleccionar_imagen);
+        mEtTituloRecordatorio = (EditText) v.findViewById(R.id.et_titulo_recordatorio);
+        mBtGuardarCategoriaRecordatorio = (Button) v.findViewById(R.id.bt_guardar_tipo_recordatorio);
+        mTilTituloTipoRecordatorio = (TextInputLayout) v.findViewById(R.id.til_titulo_tipo_recordatorio);
 
         mEtTituloRecordatorio.addTextChangedListener(twCategoriaRecordatorio);
 
@@ -171,10 +171,12 @@ public class AgregarCategoriaFragmento extends Fragment implements View.OnClickL
                 R.string.error_titulo_categoria_existe,
                 existeTitulo
         );
-        String rutaDirectorio = String.valueOf(
+        String rutaDirectorioAe = String.valueOf(
                 getActivity().getApplicationContext().getExternalFilesDir(
                         Environment.DIRECTORY_PICTURES + BARRA + DIRECTORIO_IMAGENES)
         );
+        String rutaDirectorioAi = String.valueOf(getActivity().getFilesDir() + BARRA + DIRECTORIO_IMAGENES);
+
         String uriFinalImagen = null;
 
         int valorInicialSpannable = 13;
@@ -194,18 +196,43 @@ public class AgregarCategoriaFragmento extends Fragment implements View.OnClickL
 
         //Condicionamos todos los datos a guardar a true
         if (existeTituloDb && titulo) {
-            //======================= CREO CARPETA IMG_CAT=====================================//
+            //======================= CREO LA CARPETA IMG_CAT ==============================//
             //Me aseguro que la ruta inicial de la imagen no devuelva nulo
             if (mUriInicialImagen != null) {
+
+                //URI de los almacenamientos externo/interno
+                String pathAe = Environment.getExternalStorageDirectory().getPath();
+                String pathAi = Environment.getDataDirectory().getPath();
+
+                //Almaceno el valor del espacio disponible
+                long espacioDdisponibleAe = Utilidades.espacioMemoriaDisponible(pathAe);
+                long espacioDdisponibleAi = Utilidades.espacioMemoriaDisponible(pathAi);
+
                 //Condiciono para saber que existe (almacenamiento externo)
                 if(isExternalStorageWritable()){
-                    //Almaceno la ruta final de la imagen a copiar
-                    uriFinalImagen = uriFinalImagen(rutaDirectorio, mUriInicialImagen);
-                    //Creo la carpeta IMG_CAT y copio la imagen seleccionada a la carpeta IMG_CAT
-                    copiarImagen(rutaDirectorio, mUriInicialImagen, uriFinalImagen);
-                }else {
-                    //Si el almacenamiento externo no esta disponible solo guardo la ruta en la DB
-                    uriFinalImagen = mUriInicialImagen;
+                    //Verifico si el espacio disponible en la memoria externa es mayor a 200MB
+                    if(espacioDdisponibleAe > 200){
+
+                        //Almaceno la ruta final de la imagen a copiar
+                        uriFinalImagen = uriFinalImagen(rutaDirectorioAe, mUriInicialImagen);
+                        //Creo la carpeta IMG_CAT y copio la imagen seleccionada a la carpeta IMG_CAT
+                        copiarImagenAlmacenamientoExterno(rutaDirectorioAe, mUriInicialImagen, uriFinalImagen);
+
+                    }else{
+                        uriFinalImagen = mUriInicialImagen;
+                    }
+
+                }else {//Si el almacenamiento externo no esta disponible
+
+                    //Verifico si el espacio disponible en la memoria interna es mayor a 200MB
+                    if(espacioDdisponibleAi > 200) {
+                        //Almaceno la ruta final de la imagen a copiar
+                        uriFinalImagen = uriFinalImagen(rutaDirectorioAi, mUriInicialImagen);
+                        //Creo la carpeta IMG_CAT y copio la imagen seleccionada a la carpeta IMG_CAT
+                        copiarImagenAlmacenamientoInterno(rutaDirectorioAi, mUriInicialImagen, uriFinalImagen);
+                    }else{
+                        uriFinalImagen = mUriInicialImagen;
+                    }
                 }
             }
             try{
@@ -244,10 +271,8 @@ public class AgregarCategoriaFragmento extends Fragment implements View.OnClickL
 
     }
 
-    private void copiarImagen(String rutaDirectorio, String uriInicialImagen, String uriFinalImagen){
+    private void copiarImagenAlmacenamientoExterno(String rutaDirectorio, String uriInicialImagen, String uriFinalImagen){
 
-        //TODO: comprobar espacio: getFreeSpace() o  getTotalSpace()
-        //TODO: eliminar archivos creados: getCacheDir()
         //Arreglo que contiene la uri inicial archivo y la uri final donde se copiara el archivo
         String[] args = {uriInicialImagen, uriFinalImagen};
         //Ruta del directorio IMG_CAT
@@ -260,7 +285,25 @@ public class AgregarCategoriaFragmento extends Fragment implements View.OnClickL
 
         } else {//Se ejecuta si la carpeta IMG_CAT no existe
             //Creo la carpeta IMG_CAT
-            crearCarpetaImagenesCategoria(getActivity().getApplicationContext(), DIRECTORIO_IMAGENES);
+            crearDirImagenesAe(getActivity().getApplicationContext(), DIRECTORIO_IMAGENES);
+            //Copio la imagen seleccionada a la carpeta IMG_CAT creada
+            CopiarArchivo.main(args);
+        }
+    }
+
+    private void copiarImagenAlmacenamientoInterno(String rutaDirectorio, String uriInicialImagen, String uriFinalImagen){
+        String[] args = {uriInicialImagen, uriFinalImagen};
+        //Ruta del directorio IMG_CAT
+        File directorio = new File(rutaDirectorio);
+
+        //Compruebo si la carpeta IMG_CAT existe
+        if (directorio.exists() && directorio.isDirectory()) {
+            //Copio la imagen seleccionada a la carpeta IMG_CAT
+            CopiarArchivo.main(args);
+
+        } else {//Se ejecuta si la carpeta IMG_CAT no existe
+            //Creo la carpeta IMG_CAT
+            crearDirImagenesAi(DIRECTORIO_IMAGENES);
             //Copio la imagen seleccionada a la carpeta IMG_CAT creada
             CopiarArchivo.main(args);
         }
@@ -300,12 +343,23 @@ public class AgregarCategoriaFragmento extends Fragment implements View.OnClickL
         //Devuelvo la cadena final
         return output;
     }
-
-    public File crearCarpetaImagenesCategoria(Context context, String nombreCarpeta) {
+    //Crear directorio de imágenes en almacenamiento externo
+    public File crearDirImagenesAe(Context context, String nombreCarpeta) {
         //Crear directorio privado en la carpeta Pictures.
         File directorio =new File(
                 context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                 nombreCarpeta);
+        //Muestro un mensaje en el logcat si no se creo la carpeta por algun motivo
+        if (!directorio.mkdirs())
+            Log.e(TAG, "No se creo el directorio: " + DIRECTORIO_IMAGENES);
+
+        return directorio;
+    }
+    //Crear directorio de imágenes en almacenamiento interno
+    public File crearDirImagenesAi(String nombreCarpeta) {
+        //Crear directorio en la memoria interna.
+        File directorio = new File(getActivity().getFilesDir(), nombreCarpeta);
+
         //Muestro un mensaje en el logcat si no se creo la carpeta por algun motivo
         if (!directorio.mkdirs())
             Log.e(TAG, "No se creo el directorio: " + DIRECTORIO_IMAGENES);

@@ -9,14 +9,14 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.widget.Spinner;
 
-import com.a01luisrene.multirecordatorio.R;
-
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 public class Utilidades {
 
+    private static final String TAG = "logcat";
     public static boolean smartphone = true;
 
     //Sirve para formatear cadenas [Int: parametros int]
@@ -68,6 +68,18 @@ public class Utilidades {
 
     public static String obtenerExtensionArchivo(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+    }
+
+    public static long espacioMemoriaDisponible(String path){
+
+        File file = new File(path);
+
+        // Espacio libre en disco (Bytes).
+        long libre = file.getFreeSpace(); //Espacio de disco no asignado / libre en bytes.
+
+        //Retorno espacio disponible en MB
+        return (libre/1024/1024);
+
     }
 
 }

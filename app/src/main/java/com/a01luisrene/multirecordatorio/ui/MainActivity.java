@@ -1,25 +1,15 @@
 package com.a01luisrene.multirecordatorio.ui;
 
-import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -27,19 +17,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.a01luisrene.multirecordatorio.R;
+import com.a01luisrene.multirecordatorio.interfaces.InterfaceCrud;
+import com.a01luisrene.multirecordatorio.interfaces.InterfaceItemClic;
+import com.a01luisrene.multirecordatorio.io.db.DataBaseManagerRecordatorios;
+import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 import com.a01luisrene.multirecordatorio.ui.fragmentos.ActualizarRecordatorioFragmento;
 import com.a01luisrene.multirecordatorio.ui.fragmentos.AgregarRecordatorioFragmento;
 import com.a01luisrene.multirecordatorio.ui.fragmentos.Cover;
 import com.a01luisrene.multirecordatorio.ui.fragmentos.DetalleRecordatorioFragmento;
 import com.a01luisrene.multirecordatorio.ui.fragmentos.ListaRecordatoriosFragmento;
-import com.a01luisrene.multirecordatorio.interfaces.InterfaceCrud;
-import com.a01luisrene.multirecordatorio.interfaces.InterfaceItemClic;
-import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
-import com.a01luisrene.multirecordatorio.io.db.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 
 
@@ -226,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements
         }
 
     }
+
 
     //=====================================Tareas Asincronas===============================================//
     private class buscarTask extends AsyncTask<Void, Void, Void> {

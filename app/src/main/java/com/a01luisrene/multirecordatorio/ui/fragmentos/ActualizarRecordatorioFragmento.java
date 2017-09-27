@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -50,7 +51,6 @@ import com.a01luisrene.multirecordatorio.interfaces.InterfaceCrud;
 import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 import com.a01luisrene.multirecordatorio.io.db.DataBaseManagerRecordatorios;
 import com.a01luisrene.multirecordatorio.ui.DetalleCategoriaActivity;
-import com.a01luisrene.multirecordatorio.ui.adaptadores.SpinnerCategoriasAdaptador;
 import com.a01luisrene.multirecordatorio.utilidades.Utilidades;
 import com.squareup.picasso.Picasso;
 
@@ -111,6 +111,7 @@ public class ActualizarRecordatorioFragmento extends Fragment
     Spinner mSpinnerListaCategotegorias;
     //Variables para el combo
     List<String> comboListaCategorias;
+    ArrayAdapter<String> comboAdapter;
 
     //Obtener número de los contactos del phone
     Cursor contactCursor, phoneCursor;
@@ -279,9 +280,8 @@ public class ActualizarRecordatorioFragmento extends Fragment
 
             //[INICIO COMBO]
             poblarSpinner();
-            //[FIN COMBO]
-
             mSpinnerListaCategotegorias.setOnItemSelectedListener(this);
+            //[FIN COMBO]
 
             mTieTituloRecordatorio.setText(mItemRecordatorio.getTitulo());
             mTieEntidadOtros.setText(mItemRecordatorio.getEntidadOtros());
@@ -332,8 +332,12 @@ public class ActualizarRecordatorioFragmento extends Fragment
                     .getListaCategorias().get(i).getCategorioRecordatorio());
         }
 
-        mSpinnerListaCategotegorias.setAdapter(new SpinnerCategoriasAdaptador(
-                getActivity().getApplicationContext(), comboListaCategorias));
+        comboAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.spinner_item, comboListaCategorias);
+
+        comboAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+
+        mSpinnerListaCategotegorias.setAdapter(comboAdapter);
 
         String categoria = mItemRecordatorio.getCategoriaRecordatorio();
 
