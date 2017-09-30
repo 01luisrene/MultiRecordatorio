@@ -16,7 +16,6 @@ import java.util.Locale;
 
 public class Utilidades {
 
-    private static final String TAG = "logcat";
     public static boolean smartphone = true;
 
     //Sirve para formatear cadenas [Int: parametros int]

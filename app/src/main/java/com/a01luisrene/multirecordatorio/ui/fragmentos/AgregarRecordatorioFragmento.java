@@ -20,6 +20,7 @@ package com.a01luisrene.multirecordatorio.ui.fragmentos;
         import android.provider.ContactsContract;
         import android.support.annotation.NonNull;
         import android.support.design.widget.CollapsingToolbarLayout;
+        import android.support.design.widget.FloatingActionButton;
         import android.support.design.widget.Snackbar;
         import android.support.design.widget.TextInputEditText;
         import android.support.design.widget.TextInputLayout;
@@ -30,6 +31,7 @@ package com.a01luisrene.multirecordatorio.ui.fragmentos;
         import android.text.Editable;
         import android.text.Spannable;
         import android.text.TextWatcher;
+        import android.util.Log;
         import android.util.Patterns;
         import android.view.LayoutInflater;
         import android.view.View;
@@ -77,7 +79,7 @@ public class AgregarRecordatorioFragmento extends Fragment
     public static final String ID_CATEGORIA_NULO = "nulo";
     public static final String VALOR_VACIO = "";
     public static final String CERO = "0";
-    public static final String UNO = "1";
+    public static final String RUTA_CARPETA_ASSETS = "file:///android_asset/";
     public static final String BARRA = "/";
     public static final String DOS_PUNTOS = ":";
     public static final String LLAVE_RETORNO_AGREGAR_RECORDATORIO = "llave.retorno.agregar.recordatorio";
@@ -94,7 +96,7 @@ public class AgregarRecordatorioFragmento extends Fragment
     public static final String REGEX_HORAS = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$";
 
     //Referencias de widgets del fragmento
-    Button mBotonGuardar, mBotonAgregarCategoria;
+    Button mBotonAgregarCategoria;
     TextInputEditText mTieTituloRecordatorio, mTieEntidadOtros, mTieTelefono, mTieContenidoMensaje, mTieFecha, mTieHora;
     TextInputLayout mTilTituloRecordatorio, mTilEntidadOtros, mTilTelefono, mTilContenidoMensaje, mTilFecha, mTilHora;
     Switch mSwFacebook, mSwTwitter, mSwEnviarMensaje;
@@ -144,6 +146,7 @@ public class AgregarRecordatorioFragmento extends Fragment
     ImageView mIvImagenRecordatorio;
     String  mValorIdCategoria, mValorRutaImgCategoria, mValorTituloCategoria;
     int mValorProteccionImg;
+    FloatingActionButton mFabAddUpd;
     Activity activity;
 
     //Referencias de widgets que se encuentran en layout toolbar_top.xml
@@ -160,14 +163,22 @@ public class AgregarRecordatorioFragmento extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_agregar_recordatorio, container, false);
+        this.mView = v; //Para mostrar mensaje
         activity = this.getActivity();
+        //Asignamos nuestro manager que contiene nuestros metodos CRUD
+        mManagerRecordatorios = new DataBaseManagerRecordatorios(getActivity().getApplicationContext());
 
         if(Utilidades.smartphone) {
             //Widgets de la activity Detalle Recordatorio
             mIvImagenRecordatorio = (ImageView) activity.findViewById(R.id.iv_cover);
             mCtCategoriaRecordatorio = (CollapsingToolbarLayout) activity.findViewById(R.id.ct_categoria_recordatorio);
-        }else{
+        }else {
             //Widgets del layout toolbar_top.xml
             mCivImagenRecordatorio = (CircleImageView) activity.findViewById(R.id.civ_toolbar);
             mTvTituloCategoriaRecordatorio = (TextView) activity.findViewById(R.id.tv_titulo_toolbar);
@@ -177,17 +188,9 @@ public class AgregarRecordatorioFragmento extends Fragment
             mIbAcutualizarRecordatorio.setVisibility(View.INVISIBLE);
         }
 
-
-    }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_agregar_recordatorio, container, false);
-        this.mView = v; //Para mostrar mensaje
-
-        //Asignamos nuestro manager que contiene nuestros metodos CRUD
-        mManagerRecordatorios = new DataBaseManagerRecordatorios(getActivity().getApplicationContext());
+        //Botón fab para guardar recordatorio
+        mFabAddUpd = (FloatingActionButton) activity.findViewById(R.id.fab_add_upd);
+        mFabAddUpd.setVisibility(View.VISIBLE);
 
         //Spinner
         mSpinnerListaCategotegorias = (Spinner) v.findViewById(R.id.sp_categorias_recordatorios);
@@ -222,7 +225,6 @@ public class AgregarRecordatorioFragmento extends Fragment
         mValorTwitter = ENVIAR_OFF;
 
         //Botones
-        mBotonGuardar = (Button) v.findViewById(R.id.bt_nuevo_guardar);
         mBotonAgregarCategoria = (Button) v.findViewById(R.id.bt_agregar_categoria);
 
         //Botón con imagenes
@@ -254,12 +256,14 @@ public class AgregarRecordatorioFragmento extends Fragment
         mSwTwitter.setOnCheckedChangeListener(this);
         mSwEnviarMensaje.setOnCheckedChangeListener(this);
 
-        mBotonGuardar.setOnClickListener(this);
         mBotonAgregarCategoria.setOnClickListener(this);
 
         mIbContactos.setOnClickListener(this);
         mIbFecha.setOnClickListener(this);
         mIbHora.setOnClickListener(this);
+
+        mFabAddUpd.setOnClickListener(this); //Evento click fab guardar
+
 
         return v;
 
@@ -423,6 +427,41 @@ public class AgregarRecordatorioFragmento extends Fragment
                 1.2f,
                 Typeface.BOLD);
 
+        int idMax = mManagerRecordatorios.idRecordatorioMax();
+
+        Recordatorios recordatorios = new Recordatorios(
+                String.valueOf(idMax),
+                stTitulo,
+                stEntidadOtros,
+                stContenidoMensaje,
+                mValorFacebook,
+                mValorTwitter,
+                mValorEnviarMensaje,
+                stTelefono,
+                Utilidades.fechaHora(),
+                stFecha,
+                stHora,
+                mValorTituloCategoria,
+                mValorRutaImgCategoria,
+                mValorProteccionImg
+        );
+
+        Log.i("logcat", "id: "+ String.valueOf(idMax) + "\n"
+                + "titulo: " + stTitulo + "\n"
+                + "Entidad: " + stEntidadOtros + "\n"
+                + "contenido mensaje: " + stContenidoMensaje + "\n"
+                + "facebook: " + mValorFacebook + "\n"
+                + "teitter: " + mValorTwitter + "\n"
+                + "enviar mensaje: " + mValorEnviarMensaje + "\n"
+                + "Telefóno: " +stTelefono + "\n"
+                + "fecha hoy: " +Utilidades.fechaHora() + "\n"
+                + "fecha colocada: " +stFecha + "\n"
+                + "hora colocada: " +stHora + "\n"
+                + "titulo cat: " +mValorTituloCategoria + "\n"
+                + "ruta imagen cat: " +mValorRutaImgCategoria + "\n"
+                + "protección cat: " +mValorProteccionImg
+        );
+
         if (!mValorIdCategoria.equals(ID_CATEGORIA_NULO)) {
 
             if (existeTituloDb && titulo && entidadOtros &&
@@ -452,32 +491,12 @@ public class AgregarRecordatorioFragmento extends Fragment
                     Toast.makeText(getActivity(), getString(R.string.nuevo_recordatorio_almacenado),
                             Toast.LENGTH_SHORT).show();
 
-                    int idMax = mManagerRecordatorios.idRecordatorioMax();
-
-                    Recordatorios recordatorios = new Recordatorios(
-                            String.valueOf(idMax),
-                            stTitulo,
-                            stEntidadOtros,
-                            stContenidoMensaje,
-                            mValorFacebook,
-                            mValorTwitter,
-                            mValorEnviarMensaje,
-                            stTelefono,
-                            Utilidades.fechaHora(),
-                            stFecha,
-                            stHora,
-                            mValorTituloCategoria,
-                            mValorRutaImgCategoria,
-                            mValorProteccionImg
-                    );
-
                     //Cierro la activity siempre que me encuentre en un smartphone
                     if(Utilidades.smartphone){
                         //Envio la respuesta con los datos del modelo
                         Intent i = new Intent();
                         i.putExtra(LLAVE_RETORNO_AGREGAR_RECORDATORIO, recordatorios);
                         getActivity().setResult(RESULT_OK, i);
-
                         esperarYCerrar(MILISEGUNDOS_ESPERA);
 
                     }else {
@@ -507,6 +526,7 @@ public class AgregarRecordatorioFragmento extends Fragment
         } else {
             mostrarMensaje(getString(R.string.error_spinner_categorias), 0);
         }
+
     }
 
     //Validar campos EditText
@@ -658,14 +678,13 @@ public class AgregarRecordatorioFragmento extends Fragment
         }
     }
     private boolean esHoraIngresadaValido(String horaIngresadaUsuario){
+        //Funvción para obtener los valores de hora y minuto
+        horaMinutoValoresObtenidos(horaIngresadaUsuario);
 
         Pattern patron = Pattern.compile(REGEX_HORAS);
         int mesActual = mes + 1;
         int horaLocal24 = (horaIngresada == 0)? 24 : horaIngresada;
         int horaSistema24 = (hora == 0)? 24: hora;
-
-        //Funvción para obtener los valores de hora y minuto
-        horaMinutoValoresObtenidos(horaIngresadaUsuario);
 
         if (!patron.matcher(horaIngresadaUsuario).matches()){
             mTilHora.setError(getString(R.string.error_hora));
@@ -1025,7 +1044,6 @@ public class AgregarRecordatorioFragmento extends Fragment
 
         switch (idItemSelected){
             case R.id.sp_categorias_recordatorios:
-                if(position >= 0) {
                     mValorIdCategoria = mManagerRecordatorios
                             .getListaCategorias()
                             .get(position).getId();
@@ -1046,7 +1064,7 @@ public class AgregarRecordatorioFragmento extends Fragment
                         if (mValorRutaImgCategoria != null){
                             if (mValorProteccionImg == 1){
                                 Picasso.with(getActivity())
-                                        .load(mValorRutaImgCategoria)
+                                        .load(RUTA_CARPETA_ASSETS + mValorRutaImgCategoria)
                                         .error(R.drawable.ic_image_150dp)
                                         .noFade()
                                         .into(mIvImagenRecordatorio);
@@ -1076,7 +1094,7 @@ public class AgregarRecordatorioFragmento extends Fragment
                         if (mValorRutaImgCategoria != null){
                             if (mValorProteccionImg == 1){
                                 Picasso.with(getActivity().getApplicationContext())
-                                        .load(mValorRutaImgCategoria)
+                                        .load(RUTA_CARPETA_ASSETS + mValorRutaImgCategoria)
                                         .error(R.drawable.ic_image_150dp)
                                         .noFade()
                                         .into(mCivImagenRecordatorio);
@@ -1093,22 +1111,6 @@ public class AgregarRecordatorioFragmento extends Fragment
                             mCivImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
                         }
                     }
-
-
-
-                }else{
-                    //Colocar el valor de id categoría en nulo
-                    mValorIdCategoria = ID_CATEGORIA_NULO;
-
-                    if(Utilidades.smartphone) {
-                        mCtCategoriaRecordatorio.setTitle(getString(R.string.agregar_recordatorio));
-                        mIvImagenRecordatorio.setImageDrawable(null);
-                    }else{
-                        mTvTituloCategoriaRecordatorio.setText(getString(R.string.agregar_recordatorio));
-                        mCivImagenRecordatorio.setImageResource(R.drawable.ic_image_150dp);
-                    }
-
-                }
 
                 break;
         }
@@ -1150,7 +1152,7 @@ public class AgregarRecordatorioFragmento extends Fragment
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.bt_nuevo_guardar:
+            case R.id.fab_add_upd:
                 validarDatos();
                 break;
             case R.id.bt_agregar_categoria:

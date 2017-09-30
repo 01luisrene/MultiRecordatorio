@@ -1,6 +1,5 @@
 package com.a01luisrene.multirecordatorio.io.db;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -79,7 +78,7 @@ class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
         if (!db.isReadOnly()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 db.setForeignKeyConstraintsEnabled(true);
             } else {
                 db.execSQL("PRAGMA foreign_keys=ON;");

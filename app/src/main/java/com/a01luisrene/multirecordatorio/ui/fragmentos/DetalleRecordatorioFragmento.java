@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ public class DetalleRecordatorioFragmento extends Fragment
     //Llave para usar con parcelable
     public static final String KEY_RECORDATORIO = "objeto.recordatorio";
     public static final String VALOR_ACTIVO = "1";
+    public static final String RUTA_CARPETA_ASSETS = "file:///android_asset/";
 
     Recordatorios mItemRecordatorio;
     CollapsingToolbarLayout mCtRecordatorio;
@@ -43,6 +45,7 @@ public class DetalleRecordatorioFragmento extends Fragment
     ImageButton mIbEliminarRecordatorio, mIbAcutualizarRecordatorio;
     int mValorProteccionImg;
 
+    FloatingActionButton fabAddUpd;
     Activity activity;
 
     DataBaseManagerRecordatorios mManager;
@@ -71,21 +74,7 @@ public class DetalleRecordatorioFragmento extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments().containsKey(KEY_RECORDATORIO)) {
-
-            activity = this.getActivity();
             mItemRecordatorio = getArguments().getParcelable(KEY_RECORDATORIO);
-
-            if(Utilidades.smartphone){
-                mCtRecordatorio = (CollapsingToolbarLayout) activity.findViewById(R.id.ct_categoria_recordatorio);
-                mIvImagenRecordatorio = (ImageView) activity.findViewById(R.id.iv_cover);
-            }else{
-                mCivImagenCategoria = (CircleImageView) activity.findViewById(R.id.civ_toolbar);
-                mIbEliminarRecordatorio = (ImageButton) activity.findViewById(R.id.ib_eliminar_toolbar);
-                mIbAcutualizarRecordatorio = (ImageButton) activity.findViewById(R.id.ib_editar_toolbar);
-            }
-
-            mValorRutaImagen = mItemRecordatorio.getRutaImagenRecordatorio();
-
         }
 
     }
@@ -94,19 +83,21 @@ public class DetalleRecordatorioFragmento extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_detalle_recordatorio, container, false);
-        mManager = new DataBaseManagerRecordatorios(getActivity().getApplicationContext());
-        mValorProteccionImg = mItemRecordatorio.getProteccionImg();
-
         if(mItemRecordatorio != null) {
+            mManager = new DataBaseManagerRecordatorios(getActivity().getApplicationContext());
+            activity = this.getActivity();
+            mValorRutaImagen = mItemRecordatorio.getRutaImagenRecordatorio();
+            mValorProteccionImg = mItemRecordatorio.getProteccionImg();
 
             if (Utilidades.smartphone) {
-
+                mCtRecordatorio = (CollapsingToolbarLayout) activity.findViewById(R.id.ct_categoria_recordatorio);
+                mIvImagenRecordatorio = (ImageView) activity.findViewById(R.id.iv_cover);
                 mCtRecordatorio.setTitle(mItemRecordatorio.getTitulocategoria());
                 //Condiciona para cargar el ImageView [solo si devuelve un valor diferente a nulo]
                 if(mValorRutaImagen != null){
                     if(mValorProteccionImg == 1){
                         Picasso.with(getContext())
-                                .load(mValorRutaImagen)
+                                .load(RUTA_CARPETA_ASSETS + mValorRutaImagen)
                                 .error(R.drawable.ic_image_150dp)
                                 .into(mIvImagenRecordatorio);
                     }else{
@@ -118,12 +109,15 @@ public class DetalleRecordatorioFragmento extends Fragment
                 }
 
             }else{ //Compruebo si es tablet
+                mCivImagenCategoria = (CircleImageView) activity.findViewById(R.id.civ_toolbar);
+                mIbEliminarRecordatorio = (ImageButton) activity.findViewById(R.id.ib_eliminar_toolbar);
+                mIbAcutualizarRecordatorio = (ImageButton) activity.findViewById(R.id.ib_editar_toolbar);
 
                 if(mValorRutaImagen != null){
                     if(mValorProteccionImg == 1){
                         //Utilizo la librería Picasso
                         Picasso.with(getContext())
-                                .load(mValorRutaImagen)
+                                .load(RUTA_CARPETA_ASSETS + mValorRutaImagen)
                                 .error(R.drawable.ic_image_150dp)
                                 .into(mCivImagenCategoria);
                     }else{
@@ -138,6 +132,11 @@ public class DetalleRecordatorioFragmento extends Fragment
                 }else{
                     mCivImagenCategoria.setImageResource(R.drawable.ic_image_150dp);
                 }
+                //Fab actualizar recordatorio
+                fabAddUpd = (FloatingActionButton) activity.findViewById(R.id.fab_add_upd);
+                //Oculto el botón de actualizar recordatorio
+                fabAddUpd.setVisibility(View.INVISIBLE);
+
                 mIbEliminarRecordatorio.setOnClickListener(this);
                 mIbAcutualizarRecordatorio.setOnClickListener(this);
                 mIbEliminarRecordatorio.setVisibility(View.VISIBLE);

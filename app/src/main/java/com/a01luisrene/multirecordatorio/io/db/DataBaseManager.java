@@ -9,12 +9,12 @@ import com.a01luisrene.multirecordatorio.modelos.Recordatorios;
 
 import java.util.List;
 
-public abstract class DataBaseManager {
+abstract class DataBaseManager {
 
     private SQLiteOpenHelper mRecordatoriosDbHelper;
     private SQLiteDatabase db;
 
-    public DataBaseManager(Context context) {
+    DataBaseManager(Context context) {
 
         mRecordatoriosDbHelper = SQLiteOpenHelper.getInstance(context);
         db = mRecordatoriosDbHelper.getWritableDatabase();

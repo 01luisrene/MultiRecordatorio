@@ -13,12 +13,12 @@ class DatosIniciales {
         String fechaActual = Utilidades.fechaHora();
         String[] id = new String[]{null};
         String[] rutaImg = new String[]{
-                "http://lorempixel.com/400/200/",
-                "http://lorempixel.com/450/220/",
-                "http://lorempixel.com/500/250/"
+                "cita.jpg",
+                "aniversario.jpg",
+                "cumpleanios.jpg"
         };
 
-        String[] tituloCat = new String[]{"Cumpleaños", "Cita", "Aniversario"};
+        String[] tituloCat = new String[]{"Cita", "Aniversario", "Cumpleaños"};
         int[] proteccion = new int[]{1};
         String[]fecha = new String[]{fechaActual};
 

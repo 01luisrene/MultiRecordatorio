@@ -12,6 +12,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,8 +58,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private Animation fab_abrir,fab_cerrar;
 
-    private DataBaseManagerRecordatorios mManager;
-
     private boolean dosPaneles = false;
     private boolean esFabAbrir = false;
 
@@ -72,8 +71,6 @@ public class MainActivity extends AppCompatActivity implements
         mAgregarRecordatorioFragmento = new AgregarRecordatorioFragmento();
         cover = new Cover();
 
-        mManager = new DataBaseManagerRecordatorios(this);
-
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
@@ -84,14 +81,16 @@ public class MainActivity extends AppCompatActivity implements
         mFabAgregarRecordatorio.setOnClickListener(this);
 
 
-        if (savedInstanceState == null)
+        if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fl_contenedor, mListaRecordatoriosFragmento)
                     .commit();
+        }
 
         //Función para determinar patrón Maestro - Detalle
         determinePaneLayout(savedInstanceState);
+
 
         //TODO: agregar una función para agregar los permisos en tiempo de ejecución que utilizara mi app
         //SMS, CONTACTOS, READ_EXTERNAL_STORAGE_PERMISSION
@@ -240,24 +239,27 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     //===============================FUNCIONES PROPIAS=================================//
-    private void determinePaneLayout(Bundle savedInstanceState) {
+    private void determinePaneLayout(Bundle bundle) {
 
         View contenedorLateral = findViewById(R.id.fl_contenedor_lateral);
 
         if (contenedorLateral != null) {
             dosPaneles = true;
             Utilidades.smartphone = false;
+
             //Agregar un fragmento cover
-            if(savedInstanceState == null)
+            if(bundle == null) {
                 abrirFragmento(cover);
+            }
 
             //Mantener en modo portrait la landscape
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         }else{
+            dosPaneles = false;
             Utilidades.smartphone = true;
             //Mantener en modo portrait la pantalla
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
 
@@ -329,8 +331,10 @@ public class MainActivity extends AppCompatActivity implements
             mListaRecordatoriosFragmento.agregarItemRecordatorio(recordatorios);
         }
 
+        Log.i("logcat", String.valueOf(recordatorios));
+
         //Reemplazo por el cover
-        abrirFragmento(cover);
+        //abrirFragmento(cover);
 
         //Muestro el botón FAB agregar
         if(esFabAbrir){

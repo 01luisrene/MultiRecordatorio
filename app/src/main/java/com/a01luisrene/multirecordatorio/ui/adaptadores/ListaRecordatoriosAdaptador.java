@@ -141,7 +141,7 @@ public class ListaRecordatoriosAdaptador
                     if(valorProteccionImg==1){
                         //Cargo la imagen con la ayuda de la librería picasso
                         Picasso.with(context)
-                                .load(valorImagen)
+                                .load("file:///android_asset/" + valorImagen)
                                 .error(R.drawable.ic_image_150dp)
                                 .into(ivImagenRecordatorio);
                     }else{
@@ -164,7 +164,7 @@ public class ListaRecordatoriosAdaptador
                     if(valorProteccionImg == 1){
                         //Cargo la imagen con la ayuda de la librería picasso
                         Picasso.with(context)
-                                .load(valorImagen)
+                                .load("file:///android_asset/" + valorImagen)
                                 .error(R.drawable.ic_image_150dp)
                                 .into(civImagenRecordatorio);
                     }else{

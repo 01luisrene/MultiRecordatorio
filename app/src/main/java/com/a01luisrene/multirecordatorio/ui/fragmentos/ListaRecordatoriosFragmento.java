@@ -2,7 +2,6 @@ package com.a01luisrene.multirecordatorio.ui.fragmentos;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -11,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,7 +161,7 @@ public class ListaRecordatoriosFragmento extends Fragment{
     public void agregarItemRecordatorio(Recordatorios recordatorios){
         //[Insertar un item en la lista]
         mAdapter.agregarItem(recordatorios);
-        mRecordatoriosRecyclerView.smoothScrollToPosition(0);
+       mRecordatoriosRecyclerView.smoothScrollToPosition(0);
 
     }
     public void actualizarItemRecordatorio(Recordatorios recordatorios){
@@ -194,5 +194,11 @@ public class ListaRecordatoriosFragmento extends Fragment{
         super.onDetach();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        //TODO: guardar la posición del recordatorio
+        super.onSaveInstanceState(outState);
+    }
 }
 

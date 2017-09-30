@@ -11,6 +11,7 @@
         android:id="@+id/rv_lista_tipo_recordatorio"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        tools:listitem="@layout/recordatorio_categoria_lista_item"/>
 
 </LinearLayout>
